@@ -3,8 +3,6 @@ const path = require('path');
 // const uglify = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-	mode: 'development',
-	devtool: 'source-map',
 	entry: './main.js',
 	output: {
 		path: __dirname + '/build',
@@ -12,6 +10,12 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.js?$/,
+				exclude: /(node_modules)/,
+				loader: 'babel-loader',
+			},
+
 			{
 				test: /\.css$/, // 正则表达式，表示.css后缀的文件
 				use: ['style-loader', 'css-loader'], // 针对css文件使用的loader，注意有先后顺序，数组项越靠后越先执行
@@ -32,16 +36,5 @@ module.exports = {
 				},
 			},
 		],
-	},
-	/* plugins: [
-        new uglify()
-    ] */
-	plugins: [new webpack.HotModuleReplacementPlugin()],
-	devServer: {
-		contentBase: path.join(__dirname, '/'),
-		port: 8082,
-		host: '127.0.0.1',
-		inline: true,
-		hot: true,
 	},
 };

@@ -7,14 +7,10 @@
 import '../../../plugins/zoomSlider/BZoomSlider.css';
 import ZoomSlider from '../../../plugins/zoomSlider/BZoomSlider';
 
-export default class ZoomSliderControl extends ZoomSlider {
-    constructor(options) {
+export default class ZoomSliderControl {
+	constructor(options) {}
 
-        super();
-    }
-
-    getControl() {
-        debugger;
-        return new ZoomSlider();
-    }
+	getControl() {
+		return new ZoomSlider();
+	}
 }

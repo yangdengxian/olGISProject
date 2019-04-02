@@ -24,7 +24,7 @@ const { overviewMapControl, scaleBarControl, zoomSildweControl } = {
 }
 
 //设置底图图层
-map.setLayerGroup(arcGISTileLayers.getLayerGroup());
+// map.setLayerGroup(arcGISTileLayers.getLayerGroup());
 //添加鹰眼
 map.addControl(overviewMapControl.getControl());
 //添加比例尺
