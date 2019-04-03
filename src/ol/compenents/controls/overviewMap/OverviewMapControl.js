@@ -4,11 +4,12 @@
  * @date 2019-04-01
  */
 import './OverviewMapControl.css';
+import Config from '../../../config/config';
 import { OverviewMap } from 'ol/control';
+import View from 'ol/View';
 
-export default class OverviewMapControl extends OverviewMap {
+export default class OverviewMapControl {
     constructor(options) {
-        super();
         this.layers = options.layers;
         this.collapsed = options.collapsed || true;
     }
@@ -20,7 +21,10 @@ export default class OverviewMapControl extends OverviewMap {
             layers: this.layers,
             collapseLabel: '\u00BB',
             label: '\u00AB',
-            collapsed: this.collapsed
+            collapsed: this.collapsed,
+            view: new View({
+                projection: Config.mapConfig.projection
+            })
         });
     }
 }

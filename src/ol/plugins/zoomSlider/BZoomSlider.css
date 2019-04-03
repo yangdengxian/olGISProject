@@ -112,8 +112,10 @@
 
 .hmap-zoom-slider {
     position: absolute;
-    top: 20px;
-    left: 20px
+    /* top: 20px;
+    left: 20px */
+    top: 10%;
+    left: 2%;
 }
 
 .hmap-zoom-slider .hmap-zoom-slider-translate-content {

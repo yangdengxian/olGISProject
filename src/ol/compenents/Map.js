@@ -25,6 +25,7 @@ const map = new Map({
     view: new View({
         center: Config.mapConfig.center,
         zoom: Config.mapConfig.zoom,
+        projection: Config.mapConfig.projection
     }),
 });
 

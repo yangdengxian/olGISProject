@@ -3,12 +3,49 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Using OpenLayers with Webpack</title>
+    <title>综合查询</title>
     <link rel="shortcut icon" href="./images/ico/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
 </head>
 
 <body>
+    <!-- 工具栏 start -->
+    <div class="container">
+        <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" class="toolbar pan">漫游</a></li>
+                        <li><a href="#" class="toolbar zoomIn">放大</a></li>
+                        <li><a href="#" class="toolbar zoomOut">缩小</a></li>
+                        <li><a href="#" class="toolbar fullScreen">全图</a></li>
+                        <li><a href="#" class="toolbar extent">拉框选择</a></li>
+                        <li><a href="#" class="toolbar loadData">数据加载</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">工具 <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </div>
+    <!-- 工具栏 end -->
+
+    <!-- 地图 start -->
     <div id="map"></div>
+    <!-- 地图 end -->
+
+    <!--业务代码  -->
     <script src="./build/bundle.js"></script>
 </body>
 

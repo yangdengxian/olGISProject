@@ -4,6 +4,16 @@ body {
     height: 100%;
 }
 
+
+/* toolbar样式 s */
+
+.navbar-offset {
+    margin-top: 50px;
+}
+
+
+/* toolbar样式 e */
+
 #map {
     position: absolute;
     top: 0;
