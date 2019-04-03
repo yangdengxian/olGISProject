@@ -8,7 +8,7 @@ Clone the project.
 
 Install the project dependencies.
 
-    cd ol-webpack
+    cd olGISProject
     npm install
 
 Create a bundle for the browser.
