@@ -8,9 +8,10 @@ import OverviewMapControl from './src/ol/compenents/controls/overviewMap/Overvie
 import ScaleBarControl from './src/ol/compenents/controls/scalebar/ScaleBar';
 //导航条
 import ZoomSildweControl from './src/ol/compenents/controls/zoomSlider/ZoomSlider';
+import DrawToolbar from './src/ol/compenents/task/DrawTask';
 
 const arcGISTileLayers = new ArcGISTileLayers();
-const { overviewMapControl, scaleBarControl, zoomSildweControl } = {
+const { overviewMapControl, scaleBarControl, zoomSildweControl, drawToolbar } = {
     overviewMapControl: new OverviewMapControl({
         layers: arcGISTileLayers.getTileLayers(),
         collapsed: true //初始是否关闭鹰眼
@@ -21,6 +22,9 @@ const { overviewMapControl, scaleBarControl, zoomSildweControl } = {
     }),
 
     zoomSildweControl: new ZoomSildweControl(),
+    drawToolbar: new DrawToolbar({
+        type: "Box" //Square、Box、Star
+    }),
 }
 
 //设置底图图层
@@ -31,3 +35,6 @@ map.addControl(overviewMapControl.getControl());
 map.addControl(scaleBarControl.getControl());
 //添加导航条
 map.addControl(zoomSildweControl.getControl());
+
+//添加绘制工具
+map.addInteraction(drawToolbar.getDrawToolBar());
