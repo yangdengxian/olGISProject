@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>综合查询</title>
     <link rel="shortcut icon" href="./images/ico/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -14,26 +16,27 @@
         <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
             <div class="container-fluid">
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="bs-navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" class="toolbar pan">漫游</a></li>
-                        <li><a href="#" class="toolbar zoomIn">放大</a></li>
-                        <li><a href="#" class="toolbar zoomOut">缩小</a></li>
-                        <li><a href="#" class="toolbar fullScreen">全图</a></li>
-                        <li><a href="#" class="toolbar extent">拉框选择</a></li>
-                        <li><a href="#" class="toolbar loadData">数据加载</a></li>
+                        <li><a href="#" class="toolbar pan" id="panBtn">漫游</a></li>
+                        <li><a href="#" class="toolbar zoomIn" id="zoomInBtn">放大</a></li>
+                        <li><a href="#" class="toolbar zoomOut" id="zoomOutBtn">缩小</a></li>
+                        <li><a href="#" class="toolbar fullScreen" id="fullScreenBtn">全图</a></li>
+                        <li><a href="#" class="toolbar extent" id="extentBtn">拉框选择</a></li>
+                        <li><a href="#" class="toolbar loadData" id="loadDataBtn">数据加载</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                工具 <b class="caret"></b>
+                                工具 
+                                <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">jmeter</a></li>
-                                <li><a href="#">EJB</a></li>
-                                <li><a href="#">Jasper Report</a></li>
+                                <li><a href="#" class="toolbar distance" id="distanceBtn">距离测量</a></li>
+                                <li><a href="#" class="toolbar area" id="areaBtn">面积测量</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">分离的链接</a></li>
+                                <li><a href="#" class="toolbar LayersMI" id="LayersMIBtn">专题图控制</a></li>
+                                <li><a href="#" class="toolbar switchLayer" id="switchLayerBtn">底图切换</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">另一个分离的链接</a></li>
+                                <li><a href="#" class="toolbar legend" id="legendBtn">图例</a></li>
                             </ul>
                         </li>
                     </ul>

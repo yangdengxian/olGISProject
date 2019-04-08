@@ -4,7 +4,8 @@
     "description": "Example using OpenLayers with Webpack",
     "scripts": {
         "build": "webpack --config webpack.config.js --mode production",
-        "start": "webpack-dev-server --config webpack.config.js --mode production --watch"
+        "start": "webpack-dev-server --config webpack.config.js --mode production --watch",
+        "dev": "http-server"
     },
     "devDependencies": {
         "@babel/core": "^7.4.0",
@@ -28,6 +29,7 @@
     "dependencies": {
         "bootstrap": "^4.3.1",
         "hmap-js": "^1.5.8",
+        "jquery": "^3.3.1",
         "ol": "^5.1.2"
     }
 }

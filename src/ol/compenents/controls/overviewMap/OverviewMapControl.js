@@ -8,23 +8,18 @@ import Config from '../../../config/config';
 import { OverviewMap } from 'ol/control';
 import View from 'ol/View';
 
-export default class OverviewMapControl {
+export default class OverviewMapControl extends OverviewMap {
     constructor(options) {
-        this.layers = options.layers;
-        this.collapsed = options.collapsed || true;
-    }
-
-    getControl() {
-        return new OverviewMap({
+        super({
             // see in overviewmap-custom.html to see the custom CSS used
             className: 'ol-overviewmap ol-custom-overviewmap',
-            layers: this.layers,
+            layers: options.layers,
             collapseLabel: '\u00BB',
             label: '\u00AB',
-            collapsed: this.collapsed,
+            collapsed: options.collapsed || true,
             view: new View({
                 projection: Config.mapConfig.projection
             })
-        });
+        })
     }
 }

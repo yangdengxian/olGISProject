@@ -11,6 +11,7 @@ const Config = {
         projection: 'EPSG:4326',
         // projection: 'EPSG:3857',
         zoom: 12,
+        extent: []
     },
     //esriTileLayer
 
