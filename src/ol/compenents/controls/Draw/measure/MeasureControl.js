@@ -11,6 +11,9 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Circle from 'ol/style/Circle';
 import Overlay from 'ol/Overlay';
+import sphere from 'ol/sphere';
+import { LineString, Polygon } from 'ol/geom';
+import Observable from 'ol/Observable';
 
 export default class MeasureControl extends Draw {
     constructor(param) {
@@ -38,26 +41,35 @@ export default class MeasureControl extends Draw {
                 })
             })
         });
+        this.lineHelpMsg = param.lineHelpMsg || "点击继续绘制线";
+        this.polygonHelpMsg = param.polygonHelpMsg || "点击继续绘制面";
         this.helpTooltipElement = null;
         this.drawingFeature = null;
         this.helpTooltip = null;
         this.helpMsg = '点击继续绘制'
+        this.map = param.map;
     }
 
     mouseoutHandler(evt) {
-        helpTooltipElement.classList.add('hidden');
+        this.helpTooltipElement.classList.add('hidden');
     }
 
     pointerMoveHandler(evt) {
+        var drawingFeature = this.drawingFeature,
+            helpMsg = this.helpMsg,
+            lineHelpMsg = this.lineHelpMsg,
+            polygonHelpMsg = this.polygonHelpMsg,
+            helpTooltipElement = this.helpTooltipElement,
+            helpTooltip = this.helpTooltip;
         if (evt.dragging) {
             return
         }
         if (drawingFeature) {
             var geom = drawingFeature.getGeometry()
-            if (geom instanceof ol.geom.Polygon) {
+            if (geom instanceof Polygon) {
                 helpMsg = polygonHelpMsg
                 console.log('polygon')
-            } else if (geom instanceof ol.geom.LineString) {
+            } else if (geom instanceof LineString) {
                 helpMsg = lineHelpMsg
                 console.log('linestring')
             }
@@ -68,15 +80,36 @@ export default class MeasureControl extends Draw {
     }
 
     drawStartHandler(evt) {
-
+        drawingFeature = evt.feature
+        var tooltipCoord = evt.coordinate
+        listener = drawingFeature.getGeometry().on('change', (evt) => {
+            var geom = evt.target
+            var output
+            if (geom instanceof Polygon) {
+                output = this.formatArea(geom)
+                tooltipCoord = geom.getInteriorPoint().getCoordinates()
+            } else if (geom instanceof LineString) {
+                output = this.formatLength(geom)
+                tooltipCoord = geom.getLastCoordinate()
+            }
+            measureTooltipElement.innerHTML = output
+            measureTooltip.setPosition(tooltipCoord)
+        })
     }
 
     drawEndHandler(evt) {
-
+        measureTooltipElement.className = 'tooltip tooltip-static'
+        measureTooltip.setOffset([0, -7])
+        drawingFeature = null
+        measureTooltipElement = null
+        this.createMeasureTooltip()
+        ol.Observable.unByKey(listener)
     }
 
     // 创建帮助信息标签
     createHelpTooltip() {
+        var helpTooltipElement = this.helpTooltipElement,
+            helpTooltip = this.helpTooltip;
         if (helpTooltipElement) {
             helpTooltipElement.parentNode.removeChild(helpTooltipElement)
         }
@@ -87,11 +120,13 @@ export default class MeasureControl extends Draw {
             offset: [15, 0],
             positioning: 'center-left'
         })
-        map.addOverlay(helpTooltip)
+        this.map.addOverlay(helpTooltip)
     }
 
     // 创建测量结果信息标签
     createMeasureTooltip() {
+        var measureTooltipElement = this.measureTooltipElement,
+            measureTooltip = this.measureTooltip;
         if (measureTooltipElement) {
             measureTooltipElement.parentNode.removeChild(measureTooltipElement)
         }
@@ -102,11 +137,11 @@ export default class MeasureControl extends Draw {
             offset: [0, -15],
             positioning: 'bottom-center'
         })
-        map.addOverlay(measureTooltip)
+        this.map.addOverlay(measureTooltip)
     }
 
-    formatLength() {
-        var length = ol.sphere.getLength(line)
+    formatLength(line) {
+        var length = sphere.getLength(line)
         var output
         if (length > 100) {
             output = (Math.round(length / 1000 * 100) / 100) + ' km'
@@ -117,7 +152,9 @@ export default class MeasureControl extends Draw {
     }
 
     formatArea(polygon) {
-        var area = ol.sphere.getArea(polygon)
+        console.log(polygon);
+
+        var area = sphere.getArea(polygon)
         var output
         if (area > 10000) {
             output = (Math.round(area / 1000000 * 100) / 100) + ' km<sup>2</sup>'
