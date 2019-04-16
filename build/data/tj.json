@@ -1,0 +1,25 @@
+{
+    "features": [{
+        "name": "大庆",
+        "geometry": {
+            "coordinates": [124.88, 46.71],
+            "type": "Point"
+        },
+        "properties": {
+            "data": [2415],
+            "key": ["探井"],
+            "colors": ["#ff7f0e"]
+        }
+    }, {
+        "name": "辽河",
+        "geometry": {
+            "coordinates": [122.07, 41.21],
+            "type": "Point"
+        },
+        "properties": {
+            "data": [1493],
+            "key": ["探井"],
+            "colors": ["#ff7f0e"]
+        }
+    }]
+}

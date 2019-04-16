@@ -73,7 +73,6 @@ export default class ArcGISTileLayers {
         return this.ArcGISTileLayers;
     }
 
-
     getLayerGroup() {
         return new LayerGroup({
             visible: "true",

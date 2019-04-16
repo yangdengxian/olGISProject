@@ -9,7 +9,7 @@ const argv = require('yargs').argv;
 module.exports = {
     mode: argv.mode || 'development',
     devtool: 'source-map',
-    entry: argv.serverType == 'arcgis' ? './mainArcgis.js' : './mainGeoserver.js',
+    entry: './mainTest.js',
     output: {
         path: __dirname + '/build',
         filename: 'bundle.js',
@@ -47,7 +47,7 @@ module.exports = {
     plugins: [new webpack.HotModuleReplacementPlugin()],
     devServer: {
         contentBase: path.join(__dirname, 'build'),
-        port: 8082,
+        port: 7777,
         host: '0.0.0.0',
         inline: true,
         hot: true,

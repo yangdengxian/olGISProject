@@ -1,4 +1,0 @@
-/**
- * 
- */
-import map from '../Map';

@@ -10,30 +10,54 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 
 import TileLayer from 'ol/layer/Tile.js';
-/* import OSM from 'ol/source/OSM.js';
-import Stamen from 'ol/source/Stamen'; */
+import OSM from 'ol/source/OSM.js';
 
-const map = new Map({
+/* const map = new Map({
     target: 'map',
     controls: [
 
     ],
     layers: [
-        /* new TileLayer({
+        new TileLayer({
             source: new OSM(),
         }),
-        new TileLayer({
-            source: Stamen({
-                layer: 'watercolor'
-            }),
-        }), */
+
     ],
     view: new View({
-        center: Config.mapConfig.center,
-        zoom: Config.mapConfig.zoom,
-        // extent: Config.mapConfig.extent,
         projection: Config.mapConfig.projection
     }),
-});
+}); */
 
-export default map;
+export default class MapSub extends Map {
+    constructor(param) {
+        super({
+            target: param.targetId,
+            controls: [
+
+            ],
+            layers: [
+                /* new TileLayer({
+                    source: new OSM(),
+                }), */
+
+            ],
+            view: new View({
+                projection: param.projection
+            })
+        })
+    }
+
+    getLayerById(layerId) {
+        const layers = this.getLayers()["array_"];
+        let targetLayer = {};
+        for (let i = 0; i < layers.length; i++) {
+            const layer = layers[i];
+            if (layer["values_"] && layer["values_"]["id"] == layerId) {
+                targetLayer = layer;
+                break;
+            }
+        }
+        return targetLayer;
+
+    }
+}

@@ -4,18 +4,21 @@
  * @date 2019-04-09
  */
 import { Image as ImageLayer } from 'ol/layer.js';
-import { ImageArcGISRest } from 'ol/source.js';
+import ArcGISRestLayer from './ArcGISRestLayer';
 
 export default class ArcGISImageLayers extends ImageLayer {
     constructor(url, params) {
         super({
-            source: new ImageArcGISRest({
+            title: params.title,
+            baseLayer: false,
+            thmemeLayer: true,
+            displayInLayerSwitcher: true,
+            source: new ArcGISRestLayer({
                 ratio: 1,
-                params: params || {},
+                params: params.params || {},
                 url: url
             })
         });
     }
-
 
 }

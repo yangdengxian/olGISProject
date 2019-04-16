@@ -6,7 +6,7 @@
 import DragZoom from 'ol/interaction/DragZoom';
 import { always } from 'ol/events/condition';
 
-export default class DragZoomControl extends DragZoom {
+export default class DragZoomInteraction extends DragZoom {
     constructor(param) {
         super({
             condition: always,

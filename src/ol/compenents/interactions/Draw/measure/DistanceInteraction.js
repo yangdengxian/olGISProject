@@ -1,5 +1,5 @@
 /**
- * 面积测量
+ * 长度测量
  * @author ydx
  * @date 2019-04-09
  */
@@ -11,16 +11,16 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Circle from 'ol/style/Circle';
 import Overlay from 'ol/Overlay';
-import { getArea } from 'ol/sphere';
-import { LineString, Polygon } from 'ol/geom';
+
+import { getLength } from 'ol/sphere';
 import { unByKey } from 'ol/Observable';
 
 const source = new VectorSource();
-export default class AreaControl extends Draw {
+export default class DistanceInteraction extends Draw {
     constructor(param) {
         super({
             source: source,
-            type: "Polygon",
+            type: "LineString",
             // 勾绘出要素的样式
             style: new Style({
                 fill: new Fill({
@@ -63,12 +63,13 @@ export default class AreaControl extends Draw {
                 })
             })
         });
-        this.polygonHelpMsg = param.polygonHelpMsg || "点击继续绘制面";
+        this.lineHelpMsg = param.lineHelpMsg || "点击继续绘制线";
         this.helpTooltipElement = null;
         this.drawingFeature = null;
         this.helpTooltip = null;
         this.helpMsg = '点击继续绘制'
         this.map = param.map;
+        this.listener = null;
         this.createHelpTooltip();
         this.createMeasureTooltip();
     }
@@ -116,7 +117,7 @@ export default class AreaControl extends Draw {
             return
         }
         if (this.drawingFeature) {
-            this.helpMsg = this.polygonHelpMsg;
+            this.helpMsg = this.lineHelpMsg;
         }
         this.helpTooltipElement.innerHTML = this.helpMsg
         this.helpTooltip.setPosition(evt.coordinate)
@@ -128,8 +129,8 @@ export default class AreaControl extends Draw {
         var tooltipCoord = evt.coordinate
         this.listener = this.drawingFeature.getGeometry().on('change', (evt) => {
             var geom = evt.target
-            var output = this.formatArea(geom)
-            tooltipCoord = geom.getInteriorPoint().getCoordinates()
+            var output = this.formatLength(geom)
+            tooltipCoord = geom.getLastCoordinate()
             this.measureTooltipElement.innerHTML = output
             this.measureTooltip.setPosition(tooltipCoord)
         })
@@ -146,15 +147,15 @@ export default class AreaControl extends Draw {
         this.helpTooltipElement.classList.add('hidden');
     }
 
-    formatArea(polygon) {
-        var area = getArea(polygon, {
+    formatLength(line) {
+        var length = getLength(line, {
             projection: "EPSG:4326"
         });
         var output
-        if (area > 10000) {
-            output = (Math.round(area / 1000000 * 100) / 100) + ' km<sup>2</sup>'
+        if (length > 100) {
+            output = (Math.round(length / 1000 * 100) / 100) + ' km'
         } else {
-            output = (Math.round(area * 100) / 100) + ' m<sup>2</sup>'
+            output = (Math.round(length * 100) / 100) + ' m'
         }
         return output
     }
