@@ -19,50 +19,45 @@ import Circle from 'ol/style/Circle';
 import GeoJSON from 'ol/format/GeoJSON';
 
 export default class ExtChartLayer extends Vector {
-    constructor(param) {
-        super({
-            id: param.name,
-            name: param.name,
-            title: "charts",
-            baseLayer: false,
-            displayInLayerSwitcher: false,
-            source: param.dataUrl ? new VectorSource({
-                url: param.dataUrl,
-                format: new GeoJSON()
-            }) : new VectorSource({
-                features: param.features
-            }),
-            style: function(feature) {
-                return getFeatureStyle(feature, param.type);
-            }
-        });
-
-    }
-
+	constructor(param) {
+		super({
+			id: 'chartsLayer',
+			name: param.name,
+			title: 'charts',
+			baseLayer: false,
+			displayInLayerSwitcher: false,
+			source: param.dataUrl
+				? new VectorSource({
+						url: param.dataUrl,
+						format: new GeoJSON(),
+				  })
+				: new VectorSource({
+						features: new GeoJSON().readFeatures(param.features),
+				  }),
+			style: function(feature) {
+				return getFeatureStyle(feature, param.type);
+			},
+		});
+	}
 }
 
 function getFeatureStyle(feature, type) {
-    var radius = 15;
-    // area proportional to data size: s=PI*r^2
-    if (type != "bar") {
-        radius = 8 * Math.sqrt(feature.get("size") / Math.PI);
-    }
-    // Create chart style
-    var style = new Style({
-        image: new Charts({
-            type: type,
-            radius: radius,
-            offsetX: 0,
-            offsetY: 0,
-            data: feature.get("data"),
-            // colors: ,
-            rotateWithView: true,
-            animation: 0,
-            stroke: new Stroke({
-                color: "#fff",
-                width: 2
-            }),
-        })
-    });
-    return [style];
+	var style = {},
+		radius = 20,
+		// area proportional to data size: s=PI*r^2
+		data = feature.get('data');
+	// Create chart style
+	style = [
+		new Style({
+			image: new Charts({
+				type: type,
+				radius: radius,
+				data: data,
+				rotateWithView: true,
+				stroke: new Stroke({ color: '#fff', width: 2 }),
+			}),
+		}),
+	];
+
+	return style;
 }
