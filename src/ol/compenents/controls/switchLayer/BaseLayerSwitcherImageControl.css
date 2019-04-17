@@ -1,7 +1,8 @@
 .ol-control.ol-layerswitcher-image {
+    top: 3.8em;
     right: 4em;
 }
 
 .ol-control.ol-layerswitcher-image.ol-collapsed {
-    top: 3.6em;
+    top: 3.8em;
 }

@@ -190,5 +190,5 @@ const toolBarTask = new ToolBarTask({
 toolBarTask.bindClickEvent();
 
 //地图加载完成
-const RFMP = require('./src/ol/utils/rfmp/rfmp');
-RFMP.send('map_loaded', true, null, true);
+// const RFMP = require('./src/ol/utils/rfmp/rfmp');
+// RFMP.send('map_loaded', true, null, true);

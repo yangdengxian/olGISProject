@@ -3,7 +3,7 @@
  * @author ydx
  * @date 2019-04-15
  */
-import 'ol-ext/control/LayerSwitcher.css';
+import 'ol-ext/dist/ol-ext.min.css';
 import './ThemeLayersSwitchControl.css';
 import LayerSwitcher from 'ol-ext/control/LayerSwitcher';
 import Collection from 'ol/Collection';

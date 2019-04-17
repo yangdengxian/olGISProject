@@ -29,31 +29,31 @@ import OSM from 'ol/source/OSM.js';
 }); */
 
 export default class MapSub extends Map {
-	constructor(param) {
-		super({
-			target: param.targetId,
-			controls: [],
-			layers: [
-				new TileLayer({
-					source: new OSM(),
-				}),
-			],
-			view: new View({
-				projection: param.projection,
-			}),
-		});
-	}
+    constructor(param) {
+        super({
+            target: param.targetId,
+            controls: [],
+            layers: [
+                /* new TileLayer({
+                	source: new OSM(),
+                }), */
+            ],
+            view: new View({
+                projection: param.projection,
+            }),
+        });
+    }
 
-	getLayerById(layerId) {
-		const layers = this.getLayers().getArray();
-		let targetLayer = null;
-		for (let i = 0; i < layers.length; i++) {
-			const layer = layers[i];
-			if (layer.get('id') == layerId) {
-				targetLayer = layer;
-				break;
-			}
-		}
-		return targetLayer;
-	}
+    getLayerById(layerId) {
+        const layers = this.getLayers().getArray();
+        let targetLayer = null;
+        for (let i = 0; i < layers.length; i++) {
+            const layer = layers[i];
+            if (layer.get('id') == layerId) {
+                targetLayer = layer;
+                break;
+            }
+        }
+        return targetLayer;
+    }
 }

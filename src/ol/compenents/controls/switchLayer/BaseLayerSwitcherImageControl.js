@@ -3,7 +3,7 @@
  * @author ydx
  * @date 2019-04-09
  */
-import '../../../plugins/ol-ext/ol-ext.css';
+import 'ol-ext/dist/ol-ext.min.css';
 import './BaseLayerSwitcherImageControl.css';
 import LayerSwitcherImage from 'ol-ext/control/LayerSwitcherImage';
 import Collection from 'ol/Collection';
