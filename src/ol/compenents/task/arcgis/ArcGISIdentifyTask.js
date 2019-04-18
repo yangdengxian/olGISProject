@@ -8,6 +8,7 @@ import QueryTask from '../QueryTask';
 import WellOperation from '../../../../project/js/WellOperation';
 import { arcgisToGeoJSON } from '@esri/arcgis-to-geojson-utils';
 import EsriJSONFormat from '../../format/arcgis/EsriJSONFormat';
+import Config from '../../../config/config';
 
 export default class ArcGISIdentifyTask extends QueryTask {
     constructor(url, params) {
@@ -20,9 +21,10 @@ export default class ArcGISIdentifyTask extends QueryTask {
         this.params.tolerance = params.tolerance || 10;
         this.params.returnGeometry = true;
         this.params.mapExtent = JSON.stringify(params.mapExtent);
-        this.params.imageDisplay = '1920,937,96'; //width=1920,height=937
+        this.params.imageDisplay = '1920,937,96'; //width=1920,height=937,dpi=96
         this.params.geometryType = params.geometryType || 'esriGeometryEnvelope';
         this.params.layers = 'all:' + params.layersIds.toString();
+        this.params.sr = Config.mapConfig.projection.split(":")[1];
         //格式化数据
         this.identifyJSONformat = new EsriJSONFormat({ id: "identifyJSONformat" });
     };

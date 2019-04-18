@@ -9,10 +9,10 @@ const argv = require('yargs').argv;
 module.exports = {
     mode: argv.mode || 'development',
     devtool: 'source-map',
-    entry: argv.serverType == 'arcgis' ? './mainArcgis.js' : './mainGeoserver.js',
+    entry: argv.serverType == 'mainGeoserver' ? './mainGeoserver.js' : './mainArcgis.js',
     output: {
         path: __dirname + '/build',
-        filename: 'bundle.js',
+        filename: 'bundle.js'
     },
     module: {
         rules: [

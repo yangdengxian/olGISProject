@@ -17,7 +17,7 @@ const __colorArray = [
 
 export default class BarEChartOverlay extends EChartOverlay {
     constructor(param) {
-        super(getOptions(param.features));
+        super(getOptions(param.features, param.map));
     }
 }
 
@@ -25,8 +25,9 @@ export default class BarEChartOverlay extends EChartOverlay {
  * 获取chart属性对象
  * @param {Array} features 数据
  * @param {String} type chart 类型 'bar'、'pie'
+ * @param {Map} map
  */
-function getOptions(features) {
+function getOptions(features, map) {
     var options = {};
     options = {
         tooltip: {
@@ -42,7 +43,7 @@ function getOptions(features) {
         yAxis: [],
         series: []
     }
-    setSeries(features, options);
+    setSeries(features, options, map);
     return options;
 }
 
@@ -50,8 +51,9 @@ function getOptions(features) {
  * 封装数据对象
  * @param {Array} features 数据
  * @param {Object} options chart 属性对象
+ * @param {Map} map
  */
-function setSeries(features, options) {
+function setSeries(features, options, map) {
     var singleWidh = 10; //单个柱子宽度
     features.forEach(function(result, index) {
         var properties = result["properties"],

@@ -1,9 +1,11 @@
 export const serverType = 'argis';
+//UI
+import './src/ol/compenents/UI/UIView';
 
 import Config from './src/ol/config/config';
 import Util from './src/ol/utils/Util';
-//UI
-import './src/ol/compenents/UI/UIView';
+import TranformUtil from './src/ol/utils/TransFormUtil';
+
 
 import MapSub from './src/ol/compenents/Map';
 
@@ -46,8 +48,12 @@ const mapConfig = Config.getMapConfig(Util.getQueryString("App"));
 //初始化地图
 const map = new MapSub({
     targetId: 'map',
-    projection: Config.mapConfig["projection"]
-})
+    projection: Config.mapConfig["projection"],
+    transFormUtil: new TranformUtil({
+        source: 'EPSG:4326',
+        destination: Config.mapConfig["projection"],
+    })
+});
 
 const {
     arcGISTileLayers,
@@ -62,13 +68,11 @@ const {
     }),
     mapServer: new ArcGISImageLayers(mapConfig.mapUrl, {
         title: "井图层",
-        params: {
-            id: 0
-        }
+        params: {}
     }),
     d_mapServer: new ArcGISImageLayers(mapConfig.d_mapUrl[0], {
         title: "油田部署图",
-        params: { id: 0 }
+        params: {}
     })
 }
 
@@ -86,7 +90,8 @@ const {
 } = {
     overviewMapControl: new OverviewMapControl({
         layers: arcGISTileLayers.getTileLayers(),
-        collapsed: true //初始是否关闭鹰眼
+        collapsed: true, //初始是否关闭鹰眼,
+        map: map
     }),
     scaleBarControl: new ScaleBarControl({
         minWidth: 140,
@@ -120,7 +125,10 @@ const {
 const tileLayerGroup = arcGISTileLayers.getLayerGroup();
 map.setLayerGroup(tileLayerGroup);
 // tileLayerGroup.setExtent(Util.getExtentArray(mapConfig["mapFullExtent"]));
-map.getView().fit(Util.getExtentArray(mapConfig["mapFullExtent"]));
+map.getView().fit(
+    map.getTransFormUtil()
+    .transformExtent(
+        Util.getExtentArray(mapConfig["mapFullExtent"])));
 map.addLayer(d_mapServer);
 map.addLayer(mapServer);
 map.addLayer(vectorLayer);
@@ -188,7 +196,3 @@ const toolBarTask = new ToolBarTask({
     }
 });
 toolBarTask.bindClickEvent();
-
-//地图加载完成
-// const RFMP = require('./src/ol/utils/rfmp/rfmp');
-// RFMP.send('map_loaded', true, null, true);

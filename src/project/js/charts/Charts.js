@@ -13,13 +13,15 @@ export default class Charts {
         switch (param.type) {
             case 'bar':
                 this.chartsLayer = new BarChartsLayer({
-                    features: param.data
+                    features: param.data,
+                    map: param.map
                 });
                 break;
 
             case 'pie':
                 this.chartsLayer = new PieChartsLayer({
-                    features: param.data
+                    features: param.data,
+                    map: param.map
                 });
                 break;
 

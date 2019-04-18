@@ -54,14 +54,15 @@ export default class DragBoxInteraction extends DragBox {
 
     initArcGISQueryTask(extent) {
         var mapConfig = Config.getMapConfig(Util.getQueryString("App"));
-
+        extent = this.getMap().getTransFormUtil()
+            .transformByProjParm(extent, this.getMap().getView().getProjection(), Config.mapConfig.sourceProjection);
         var geometry = {
             xmin: extent[0],
             ymin: extent[1],
             xmax: extent[2],
             ymax: extent[3],
             spatialReference: {
-                wkid: 4326
+                wkid: Config.mapConfig.sourceProjection.split(':')[1]
             }
         };
         var arcGISIdentifyTask = new ArcGISIdentifyTask(

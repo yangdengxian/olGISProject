@@ -18,7 +18,7 @@ export default class OverviewMapControl extends OverviewMap {
             label: '\u00AB',
             collapsed: options.collapsed || true,
             view: new View({
-                projection: Config.mapConfig.projection
+                projection: options.map.getView().getProjection()
             })
         })
     }

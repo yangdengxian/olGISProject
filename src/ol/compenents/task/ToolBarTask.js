@@ -65,7 +65,7 @@ export default class ToolbarTask {
                 break;
 
             case '全图':
-                __this.map.getView().fit(__this.mapFullExtent);
+                __this.map.getView().fit(__this.map.getTransFormUtil().transformExtent(__this.mapFullExtent));
                 break;
 
             case '拉框选择':
@@ -103,6 +103,7 @@ export default class ToolbarTask {
                 this.echartLayer = new Charts({
                     data: Config.chartData.features,
                     type: type == '绘制Echart饼图' ? 'pie' : 'bar',
+                    map: __this.map
                 }).getChartsLayer();
                 this.echartLayer.appendTo(__this.map);
                 break;

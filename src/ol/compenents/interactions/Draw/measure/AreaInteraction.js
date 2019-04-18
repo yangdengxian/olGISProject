@@ -3,6 +3,7 @@
  * @author ydx
  * @date 2019-04-09
  */
+import './measure.css';
 import Draw from 'ol/interaction/Draw'
 import VectorSource from 'ol/source/Vector';
 import Vector from 'ol/layer/Vector';
@@ -149,7 +150,7 @@ export default class AreaInteraction extends Draw {
 
     formatArea(polygon) {
         var area = getArea(polygon, {
-            projection: "EPSG:4326"
+            projection: this.getMap().getView().getProjection()
         });
         var output
         if (area > 10000) {
