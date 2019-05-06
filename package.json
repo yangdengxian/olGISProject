@@ -1,10 +1,10 @@
 {
     "name": "5201openlayers",
     "version": "1.0.0",
-    "description": "Example using OpenLayers with Webpack",
+    "description": "OpenLayers with Webpack",
     "main": "mainArcgis.js",
     "author": "ydx",
-    "repository": "http://yangdengxian@git.epai.io/yangdengxian/5201openlayers.git",
+    "repository": "https://github.com/yangdengxian/olGISProject.git",
     "scripts": {
         "build": "npm run buildArcgis",
         "buildGeoserver": "webpack --config webpack.config.js --mode development --serverType geoserver",
