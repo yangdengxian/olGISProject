@@ -4,9 +4,6 @@
  * @date 2019-04-11
  */
 //井业务图层展示
-import SelectInteraction from '../../ol/compenents/interactions/SelectInteraction';
-import VectorSource from 'ol/source/Vector.js';
-import { Vector as VectorLayer } from 'ol/layer.js';
 
 const WellOperation = {
     selectWellsInteraction: null,

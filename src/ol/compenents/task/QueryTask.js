@@ -1,7 +1,7 @@
 /**
  * 查询工具
  */
-import $ from 'jquery/dist/jquery.min';
+import Util from '../../utils/Util';
 import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
@@ -24,35 +24,8 @@ export default class QueryTask {
     }
 
     ajaxGetReqeust(url, param) {
-        var $defferd = $.Deferred();
-        $.ajax({
-            url: url,
-            data: param,
-            dataType: 'jsonp',
-            type: 'GET',
-            success: function(result) {
-                $defferd.resolve(result);
-            },
-            error: function(error) {
-                $defferd.reject(error);
-            }
-        })
-        return $defferd;
+        return Util.ajaxGetReqeust(url, param);
     };
-    /* 
-        fetchRequest() {
-            if (!fetch) return;
-            fetch('https://ahocevar.com/geoserver/wfs', {
-                method: 'POST',
-                body: new XMLSerializer().serializeToString(featureRequest)
-            }).then(function(response) {
-                return response.json();
-            }).then(function(json) {
-                var features = new GeoJSON().readFeatures(json);
-                vectorSource.addFeatures(features);
-                map.getView().fit(vectorSource.getExtent());
-            });
-        } */
 
     //获取查询样式
     getStyle() {

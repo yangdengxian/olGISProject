@@ -140,6 +140,16 @@ export default class AreaInteraction extends Draw {
     drawEndHandler(evt) {
         this.measureTooltipElement.className = 'tooltip tooltip-static'
         this.measureTooltip.setOffset([0, -7])
+
+        //测量结果清除按钮
+        var popupcloser = document.createElement('a');
+        popupcloser.href = 'javascript:void(0);';
+        popupcloser.classList.add('ol-popup-closer');
+        popupcloser.addEventListener('click', function(target) {
+            this.clearOverLayers(target, evt.feature);
+        }.bind(this), false);
+        this.measureTooltipElement.appendChild(popupcloser);
+
         this.drawingFeature = null
         this.measureTooltipElement = null
         this.createMeasureTooltip()
@@ -159,5 +169,16 @@ export default class AreaInteraction extends Draw {
             output = (Math.round(area * 100) / 100) + ' m<sup>2</sup>'
         }
         return output
+    }
+
+    /**
+     * 清除测量图层
+     * @param {*Object} evt 鼠标点击对象
+     * @param {*Feature} feature 选中要素
+     */
+    clearOverLayers(evt, feature) {
+        var target = evt.target;
+        target.parentElement.className = 'tooltip hidden';
+        source.removeFeature(feature);
     }
 }

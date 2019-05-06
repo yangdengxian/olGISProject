@@ -9,7 +9,7 @@ import PieChartsLayer from '../../../ol/compenents/overlay/charts/echarts/PieECh
 
 export default class Charts {
     constructor(param) {
-        this.chartsLayer = {};
+        this.chartsLayer = null;
         switch (param.type) {
             case 'bar':
                 this.chartsLayer = new BarChartsLayer({

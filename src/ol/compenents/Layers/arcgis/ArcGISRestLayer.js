@@ -11,6 +11,10 @@ import { appendParams } from 'ol/uri';
 export default class ArcGISRestLayer extends ImageArcGISRest {
     constructor(param) {
         super(param);
+        //可见图层
+        if (param.params.layerIds) {
+            this.layers = 'show:' + param.params.layerIds.join(',');
+        }
     };
     //重写父类方法
     getRequestUrl_(extent, size, pixelRatio, projection, params) {
@@ -22,7 +26,9 @@ export default class ArcGISRestLayer extends ImageArcGISRest {
         params['BBOXSR'] = srid;
         params['IMAGESR'] = srid;
         params['DPI'] = Math.round(90 * pixelRatio);
-
+        if (this.layers) {
+            params['layers'] = this.layers;
+        }
 
         var url = this.url_;
         //判断是否有参数

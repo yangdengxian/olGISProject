@@ -1,3 +1,10 @@
 .ol-control.ol-layerswitcher {
-    top: 3.8em;
+    top: 2.6em;
+}
+
+.ol-control.ol-layerswitcher button {
+    background-image: url('../../../../../images/tools/public_icon.png');
+    background-position: -426px -10px;
+    height: 12px;
+    width: 12px;
 }

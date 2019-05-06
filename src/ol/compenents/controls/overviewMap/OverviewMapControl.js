@@ -4,7 +4,6 @@
  * @date 2019-04-01
  */
 import './OverviewMapControl.css';
-import Config from '../../../config/config';
 import { OverviewMap } from 'ol/control';
 import View from 'ol/View';
 

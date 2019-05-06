@@ -5,6 +5,7 @@
  */
 // import ZoomSlider from 'ol/control/ZoomSlider';
 import '../../../plugins/zoomSlider/BZoomSlider.css';
+import './zoomSlider.css';
 import ZoomSlider from '../../../plugins/zoomSlider/BZoomSlider';
 
 export default class ZoomSliderControl extends ZoomSlider {

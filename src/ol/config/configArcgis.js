@@ -594,9 +594,9 @@ function getMapConfig(App) {
             break;
         case 'demo':
             mapConfig = {
-                mapUrl: 'https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer',
+                mapUrl: 'https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/PublicSafety/PublicSafetyBasemap/MapServer',
                 d_mapUrl: [
-                    'https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer',
+                    'https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer',
                 ],
                 arcgisQueryLayerIds: [0],
                 mapFullExtent: {
@@ -626,6 +626,7 @@ function getMapConfig(App) {
                 },
                 wellId: 0,
             };
+
             break;
     }
     return mapConfig;

@@ -1,17 +1,16 @@
-export const serverType = 'argis';
-//UI
-import './src/ol/compenents/UI/UIView';
-
+const serverType = 'geoserver';
 import Config from './src/ol/config/config';
 import Util from './src/ol/utils/Util';
 import TranformUtil from './src/ol/utils/TransFormUtil';
-
 
 import MapSub from './src/ol/compenents/Map';
 
 //esri离线切片服务
 import ArcGISTileLayers from './src/ol/compenents/Layers/arcgis/ArcGISTileLayer';
-import ArcGISImageLayers from './src/ol/compenents/Layers/arcgis/ArcGISImageLayers';
+//图层组
+import ArcgisLayerGroup from './src/ol/compenents/Layers/arcgis/ArcgisLayerGroup';
+import GroupLayers from './src/ol/compenents/Layers/GroupLayers';
+
 //要素图层
 import VectorLayer from './src/ol/compenents/Layers/VectorLayer';
 
@@ -41,6 +40,9 @@ import DistanceInteraction from './src/ol/compenents/interactions/Draw/measure/D
 //菜单
 import ToolBarTask from './src/ol/compenents/task/ToolBarTask';
 
+//消息机制
+import GIS_Event_RFMPON from './src/project/js/rfmp/GIS_Event_RFMPON';
+
 
 //获取配置范围
 const mapConfig = Config.getMapConfig(Util.getQueryString("App"));
@@ -59,20 +61,23 @@ const {
     arcGISTileLayers,
     vectorLayer,
     mapServer,
-    d_mapServer
+    d_mapServer,
+    groupLayers, //专题图层组
 } = {
     arcGISTileLayers: new ArcGISTileLayers(),
     vectorLayer: new VectorLayer({
         id: "queryFeaturesLayer",
         map: map
     }),
-    mapServer: new ArcGISImageLayers(mapConfig.mapUrl, {
-        title: "井图层",
-        params: {}
+    mapServer: new ArcgisLayerGroup({
+        id: "wellGroupLayer"
     }),
-    d_mapServer: new ArcGISImageLayers(mapConfig.d_mapUrl[0], {
-        title: "油田部署图",
-        params: {}
+    d_mapServer: new ArcgisLayerGroup({
+        id: "wellPotionsGroupLayer"
+    }),
+    groupLayers: new GroupLayers({
+        id: "themeGroupLayer",
+        title: "专题图层组"
     })
 }
 
@@ -120,6 +125,9 @@ const {
     }),
 }
 
+//图例
+
+map.addControl(legendControl);
 
 //设置底图图层
 const tileLayerGroup = arcGISTileLayers.getLayerGroup();
@@ -129,9 +137,22 @@ map.getView().fit(
     map.getTransFormUtil()
     .transformExtent(
         Util.getExtentArray(mapConfig["mapFullExtent"])));
-map.addLayer(d_mapServer);
-map.addLayer(mapServer);
+
+mapServer.addImageLayers(mapConfig.mapUrl, {}).then((layers) => {
+    legendControl.addRows(layers);
+});
+
+if (mapConfig.d_mapUrl[0]) {
+    d_mapServer.addImageLayers(mapConfig.d_mapUrl[0], {}).then((layers) => {});
+    groupLayers.addLayers([d_mapServer, mapServer]);
+} else {
+    groupLayers.addLayers([mapServer]);
+}
+
+
+map.addLayer(groupLayers);
 map.addLayer(vectorLayer);
+
 
 //添加鹰眼
 map.addControl(overviewMapControl);
@@ -143,8 +164,7 @@ map.addControl(zoomSildweControl);
 map.addControl(baseLayerSwitcherImageControl);
 //专题图层控制
 map.addControl(themeLayersSwitchControl);
-//图例
-map.addControl(legendControl);
+
 
 //框选
 map.addInteraction(dragZoomInteraction);
@@ -196,3 +216,11 @@ const toolBarTask = new ToolBarTask({
     }
 });
 toolBarTask.bindClickEvent();
+
+//消息机制
+const gIS_Event_RFMPON = new GIS_Event_RFMPON({
+    map: map
+});
+
+gIS_Event_RFMPON.send('mapRendered', true);
+gIS_Event_RFMPON.on();

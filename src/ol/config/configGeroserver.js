@@ -9,10 +9,10 @@ const Config = {
     mapConfig: {
         center: [116.404269, 39.913828],
         // center: [12929479, 4843400],
-        projection: 'EPSG:4326',
-        // projection: 'EPSG:3857',
+        sourceProjection: 'EPSG:4326', //经纬度坐标code
+        projection: 'EPSG:3857',
         zoom: 12,
-        extent: [47.89, 13.18, 166.45, 57.06]
+        extent: [47.89, 13.18, 166.45, 57.06],
     },
     //esriTileLayer
 
@@ -28,31 +28,224 @@ const Config = {
         TDTTER: "http://a4.petrochina/A4Service/WMTS/TDTTER/MapServer/tile/{z}/{y}/{x}",
         TDTCTA: "http://a4.petrochina/A4Service/WMTS/TDTCTA/MapServer/tile/{z}/{y}/{x}",
     },
-    //imageWMS
-    ImageWMSSource: {
-        url: 'http://localhost:8083/geoserver2.15/localhost/wms?service=WMS',
-        params: { LAYERS: 'localhost:planet_osm_point' },
-        serverType: 'geoserver',
-        crossOrigin: 'anonymous',
-    },
-    //wmtsLayer
-    WMTSSource: {
-        // url: 'http://localhost:8081/geoserver/gwc/service/wms?',
-        url: 'http://localhost:8083/geoserver2.15/localhost/gwc/service/wms?',
-        params: {
-            FORMAT: 'image/png',
-            VERSION: '1.1.0',
-            tiled: true,
-            STYLES: '',
-            LAYERS: 'localhost:global_polygon',
-            //tilesOrigin: -124.73142200000001 + "," + 24.955967
-        },
-    },
     //fileStore or s3 blobStore
     blobStoreLayerSource: {
         projection: 'EPSG:3857',
         // url: 'http://11.53.55.10/gis/tiles-cache-dev/LayerInfoImpl--3d41865b%3A169c2fa5945%3A-7ffc/EPSG%3A4326/png/default/{z}/{x}/{-y}.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=pcep%2F20190328%2F%2Fs3%2Faws4_request&X-Amz-Date=20190328T073716Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=c601d1c7eca5a2dcd9b1a23f5bf88037914a208c9c2ea906019cc8c4909d1e24'
         url: 'http://localhost/localhost_global_polygon/{z}/{x}/{-y}.png',
+    },
+    chartData: {
+        type: 'FeatureCollection',
+        features: [{
+                type: 'Feature',
+                geometry: {
+                    coordinates: [124.88, 46.71],
+                    type: 'Point',
+                },
+                properties: {
+                    data: [2415, 75799],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                    name: '大庆',
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [122.07, 41.21],
+                    type: 'Point',
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+                properties: {
+                    name: '辽河',
+                    data: [1493, 23509],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [108.89, 34.49],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '长庆',
+                    data: [6892, 100553],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [86.21, 41.74],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '塔里木',
+                    data: [345, 2909],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [84.98, 45.61],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '新疆',
+                    data: [4342, 39803],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [104.09, 30.63],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '西南',
+                    data: [1365, 826],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [124.88, 45.18],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '吉林',
+                    data: [92, 35631],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [117.46, 38.79],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '大港',
+                    data: [302, 7097],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [94.56, 40.28],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '青海',
+                    data: [2872, 8600],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [116.05, 38.75],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '华北',
+                    data: [4316, 8358],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [93.42, 42.97],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '吐哈',
+                    data: [1212, 5297],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [118.12, 39.64],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '冀东',
+                    data: [77, 2789],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [98.43, 39.74],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '玉门',
+                    data: [349, 355],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [120.05, 30.33],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '浙江',
+                    data: [227, 373],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [110.38, 20.18],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '南方',
+                    data: [253, 257],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    coordinates: [116.35, 39.9],
+                    type: 'Point',
+                },
+                properties: {
+                    name: '煤层气',
+                    data: [409, 2897],
+                    key: ['探井', '开发井'],
+                    colors: ['#1f77b4', '#ff7f0e'],
+                },
+            },
+        ],
     },
 };
 
@@ -228,9 +421,10 @@ function getMapConfig(App) {
             break;
         case 'JD': //冀东
             mapConfig = {
-                mapUrl: "http://10.86.13.221:6080/arcgis/rest/services/A1/JiDong/MapServer",
+                mapUrl: "http://localhost:8083/geoserver2.15/pecp",
+                layerName: 'pecp:pecp', //图层组名称
+                queryNames: ['pecp:v_geo_wellhead'], //查询图层名称
                 d_mapUrl: ["http://a4.petrochina/arcgis/rest/a4services/A1EPJDYTBST/MapServer?token=2fa67d8f-212e-11e4-8f44-005056c00008"],
-                arcgisQueryLayerIds: [1, 2],
                 mapFullExtent: { "xmin": 117.42, "ymin": 38.68, "xmax": 121.10, "ymax": 39.98, "spatialReference": { "wkid": 4326 } },
                 wellId: 0
             };
@@ -265,9 +459,12 @@ function getMapConfig(App) {
 
         default:
             mapConfig = {
-                mapUrl: "http://localhost:8083/geoserver2.15/localhost",
+                mapUrl: "http://localhost:8083/geoserver2.15/pecp",
+                layerName: 'pecp:pecp', //图层组名称
+                queryNames: ['pecp:v_geo_wellhead'], //查询图层名称
+                /* mapUrl: "http://localhost:8083/geoserver2.15/localhost",
                 layerName: 'localhost:osm', //图层组名称
-                queryNames: ['localhost:planet_osm_point', 'localhost:planet_osm_line', 'localhost:planet_osm_polygon'], //查询图层名称
+                queryNames: ['localhost:planet_osm_point', 'localhost:planet_osm_line', 'localhost:planet_osm_polygon'], //查询图层名称 */
                 d_mapUrl: ["http://a4.petrochina/arcgis/rest/a4services/A1EPJDYTBST/MapServer?token=2fa67d8f-212e-11e4-8f44-005056c00008"],
                 mapFullExtent: { "xmin": 117.42, "ymin": 38.68, "xmax": 121.10, "ymax": 39.98, "spatialReference": { "wkid": 4326 } },
                 wellId: 0

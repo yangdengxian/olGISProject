@@ -3,59 +3,15 @@
 
 <head>
     <meta charset="utf-8">
+    <!-- IE兼容性设置 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,IE=11,chrome=1">
     <title>综合查询</title>
-    <link rel="shortcut icon" href="../images/ico/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./css/bootstrap.min.css" />
-</head>
+<link rel="shortcut icon" href="favicon.ico"></head>
 
 <body>
-    <!-- 工具栏 start -->
-    <div class="container">
-        <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
-            <div class="container-fluid">
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" class="toolbar pan" id="panBtn">漫游</a></li>
-                        <li><a href="#" class="toolbar zoomIn" id="zoomInBtn">放大</a></li>
-                        <li><a href="#" class="toolbar zoomOut" id="zoomOutBtn">缩小</a></li>
-                        <li><a href="#" class="toolbar fullScreen" id="fullScreenBtn">全图</a></li>
-                        <li><a href="#" class="toolbar extent" id="extentBtn">拉框选择</a></li>
-                        <!-- <li><a href="#" class="toolbar loadData" id="loadDataBtn">数据加载</a></li> -->
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                工具
-                                <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="toolbar distance" id="distanceBtn">距离测量</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="toolbar area" id="areaBtn">面积测量</a></li>
-                                <!-- <li class="divider"></li>
-                                <li><a href="#" class="toolbar pieChart" id="pieChartBtn">绘制饼图</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="toolbar barChart" id="barChartBtn">绘制柱状图</a></li> -->
-                                <li class="divider"></li>
-                                <li><a href="#" class="toolbar pieEChart" id="pieEChartBtn">绘制Echart饼图</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="toolbar barEChart" id="barEChartBtn">绘制Echart柱状图</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
-        </nav>
-    </div>
-    <!-- 工具栏 end -->
-
     <!-- 地图 start -->
     <div id="map"></div>
     <!-- 地图 end -->
-
-    <!--业务代码  -->
-    <script src="./bundle.js"></script>
-</body>
+<script type="text/javascript" src="bundle.js"></script></body>
 
 </html>

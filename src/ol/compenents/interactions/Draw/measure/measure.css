@@ -45,3 +45,15 @@
 .tooltip-static:before {
     border-top-color: #ffcc33;
 }
+
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 4px;
+    /* right: 8px; */
+    color: red;
+}
+
+.ol-popup-closer:after {
+    content: "✖";
+}

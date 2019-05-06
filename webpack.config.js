@@ -1,29 +1,38 @@
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 //自定义参数，根据serverType选择文件打包
 const argv = require('yargs').argv;
-// console.log(argv);
-
-// const uglify = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     mode: argv.mode || 'development',
     devtool: 'source-map',
-    entry: argv.serverType == 'mainGeoserver' ? './mainGeoserver.js' : './mainArcgis.js',
+    entry: [
+        'babel-polyfill', //js with async/await
+        argv.serverType == "geoserver" ? "./mainGeoserver.js" : "./mainArcgis.js",
+    ],
     output: {
         path: __dirname + '/build',
         filename: 'bundle.js'
     },
     module: {
-        rules: [
-            /*  {
-                 test: /\.js?$/,
-                 exclude: /(node_modules)/,
-                 loader: 'babel-loader',
-             }, */
+        rules: [{
+                test: /\.js?$/,
+                exclude: /(node_modules)/,
+                loader: 'babel-loader',
+            },
             {
                 test: /\.css$/, // 正则表达式，表示.css后缀的文件
-                use: ['style-loader', 'css-loader'], // 针对css文件使用的loader，注意有先后顺序，数组项越靠后越先执行
+                use: [
+                    /* {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            minimize: true
+                        },
+                    }, */
+                    'style-loader',
+                    'css-loader'
+                ], // 针对css文件使用的loader，注意有先后顺序，数组项越靠后越先执行
             },
             /* {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
@@ -42,13 +51,19 @@ module.exports = {
             },
         ],
     },
-    /* plugins: [
-        new uglify()
-    ] */
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin({
+            filename: './index.html',
+            template: './index.html',
+            favicon: './images/ico/favicon.ico', // 添加小图标
+            inject: true //自动注入
+        })
+    ],
     devServer: {
-        contentBase: path.join(__dirname, 'build'),
-        port: 8082,
+        contentBase: path.join(__dirname, '/'),
+        port: 80,
         host: '0.0.0.0',
         inline: true,
         hot: true,

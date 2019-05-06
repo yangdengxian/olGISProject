@@ -96,12 +96,14 @@ export default class DistanceInteraction extends Draw {
 
     // 创建测量结果信息标签
     createMeasureTooltip() {
+        //清除之前测量容器
         if (this.measureTooltipElement) {
             this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement)
         }
         this.measureTooltipElement = document.createElement('div')
         this.measureTooltipElement.className = 'tooltip tooltip-measure'
         this.measureTooltip = new Overlay({
+            id: "distanceMeasureTooltip",
             element: this.measureTooltipElement,
             offset: [0, -15],
             positioning: 'bottom-center'
@@ -140,9 +142,20 @@ export default class DistanceInteraction extends Draw {
     drawEndHandler(evt) {
         this.measureTooltipElement.className = 'tooltip tooltip-static'
         this.measureTooltip.setOffset([0, -7])
+
+        //测量结果清除按钮
+        var popupcloser = document.createElement('a');
+        popupcloser.href = 'javascript:void(0);';
+        popupcloser.classList.add('ol-popup-closer');
+        popupcloser.addEventListener('click', function(target) {
+            this.clearOverLayers(target, evt.feature);
+        }.bind(this), false);
+        this.measureTooltipElement.appendChild(popupcloser);
+
         this.drawingFeature = null
         this.measureTooltipElement = null
         this.createMeasureTooltip()
+
         unByKey(this.listener);
         this.setActive(false);
         this.helpTooltipElement.classList.add('hidden');
@@ -159,5 +172,16 @@ export default class DistanceInteraction extends Draw {
             output = (Math.round(length * 100) / 100) + ' m'
         }
         return output
+    }
+
+    /**
+     * 清除测量图层
+     * @param {*Object} evt 鼠标点击对象
+     * @param {*Feature} feature 选中要素
+     */
+    clearOverLayers(evt, feature) {
+        var target = evt.target;
+        target.parentElement.className = 'tooltip hidden';
+        source.removeFeature(feature);
     }
 }

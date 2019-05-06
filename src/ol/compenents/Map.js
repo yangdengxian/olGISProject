@@ -8,8 +8,8 @@ import '../../../css/common.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 
-import TileLayer from 'ol/layer/Tile.js';
-import OSM from 'ol/source/OSM.js';
+/* import TileLayer from 'ol/layer/Tile.js';
+import OSM from 'ol/source/OSM.js'; */
 
 export default class MapSub extends Map {
     constructor(param) {
@@ -18,7 +18,7 @@ export default class MapSub extends Map {
             controls: [],
             layers: [
                 /* new TileLayer({
-                	source: new OSM(),
+                    source: new OSM(),
                 }), */
             ],
             view: new View({

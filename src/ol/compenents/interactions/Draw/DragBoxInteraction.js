@@ -77,13 +77,16 @@ export default class DragBoxInteraction extends DragBox {
     }
 
     initGeoServerQueryTask(extent) {
+        extent = this.getMap().getTransFormUtil()
+            .transformByProjParm(extent, this.getMap().getView().getProjection(), Config.mapConfig.sourceProjection);
         var mapConfig = Config.getMapConfig(Util.getQueryString("App"));
-
         var geoserverIdentifyTask = new GeoserverIdentifyTask(
             mapConfig["mapUrl"], {
                 map: this.getMap(),
-                filter: bboxFilter('Polygon', extent),
-                queryNames: mapConfig["queryNames"]
+                // filter: bboxFilter('Polygon', extent),
+                filter: extent.join(',') + "," + Config.mapConfig.sourceProjection,
+                queryNames: mapConfig["queryNames"],
+                srsName: Config.mapConfig.sourceProjection
             }
         );
         geoserverIdentifyTask.execute();

@@ -5,6 +5,7 @@
  */
 import 'ol-ext/dist/ol-ext.min.css';
 import './BaseLayerSwitcherImageControl.css';
+import $ from 'jquery/dist/jquery.min';
 import LayerSwitcherImage from 'ol-ext/control/LayerSwitcherImage';
 import Collection from 'ol/Collection';
 export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
@@ -18,6 +19,7 @@ export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
         // Remove existing layers
         this._layers = [];
         this.panel_.parentNode.setAttribute("title", "底图切换");
+
         this.panel_.querySelectorAll('li').forEach(function(li) {
             if (!li.classList.contains('ol-header')) li.remove();
         }.bind(this));

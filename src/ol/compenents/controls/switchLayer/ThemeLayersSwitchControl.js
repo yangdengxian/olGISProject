@@ -5,8 +5,10 @@
  */
 import 'ol-ext/dist/ol-ext.min.css';
 import './ThemeLayersSwitchControl.css';
+
 import LayerSwitcher from 'ol-ext/control/LayerSwitcher';
 import Collection from 'ol/Collection';
+
 export default class LayersSwitchControl extends LayerSwitcher {
     constructor(param) {
         super(param)
@@ -28,5 +30,32 @@ export default class LayersSwitchControl extends LayerSwitcher {
             }
         });
         this.drawList(this.panel_, collection);
+    };
+
+
+    //重写父类的方法
+    viewChange() {
+        var map = this.getMap();
+        var res = map.getView().getResolution();
+        this.panel_.querySelectorAll('li').forEach(function(li) {
+            var l = this._getLayerForLI(li);
+            if (l) {
+                if (l.getMaxResolution() <= res || l.getMinResolution() >= res) {
+                    li.classList.add('ol-layer-hidden');
+                } else {
+                    var ex0 = l.getExtent();
+                    if (ex0) {
+                        var ex = map.getView().calculateExtent(map.getSize());
+                        if (!ol_extent_intersects(ex, ex0)) {
+                            li.classList.add('ol-layer-hidden');
+                        } else {
+                            li.classList.remove('ol-layer-hidden');
+                        }
+                    } else {
+                        li.classList.remove('ol-layer-hidden');
+                    }
+                }
+            }
+        }.bind(this));
     };
 }

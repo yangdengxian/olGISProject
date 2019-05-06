@@ -1,8 +1,15 @@
 .ol-control.ol-layerswitcher-image {
-    top: 3.8em;
+    top: 2.6em;
     right: 4em;
 }
 
 .ol-control.ol-layerswitcher-image.ol-collapsed {
-    top: 3.8em;
+    top: 2.6em;
+}
+
+.ol-layerswitcher-image button {
+    background-image: url('../../../../../images/tools/public_icon.png');
+    background-position: -442px -10px;
+    height: 12px;
+    width: 12px;
 }
