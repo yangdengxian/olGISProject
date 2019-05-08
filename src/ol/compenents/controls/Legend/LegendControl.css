@@ -1,0 +1,14 @@
+.ol-control.ol-legend {
+    max-height: 40%;
+    opacity: 1.0;
+    background: #fff;
+}
+
+.ol-control.ol-legend li.ol-title {
+    background: #198F78;
+    height: 30px;
+}
+
+.ol-control.ol-legend li>div {
+    font-size: 12px;
+}
