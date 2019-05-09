@@ -3,8 +3,22 @@
 }
 
 .ol-control.ol-layerswitcher button {
-    background-image: url('../../../../../images/tools/public_icon.png');
-    background-position: -426px -10px;
-    height: 12px;
-    width: 12px;
+    background-image: url('../../../../../images/tools/themeLayers/themeIcon.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 34px;
+    width: 34px;
+}
+
+.ol-layerswitcher button:before {
+    opacity: 0;
+    background: #fff;
+    -webkit-box-shadow: 0.1em 0.1em #fff;
+    box-shadow: 0.1em 0.1em #fff;
+}
+
+.ol-layerswitcher button:after {
+    opacity: 0;
+    background: #fff;
+    background-image: radial-gradient(circle at .85em .6em, #fff 0, #fff .65em, #fff .65em);
 }
