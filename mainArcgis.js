@@ -1,4 +1,4 @@
-const serverType = 'geoserver';
+const serverType = 'arcgis';
 import Config from './src/ol/config/config';
 import Util from './src/ol/utils/Util';
 import TranformUtil from './src/ol/utils/TransFormUtil';

@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 //自定义参数，根据serverType选择文件打包
 const argv = require('yargs').argv;
 // console.log(argv);
@@ -9,7 +10,7 @@ const argv = require('yargs').argv;
 module.exports = {
     mode: argv.mode || 'development',
     devtool: 'source-map',
-    entry: './mainTest.js',
+    entry: './test/mainTest.js',
     output: {
         path: __dirname + '/build',
         filename: 'bundle.js',
@@ -41,10 +42,15 @@ module.exports = {
             },
         ],
     },
-    /* plugins: [
-        new uglify()
-    ] */
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin({
+            filename: './index.test.html',
+            template: './test/index.test.html',
+            favicon: './images/ico/favicon.ico', // 添加小图标
+            inject: true //自动注入
+        })
+    ],
     devServer: {
         contentBase: path.join(__dirname, 'build'),
         port: 7777,

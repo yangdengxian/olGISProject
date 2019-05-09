@@ -15,13 +15,15 @@ export default class MapSub extends Map {
     constructor(param) {
         super({
             target: param.targetId,
-            controls: [],
-            layers: [
+            controls: param.controls || [],
+            layers: param.layers || [
                 /* new TileLayer({
                     source: new OSM(),
                 }), */
             ],
             view: new View({
+                center: param.center || [0, 0],
+                zoom: param.zoom || 7,
                 projection: param.projection,
             }),
         });
