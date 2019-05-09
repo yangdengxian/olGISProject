@@ -2,6 +2,7 @@ node_modules
 build
 css
 examples
+images
 test
 index.html
 .babelrc

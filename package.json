@@ -1,6 +1,6 @@
 {
     "name": "ol-gis-project",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "OpenLayers with Webpack",
     "main": "mainArcgis.js",
     "author": "ydx",
