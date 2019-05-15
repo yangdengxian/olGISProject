@@ -173,8 +173,8 @@ export default class AreaInteraction extends Draw {
 
     /**
      * 清除测量图层
-     * @param {*Object} evt 鼠标点击对象
-     * @param {*Feature} feature 选中要素
+     * @param {Object} evt 鼠标点击对象
+     * @param {Feature} feature 选中要素
      */
     clearOverLayers(evt, feature) {
         var target = evt.target;

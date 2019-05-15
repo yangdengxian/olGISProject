@@ -45,10 +45,10 @@ export default class GIS_Event_RFMPON {
                 __this.echartLayer.appendTo(__this.map);
 
                 //chart图标绑定click事件
-                /* __this.echartLayer.$chart.on('click', (evt) => {
+                __this.echartLayer.$chart.on('click', (evt) => {
                     //发送点击事件
                     __this.send('chartClicked', JSON.stringify(evt));
-                }); */
+                });
 
                 //数据加载完成
                 __this.send('chartDataLoaded', JSON.stringify(data["data"]));

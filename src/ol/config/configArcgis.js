@@ -28,12 +28,19 @@ const Config = {
         TDTTER: 'http://a4.petrochina/A4Service/WMTS/TDTTER/MapServer/tile/{z}/{y}/{x}',
         TDTCTA: 'http://a4.petrochina/A4Service/WMTS/TDTCTA/MapServer/tile/{z}/{y}/{x}',
     },
-    //imageWMS
-    ImageWMSSource: {
-        url: 'http://localhost:8081/geoserver/wms?service=WMS',
-        params: { LAYERS: 'localhost' },
-        serverType: 'geoserver',
-        crossOrigin: 'anonymous',
+    //tkq_layer ydx 2015-05-14 演示
+    WMSImageLayers: {
+        "tkq": {
+            id: "tkq_layer",
+            url: "http://10.88.104.225:58081/geoserver/tkq_ckq",
+            layerName: "tkq_ckq:tkq"
+        },
+        "ckq": {
+            id: "ckq_layer",
+            url: "http://10.88.104.225:58081/geoserver/tkq_ckq",
+            layerName: "tkq_ckq:ckq"
+        }
+
     },
     //wmtsLayer
     WMTSSource: {
@@ -612,18 +619,10 @@ function getMapConfig(App) {
 
         default:
             mapConfig = {
-                mapUrl: 'http://10.86.13.221:6080/arcgis/rest/services/A1/JiDong/MapServer',
-                d_mapUrl: [
-                    'http://a4.petrochina/arcgis/rest/a4services/A1EPJDYTBST/MapServer?token=2fa67d8f-212e-11e4-8f44-005056c00008',
-                ],
-                arcgisQueryLayerIds: [1, 2],
-                mapFullExtent: {
-                    xmin: 117.42,
-                    ymin: 38.68,
-                    xmax: 121.1,
-                    ymax: 39.98,
-                    spatialReference: { wkid: 4326 },
-                },
+                mapUrl: 'http://a4.petrochina/arcgis/rest/a4services/A1EPQGPDBST/MapServer?token=2fa67d8f-212e-11e4-8f44-005056c00008',
+                d_mapUrl: [],
+                arcgisQueryLayerIds: [],
+                mapFullExtent: { xmin: 72.86, ymin: 17.73, xmax: 136.23, ymax: 53.9, spatialReference: { wkid: 4326 } },
                 wellId: 0,
             };
 

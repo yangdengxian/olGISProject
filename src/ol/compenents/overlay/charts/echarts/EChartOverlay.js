@@ -5,9 +5,10 @@
  */
 import EChartsLayer from 'ol-echarts/dist/ol-echarts';
 
-export default class ChartOverlay extends EChartsLayer {
+export default class EChartOverlay extends EChartsLayer {
     constructor(param) {
         param.id = 'EChartsLayer';
         super(param);
     }
+
 }

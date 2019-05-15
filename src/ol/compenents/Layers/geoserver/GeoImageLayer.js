@@ -9,6 +9,8 @@ export default class GeoImageLayer extends ImageWMSLayer {
     constructor(param) {
         super({
             id: param.id,
+            baseLayer: param.isBaseLayer || false,
+            thmemeLayer: param.isThmemeLayer || false,
             source: {
                 url: param.url + '/wms',
                 params: { LAYERS: param.layerName },

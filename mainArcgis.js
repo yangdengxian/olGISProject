@@ -10,6 +10,8 @@ import ArcGISTileLayers from './src/ol/compenents/Layers/arcgis/ArcGISTileLayer'
 //图层组
 import ArcgisLayerGroup from './src/ol/compenents/Layers/arcgis/ArcgisLayerGroup';
 import GroupLayers from './src/ol/compenents/Layers/GroupLayers';
+//演示图层 ydx 2019-05-14
+import GeoImageLayer from './src/ol/compenents/Layers/geoserver/GeoImageLayer';
 
 //要素图层
 import VectorLayer from './src/ol/compenents/Layers/VectorLayer';
@@ -151,9 +153,12 @@ if (mapConfig.d_mapUrl[0]) {
 
 
 map.addLayer(groupLayers);
+
+//演示图层 ydx 2019-05-14
+map.addLayer(new GeoImageLayer(Config.WMSImageLayers["tkq"]));
+map.addLayer(new GeoImageLayer(Config.WMSImageLayers["ckq"]));
+//查询结果
 map.addLayer(vectorLayer);
-
-
 //添加鹰眼
 map.addControl(overviewMapControl);
 //添加比例尺

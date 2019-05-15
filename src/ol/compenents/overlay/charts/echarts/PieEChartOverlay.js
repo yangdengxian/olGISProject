@@ -18,6 +18,7 @@ export default class PieEChartOverlay extends EChartOverlay {
     constructor(param) {
         super(getOptions(param.features, param.map));
     }
+
 }
 
 
