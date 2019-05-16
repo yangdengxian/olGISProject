@@ -8,6 +8,10 @@ import { OverviewMap } from 'ol/control';
 import View from 'ol/View';
 
 export default class OverviewMapControl extends OverviewMap {
+    /**
+     * 构造函数
+     * @param {Object} options 初始化参数
+     */
     constructor(options) {
         options.className = 'ol-overviewmap ol-custom-overviewmap';
         options.collapseLabel = '\u00BB';

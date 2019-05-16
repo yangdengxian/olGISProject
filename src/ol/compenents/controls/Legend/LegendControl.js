@@ -11,6 +11,10 @@ import Legend from 'ol-ext/control/Legend';
 import { DEVICE_PIXEL_RATIO as ol_has_DEVICE_PIXEL_RATIO } from 'ol/has'
 
 export default class LegendControl extends Legend {
+    /**
+     * 构造函数
+     * @param {Object} param 初始化参数
+     */
     constructor(param) {
         //width height
         param.size = [30, 15];
@@ -19,6 +23,9 @@ export default class LegendControl extends Legend {
         super(param);
     }
 
+    /**
+     * 动态更新图例
+     */
     refresh() {
         var self = this;
         var table = this._tableElement
@@ -67,7 +74,10 @@ export default class LegendControl extends Legend {
 
     }
 
-
+    /**
+     * 添加图例行
+     * @param {Array<layer>} layers 图层组
+     */
     addRows(layers) {
         var __this = this;
         layers = Util.sortArrayFuncs(layers, 1, "ol_uid");

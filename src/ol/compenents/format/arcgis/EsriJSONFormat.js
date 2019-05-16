@@ -6,10 +6,19 @@
 import EsriJSON from 'ol/format/EsriJSON';
 
 export default class EsriJSONFormat extends EsriJSON {
+    /**
+     * 构造函数
+     * @param {Object} param 初始化参数
+     */
     constructor(param) {
         super(param);
     };
-    //重写父类方法
+
+    /**
+     * 重写父类方法 读取要素
+     * @param {Object} object 要素对象
+     * @param {Object} opt_options 参数
+     */
     readFeaturesFromObject(object, opt_options) {
         var options = opt_options ? opt_options : {};
         if (object['features'] || object["results"]) {

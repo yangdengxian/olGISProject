@@ -19,7 +19,7 @@ import VectorLayer from './src/ol/compenents/Layers/VectorLayer';
 //鹰眼图
 import OverviewMapControl from './src/ol/compenents/controls/overviewMap/OverviewMapControl';
 //比例尺
-import ScaleBarControl from './src/ol/compenents/controls/scalebar/ScaleBar';
+import ScaleBarControl from './src/ol/compenents/controls/scalebar/ScaleBarControl';
 //导航条
 import ZoomSildweControl from './src/ol/compenents/controls/zoomSlider/ZoomSlider';
 //底图切换

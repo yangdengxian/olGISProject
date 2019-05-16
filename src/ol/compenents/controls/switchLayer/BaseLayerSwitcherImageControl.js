@@ -8,11 +8,17 @@ import './BaseLayerSwitcherImageControl.css';
 import LayerSwitcherImage from 'ol-ext/control/LayerSwitcherImage';
 import Collection from 'ol/Collection';
 export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
+    /**
+     * 构造函数
+     * @param {Object} param 初始化参数
+     */
     constructor(param) {
         super(param);
     }
 
-    //重写父类方法，只控制底图
+    /**
+     * 重写父类方法，只控制底图
+     */
     drawPanel_() {
         if (--this.dcount || this.dragging_) return;
         // Remove existing layers
@@ -32,7 +38,9 @@ export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
         this.drawList(this.panel_, collection);
     };
 
-    //重写父类的方法
+    /**
+     * 重写父类方法 图层是否可见
+     */
     switchLayerVisibility(l, layers) {
         if (!l.get('baseLayer')) {
             l.setVisible(!l.getVisible());
