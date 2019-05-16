@@ -10,10 +10,17 @@ import LayerSwitcher from 'ol-ext/control/LayerSwitcher';
 import Collection from 'ol/Collection';
 
 export default class LayersSwitchControl extends LayerSwitcher {
+    /**
+     * 构造函数
+     * @param {Object} param 初始化参数
+     */
     constructor(param) {
         super(param)
     };
-    //重写父类方法，只控制专题图
+
+    /**
+     * 重写父类方法，只控制底图
+     */
     drawPanel_() {
         if (--this.dcount || this.dragging_) return;
         // Remove existing layers
@@ -33,7 +40,9 @@ export default class LayersSwitchControl extends LayerSwitcher {
     };
 
 
-    //重写父类的方法
+    /**
+     * 重写父类方法 动态更新
+     */
     viewChange() {
         var map = this.getMap();
         var res = map.getView().getResolution();
