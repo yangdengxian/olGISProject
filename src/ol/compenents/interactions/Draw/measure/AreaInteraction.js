@@ -1,8 +1,3 @@
-/**
- * 面积测量
- * @author ydx
- * @date 2019-04-09
- */
 import './measure.css';
 import Draw from 'ol/interaction/Draw'
 import VectorSource from 'ol/source/Vector';
@@ -16,6 +11,13 @@ import { getArea } from 'ol/sphere';
 import { unByKey } from 'ol/Observable';
 
 const source = new VectorSource();
+
+/**
+ * 面积测量
+ * @author ydx
+ * @date 2019-04-09
+ * @extends Draw
+ */
 export default class AreaInteraction extends Draw {
     constructor(param) {
         super({

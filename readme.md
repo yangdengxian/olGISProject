@@ -22,3 +22,6 @@ Start the project
 Open `index.html` to see the result.
 
     open index.html
+
+## v1.0.6
+### 二维版本
