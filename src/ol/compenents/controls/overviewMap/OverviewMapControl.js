@@ -9,16 +9,13 @@ import View from 'ol/View';
 
 export default class OverviewMapControl extends OverviewMap {
     constructor(options) {
-        super({
-            // see in overviewmap-custom.html to see the custom CSS used
-            className: 'ol-overviewmap ol-custom-overviewmap',
-            layers: options.layers,
-            collapseLabel: '\u00BB',
-            label: '\u00AB',
-            collapsed: options.collapsed || true,
-            view: new View({
-                projection: options.map.getView().getProjection()
-            })
-        })
+        options.className = 'ol-overviewmap ol-custom-overviewmap';
+        options.collapseLabel = '\u00BB';
+        options.label = '\u00AB';
+        options.collapsed = options.collapsed || true;
+        options.view = new View({
+            projection: options.map.getView().getProjection()
+        });
+        super(options);
     }
 }

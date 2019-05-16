@@ -9,6 +9,8 @@ export default class GeoTileLayer extends WMTSLayer {
     constructor(url, param) {
         super({
             url: url,
+            title: param.title,
+
             params: {
                 'FORMAT': 'image/png',
                 'VERSION': '1.1.1',

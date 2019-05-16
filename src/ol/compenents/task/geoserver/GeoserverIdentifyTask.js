@@ -4,15 +4,7 @@
  * @date 2019-04-11
  */
 
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
 import QueryTask from '../QueryTask';
-import {
-    equalTo as equalToFilter,
-    like as likeFilter,
-    and as andFilter,
-    bbox as bboxFilter
-} from 'ol/format/filter.js';
 import GML from 'ol/format/GML3';
 import GeoServerJSONFormat from '../../format/geoserver/GeoServerJSONFormat';
 //业务数据展示

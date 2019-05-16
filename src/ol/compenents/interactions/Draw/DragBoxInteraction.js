@@ -10,15 +10,12 @@ import { DragBox, Select } from 'ol/interaction';
 
 import ArcGISIdentifyTask from '../../task/arcgis/ArcGISIdentifyTask';
 import GeoserverIdentifyTask from '../../task/geoserver/GeoserverIdentifyTask';
-import {
-    bbox as bboxFilter
-} from 'ol/format/filter.js';
 
 export default class DragBoxInteraction extends DragBox {
     constructor(param) {
-        super({
-            condition: always
-        });
+        param = param || {};
+        param.condition = always;
+        super(param);
     }
 
     drawStartHandler(evt) {

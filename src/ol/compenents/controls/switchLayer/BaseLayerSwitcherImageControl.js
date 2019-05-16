@@ -5,7 +5,6 @@
  */
 import 'ol-ext/dist/ol-ext.min.css';
 import './BaseLayerSwitcherImageControl.css';
-import $ from 'jquery/dist/jquery.min';
 import LayerSwitcherImage from 'ol-ext/control/LayerSwitcherImage';
 import Collection from 'ol/Collection';
 export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {

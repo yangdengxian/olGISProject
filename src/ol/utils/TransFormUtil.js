@@ -10,11 +10,17 @@ export default class TransFormUtil {
         this.source = params.source;
         this.destination = params.destination;
     };
-    //经纬度转平面   4326
+    /**
+     * 经纬度转平面   4326
+     * @param {Array} coordinate [lon,lat]
+     */
     fromLonLat(coordinate) {
         return fromLonLat(coordinate, this.destination);
     };
-    //平面坐标转经纬度   3857
+    /**
+     * 平面坐标转经纬度   3857
+     * @param {Array} coordinate [x,y]
+     */
     toLonLat(coordinate) {
         return toLonLat(coordinate, this.destination);
     }
@@ -27,13 +33,19 @@ export default class TransFormUtil {
         return transformExtent(extent, this.source, this.destination);
     }
 
+    /**
+     * 
+     * @param {Array} coordinate [lon,lat] or [x,y]
+     * @param {String} source eg: 'EPSG:4326'
+     * @param {String} destination eg: 'EPSG:3857'
+     */
     transformByProjParm(coordinate, source, destination) {
         if (Array.isArray(coordinate)) {
             return coordinate.length > 2 ?
                 transformExtent(coordinate, source, destination) :
                 transform(coordinate, source, destination)
         }
-        return null;
+        return coordinate;
     }
 
 }

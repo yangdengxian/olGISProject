@@ -3,10 +3,7 @@
  * @date 2019-04-08
  */
 import './ToolBar.css';
-import Config from '../../config/config';
 import $ from 'jquery/dist/jquery.min';
-// import ExcChartLayer from '../../compenents/Layers/vectorCharts/ExtChartLayer';
-import Charts from '../../../project/js/charts/Charts';
 
 
 export default class ToolbarTask {

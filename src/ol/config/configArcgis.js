@@ -32,12 +32,12 @@ const Config = {
     WMSImageLayers: {
         "tkq": {
             id: "tkq_layer",
-            url: "http://10.88.104.225:58081/geoserver/tkq_ckq",
+            url: "http://a6-geoserver.a6-dev.dev.pcep.cloud/geoserver/tkq_ckq",
             layerName: "tkq_ckq:tkq"
         },
         "ckq": {
             id: "ckq_layer",
-            url: "http://10.88.104.225:58081/geoserver/tkq_ckq",
+            url: "http://a6-geoserver.a6-dev.dev.pcep.cloud/geoserver/tkq_ckq",
             layerName: "tkq_ckq:ckq"
         }
 

@@ -4,7 +4,7 @@
  * @date 2019-04-09
  */
 import Util from '../../../utils/Util';
-import { Image as ImageLayer } from 'ol/layer.js';
+import { Image as ImageLayer } from 'ol/layer';
 import ArcGISRestLayer from './ArcGISRestLayer';
 
 import Style from 'ol/style/Style';
@@ -18,8 +18,8 @@ export default class ArcGISImageLayers extends ImageLayer {
         super({
             id: params.id,
             title: params.title,
-            baseLayer: false,
-            thmemeLayer: true,
+            baseLayer: params.isBaseLayer || false,
+            thmemeLayer: params.isThmemeLayer || true,
             displayInLayerSwitcher: true,
             source: new ArcGISRestLayer({
                 ratio: 1,

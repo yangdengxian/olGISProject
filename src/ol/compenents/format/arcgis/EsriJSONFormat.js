@@ -13,8 +13,7 @@ export default class EsriJSONFormat extends EsriJSON {
     readFeaturesFromObject(object, opt_options) {
         var options = opt_options ? opt_options : {};
         if (object['features'] || object["results"]) {
-            var esriJSONFeatureSet = /** @type {EsriJSONFeatureSet} */ (object);
-            /** @type {Array<import("../Feature.js").default>} */
+            var esriJSONFeatureSet = object;
             var features = [];
             var esriJSONFeatures = esriJSONFeatureSet.features || esriJSONFeatureSet.results;
             options.idField = object.objectIdFieldName;

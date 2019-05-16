@@ -8,10 +8,9 @@ import { always } from 'ol/events/condition';
 
 export default class DragZoomInteraction extends DragZoom {
     constructor(param) {
-        super({
-            condition: always,
-            // out: false, // 此处为设置拉框完成时放大还是缩小
-        })
+        param = param || {};
+        param.condition = always;
+        super(param);
     }
 
     zoomIn() {

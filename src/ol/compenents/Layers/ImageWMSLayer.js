@@ -3,8 +3,8 @@
  * @author ydx
  * @date 2019-03-22
  */
-import ImageLayer from 'ol/layer/Image.js';
-import ImageWMS from 'ol/source/ImageWMS.js';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
 
 export default class ImageWMSLayer extends ImageLayer {
     constructor(param) {

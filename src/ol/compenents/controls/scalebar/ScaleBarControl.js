@@ -8,10 +8,7 @@ import ScaleLine from 'ol/control/ScaleLine';
 
 export default class ScaleBarControl extends ScaleLine {
     constructor(options) {
-        super({
-            className: 'ol-scale-line',
-            minWidth: options.minWidth,
-            units: options.units | "metric",
-        })
+        options.className = 'ol-scale-line';
+        super(options);
     }
 }

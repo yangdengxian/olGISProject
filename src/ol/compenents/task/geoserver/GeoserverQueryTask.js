@@ -4,11 +4,6 @@
  * @date 2019-04-11
  */
 import QueryTask from '../QueryTask';
-import {
-    equalTo as equalToFilter,
-    like as likeFilter,
-    and as andFilter
-} from 'ol/format/filter.js';
 
 export default class GeoserverQueryTask extends QueryTask {
     constructor(params) {

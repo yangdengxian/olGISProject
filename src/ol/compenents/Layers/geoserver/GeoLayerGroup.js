@@ -5,7 +5,6 @@
  */
 import Util from '../../../utils/Util';
 import GroupLayers from '../GroupLayers';
-import GeoImageLayer from './GeoImageLayer';
 
 export default class GeoLayerGroup extends GroupLayers {
     constructor(param) {

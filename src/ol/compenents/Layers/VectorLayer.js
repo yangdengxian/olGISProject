@@ -15,6 +15,7 @@ export default class VectorLayer extends Vector {
         super({
             id: param.id,
             baseLayer: false,
+            thmemeLayer: false,
             displayInLayerSwitcher: false,
             source: new VectorSource(),
             // 矢量图层样式

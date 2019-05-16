@@ -4,7 +4,7 @@
  * @date 2019-04-11
  */
 import Util from '../../../utils/Util';
-import { ImageArcGISRest } from 'ol/source.js';
+import { ImageArcGISRest } from 'ol/source';
 import { assert } from 'ol/asserts';
 import { appendParams } from 'ol/uri';
 

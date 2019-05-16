@@ -11,10 +11,10 @@ export default class GroupLayers extends LayerGroup {
         super({
             id: param.id,
             title: param.title,
-            baseLayer: false, //是否基础底图
-            displayInLayerSwitcher: true, //是否在控件显示
-            openInLayerSwitcher: true, //The openInLayerSwitcher property of an ol.layer.Group is used to code the visibility of the sublayers.
-            thmemeLayer: true, //是否专题图
+            baseLayer: param.baseLayer || false, //是否基础底图
+            displayInLayerSwitcher: param.displayInLayerSwitcher || true, //是否在控件显示
+            openInLayerSwitcher: param.openInLayerSwitcher || true, //The openInLayerSwitcher property of an ol.layer.Group is used to code the visibility of the sublayers.
+            thmemeLayer: param.thmemeLayer || true, //是否专题图
             layers: [
 
             ]
