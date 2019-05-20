@@ -22,3 +22,35 @@ Start the project
 Open `index.html` to see the result.
 
     open index.html
+
+-----
+
+**v1.0.6版本 二维框架**
+
+> * 工具类
+> * 控件
+> * 图层切换展示
+> * 查询
+
+
+**v2.0.0版本 二三维框架**
+
+> * 工具类
+> * 控件
+> * 图层切换展示
+> * 查询
+> * 新增三维展示
+
+**相关参考**
+[openlayers][1]
+[@esri/arcgis-to-geojson-utils][2]
+[ol-echarts][3]
+[ol-ext][4]
+[ol-cesium][5]
+
+
+  [1]: https://github.com/openlayers/openlayers
+  [2]: https://github.com/Esri/arcgis-to-geojson-utils
+  [3]: https://github.com/sakitam-fdd/ol3Echarts
+  [4]: https://github.com/Viglino/ol-ext
+  [5]: https://github.com/openlayers/ol-cesium

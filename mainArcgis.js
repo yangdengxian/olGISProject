@@ -13,13 +13,16 @@ import GroupLayers from './src/ol/compenents/Layers/GroupLayers';
 //演示图层 ydx 2019-05-14
 import GeoImageLayer from './src/ol/compenents/Layers/geoserver/GeoImageLayer';
 
+//三维 ydx 2019-05-14
+import OL3DCesium from './src/ol/compenents/cesium/OL3DCesium'
+
 //要素图层
 import VectorLayer from './src/ol/compenents/Layers/VectorLayer';
 
 //鹰眼图
 import OverviewMapControl from './src/ol/compenents/controls/overviewMap/OverviewMapControl';
 //比例尺
-import ScaleBarControl from './src/ol/compenents/controls/scalebar/ScaleBar';
+import ScaleBarControl from './src/ol/compenents/controls/scalebar/ScaleBarControl';
 //导航条
 import ZoomSildweControl from './src/ol/compenents/controls/zoomSlider/ZoomSlider';
 //底图切换
@@ -134,7 +137,6 @@ map.addControl(legendControl);
 //设置底图图层
 const tileLayerGroup = arcGISTileLayers.getLayerGroup();
 map.setLayerGroup(tileLayerGroup);
-// tileLayerGroup.setExtent(Util.getExtentArray(mapConfig["mapFullExtent"]));
 map.getView().fit(
     map.getTransFormUtil()
     .transformExtent(
@@ -208,6 +210,13 @@ map.getViewport().addEventListener('mouseout', (evt) => {
     }
 });
 
+//三维 ydx 2019-05-17
+const oL3DCesium = new OL3DCesium({
+    map: map
+});
+//默认二维 ydx 2019-05-17
+oL3DCesium.setEnabled(false);
+
 // 菜单事件绑定
 const toolBarTask = new ToolBarTask({
     map: map,
@@ -217,7 +226,9 @@ const toolBarTask = new ToolBarTask({
         dragZoomInteraction: dragZoomInteraction,
         areaInteraction: areaInteraction,
         distanceInteraction: distanceInteraction,
-        dragBoxInteraction: dragBoxInteraction
+        dragBoxInteraction: dragBoxInteraction,
+        //三维工具条   ydx  2019-05-17
+        oL3DCesium: oL3DCesium
     }
 });
 toolBarTask.bindClickEvent();
