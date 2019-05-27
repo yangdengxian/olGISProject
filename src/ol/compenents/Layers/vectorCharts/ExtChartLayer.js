@@ -1,8 +1,3 @@
-/**
- * ol-ext图表
- * @author ydx
- * @date 2019-04-16
- */
 import 'ol-ext/dist/ol-ext.css';
 import Vector from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -13,7 +8,22 @@ import Stroke from 'ol/style/Stroke';
 
 import GeoJSON from 'ol/format/GeoJSON';
 
-export default class ExtChartLayer extends Vector {
+/**
+ * @classdesc ol-ext图表
+ * @author ydx
+ * @date 2019-04-16
+ * @module Layers/vectorCharts/ExtChartLayer
+ * @extends Vector
+ */
+class ExtChartLayer extends Vector {
+    /**
+     * 
+     * @param {*} param 
+     * @param {string} param.name 
+     * @param {string} param.dataUrl 根据地址查询数据
+     * @param {features} param.features 要素集  与 dataUrl互斥，二选一
+     * @param {string} param.type 图表类型  'bar'、'pie'
+     */
     constructor(param) {
         super({
             id: 'chartsLayer',
@@ -55,3 +65,5 @@ function getFeatureStyle(feature, type) {
 
     return style;
 }
+
+export default ExtChartLayer;

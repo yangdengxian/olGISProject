@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: interactions/Draw/measure/AreaInteraction.js</title>
+
+    <script src="scripts/prettify.js"> </script>
+    <script src="scripts/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/tomorrow.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: interactions/Draw/measure/AreaInteraction.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import './measure.css';
+import Draw from 'ol/interaction/Draw'
+import VectorSource from 'ol/source/Vector';
+import Vector from 'ol/layer/Vector';
+import Style from 'ol/style/Style';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Circle from 'ol/style/Circle';
+import Overlay from 'ol/Overlay';
+import { getArea } from 'ol/sphere';
+import { unByKey } from 'ol/Observable';
+
+const source = new VectorSource();
+
+/**
+ * @classdesc 面积测量
+ * @author ydx
+ * @date 2019-04-09
+ * @module interactions/Draw/measure/AreaInteraction
+ * @extends Draw
+ */
+class AreaInteraction extends Draw {
+    /**
+     * 
+     * @param {*} param 
+     * @param {string} param.id    测量工具id
+     * @param {Map} param.map   地图实例   （必填）
+     */
+    constructor(param) {
+        super({
+            id: param.id,
+            baseLayer: false,
+            displayInLayerSwitcher: false,
+            source: source,
+            type: "Polygon",
+            // 勾绘出要素的样式
+            style: new Style({
+                fill: new Fill({
+                    color: 'rgba(125, 125, 125, 0.2)'
+                }),
+                stroke: new Stroke({
+                    color: 'rgba(0, 0, 0, 0.5)',
+                    lineDash: [10, 10],
+                    width: 2
+                }),
+                image: new Circle({
+                    radius: 5,
+                    stroke: new Stroke({
+                        color: 'rgba(0, 0, 0, 0.7)'
+                    }),
+                    fill: new Fill({
+                        color: 'rgba(255, 255, 255, 0.2)'
+                    })
+                })
+            })
+        });
+        this.vectorLayer = new Vector({
+            id: "areaVectorLayer",
+            baseLayer: false,
+            displayInLayerSwitcher: false,
+            source: source,
+            // 矢量图层样式
+            style: new Style({
+                fill: new Fill({
+                    color: 'rgba(125, 125, 125, 0.2)'
+                }),
+                stroke: new Stroke({
+                    color: '#ffcc33',
+                    width: 2
+                }),
+                image: new Circle({
+                    radius: 7,
+                    fill: new Fill({
+                        color: '#ffcc33'
+                    })
+                })
+            })
+        });
+        this.polygonHelpMsg = param.polygonHelpMsg || "点击继续绘制面";
+        this.helpTooltipElement = null;
+        this.drawingFeature = null;
+        this.helpTooltip = null;
+        this.helpMsg = '点击继续绘制'
+        this.map = param.map;
+        this.createHelpTooltip();
+        this.createMeasureTooltip();
+    }
+
+    /**
+     * @description 添加测量要素图层
+     */
+    addMeasureLayer() {
+        this.map.addLayer(this.vectorLayer);
+    }
+
+    /**
+     * @description 创建帮助信息标签
+     */
+    createHelpTooltip() {
+        if (this.helpTooltipElement) {
+            this.helpTooltipElement.parentNode.removeChild(this.helpTooltipElement)
+        }
+        this.helpTooltipElement = document.createElement('div')
+        this.helpTooltipElement.className = 'tooltip hidden'
+        this.helpTooltip = new Overlay({
+            element: this.helpTooltipElement,
+            offset: [15, 0],
+            positioning: 'center-left'
+        })
+        this.map.addOverlay(this.helpTooltip)
+    }
+
+    /**
+     * @description 创建测量结果信息标签
+     */
+    createMeasureTooltip() {
+        if (this.measureTooltipElement) {
+            this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement)
+        }
+        this.measureTooltipElement = document.createElement('div')
+        this.measureTooltipElement.className = 'tooltip tooltip-measure'
+        this.measureTooltip = new Overlay({
+            element: this.measureTooltipElement,
+            offset: [0, -15],
+            positioning: 'bottom-center'
+        })
+        this.map.addOverlay(this.measureTooltip)
+    }
+
+    /**
+     * @description 鼠标移动事件监听
+     * @param {*} evt 监听对象
+     */
+    mouseoutHandler(evt) {
+        this.helpTooltipElement.classList.add('hidden');
+    }
+
+    /**
+     * @description 要素点移动事件监听
+     * @param {*} evt 监听对象
+     */
+    pointerMoveHandler(evt) {
+        if (evt.dragging) {
+            return
+        }
+        if (this.drawingFeature) {
+            this.helpMsg = this.polygonHelpMsg;
+        }
+        this.helpTooltipElement.innerHTML = this.helpMsg
+        this.helpTooltip.setPosition(evt.coordinate)
+        this.helpTooltipElement.classList.remove('hidden');
+    }
+
+    /**
+     * @description 测量开始事件监听
+     * @param {*} evt 监听对象
+     */
+    drawStartHandler(evt) {
+        this.drawingFeature = evt.feature
+        var tooltipCoord = evt.coordinate
+        this.listener = this.drawingFeature.getGeometry().on('change', (evt) => {
+            var geom = evt.target
+            var output = this.formatArea(geom)
+            tooltipCoord = geom.getInteriorPoint().getCoordinates()
+            this.measureTooltipElement.innerHTML = output
+            this.measureTooltip.setPosition(tooltipCoord)
+        })
+    }
+
+    /**
+     * @description 测量结束事件监听
+     * @param {*} evt 监听对象
+     */
+    drawEndHandler(evt) {
+        this.measureTooltipElement.className = 'tooltip tooltip-static'
+        this.measureTooltip.setOffset([0, -7])
+
+        //测量结果清除按钮
+        var popupcloser = document.createElement('a');
+        popupcloser.href = 'javascript:void(0);';
+        popupcloser.classList.add('ol-popup-closer');
+        popupcloser.addEventListener('click', function(target) {
+            this.clearOverLayers(target, evt.feature);
+        }.bind(this), false);
+        this.measureTooltipElement.appendChild(popupcloser);
+
+        this.drawingFeature = null
+        this.measureTooltipElement = null
+        this.createMeasureTooltip()
+        unByKey(this.listener);
+        this.setActive(false);
+        this.helpTooltipElement.classList.add('hidden');
+    }
+
+    /**
+     * @description 面积计算
+     * @param {polygon} polygon 面feature
+     */
+    formatArea(polygon) {
+        var area = getArea(polygon, {
+            projection: this.getMap().getView().getProjection()
+        });
+        var output
+        if (area > 10000) {
+            output = (Math.round(area / 1000000 * 100) / 100) + ' km&lt;sup>2&lt;/sup>'
+        } else {
+            output = (Math.round(area * 100) / 100) + ' m&lt;sup>2&lt;/sup>'
+        }
+        return output
+    }
+
+    /**
+     * @description 清除测量图层
+     * @param {Object} evt 鼠标点击对象
+     * @param {Feature} feature 选中要素
+     */
+    clearOverLayers(evt, feature) {
+        var target = evt.target;
+        target.parentElement.className = 'tooltip hidden';
+        source.removeFeature(feature);
+    }
+}
+
+export default AreaInteraction;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controls_Legend_LegendControl.html">controls/Legend/LegendControl</a></li><li><a href="module-controls_overviewMap_OverviewMapControl.html">controls/overviewMap/OverviewMapControl</a></li><li><a href="module-controls_scalebar_ScaleBarControl.html">controls/scalebar/ScaleBarControl</a></li><li><a href="module-controls_switchLayer_BaseLayerSwitcherImageControl.html">controls/switchLayer/BaseLayerSwitcherImageControl</a></li><li><a href="module-controls_switchLayer_LayersSwitchControl.html">controls/switchLayer/LayersSwitchControl</a></li><li><a href="module-controls_zoomSlider_ZoomSliderControl.html">controls/zoomSlider/ZoomSliderControl</a></li><li><a href="module-format_arcgis_EsriJSONFormat.html">format/arcgis/EsriJSONFormat</a></li><li><a href="module-format_geoserver_GeoServerJSONFormat.html">format/geoserver/GeoServerJSONFormat</a></li><li><a href="module-interactions_Draw_DragBoxInteraction.html">interactions/Draw/DragBoxInteraction</a></li><li><a href="module-interactions_Draw_DragZoomInteraction.html">interactions/Draw/DragZoomInteraction</a></li><li><a href="module-interactions_Draw_measure_AreaInteraction.html">interactions/Draw/measure/AreaInteraction</a></li><li><a href="module-interactions_Draw_measure_DistanceInteraction.html">interactions/Draw/measure/DistanceInteraction</a></li><li><a href="module-interactions_SelectInteraction.html">interactions/SelectInteraction</a></li><li><a href="module-Layers_arcgis_ArcGISImageLayers.html">Layers/arcgis/ArcGISImageLayers</a></li><li><a href="module-Layers_arcgis_ArcgisLayerGroup.html">Layers/arcgis/ArcgisLayerGroup</a></li><li><a href="module-Layers_arcgis_ArcGISRestLayer.html">Layers/arcgis/ArcGISRestLayer</a></li><li><a href="module-Layers_arcgis_ArcGISTileLayers.html">Layers/arcgis/ArcGISTileLayers</a></li><li><a href="module-Layers_geoserver_GeoImageLayer.html">Layers/geoserver/GeoImageLayer</a></li><li><a href="module-Layers_geoserver_GeoLayerGroup.html">Layers/geoserver/GeoLayerGroup</a></li><li><a href="module-Layers_geoserver_GeoTileLayer.html">Layers/geoserver/GeoTileLayer</a></li><li><a href="module-Layers_GroupLayers.html">Layers/GroupLayers</a></li><li><a href="module-Layers_ImageWMSLayer.html">Layers/ImageWMSLayer</a></li><li><a href="module-Layers_vectorCharts_ExtChartLayer.html">Layers/vectorCharts/ExtChartLayer</a></li><li><a href="module-Layers_VectorLayer.html">Layers/VectorLayer</a></li><li><a href="module-Layers_WMTSLayer.html">Layers/WMTSLayer</a></li><li><a href="module-Layers_XYZLayer.html">Layers/XYZLayer</a></li><li><a href="module-ol_compenents_MapSub.html">ol/compenents/MapSub</a></li><li><a href="module-overlay_charts_echarts_BarEChartOverlay.html">overlay/charts/echarts/BarEChartOverlay</a></li><li><a href="module-overlay_charts_echarts_EChartOverlay.html">overlay/charts/echarts/EChartOverlay</a></li><li><a href="module-overlay_charts_echarts_PieEChartOverlay.html">overlay/charts/echarts/PieEChartOverlay</a></li><li><a href="module-style_IconStyle.html">style/IconStyle</a></li><li><a href="module-task_arcgis_ArcGISIdentifyTask.html">task/arcgis/ArcGISIdentifyTask</a></li><li><a href="module-task_arcgis_GeoserverIdentifyTask.html">task/arcgis/GeoserverIdentifyTask</a></li></ul><h3>Classes</h3><ul><li><a href="module-controls_Legend_LegendControl-LegendControl.html">LegendControl</a></li><li><a href="module-controls_overviewMap_OverviewMapControl-OverviewMapControl.html">OverviewMapControl</a></li><li><a href="module-controls_scalebar_ScaleBarControl-ScaleBarControl.html">ScaleBarControl</a></li><li><a href="module-controls_switchLayer_BaseLayerSwitcherImageControl-BaseLayerSwitcherImageControl.html">BaseLayerSwitcherImageControl</a></li><li><a href="module-controls_switchLayer_LayersSwitchControl-LayersSwitchControl.html">LayersSwitchControl</a></li><li><a href="module-controls_zoomSlider_ZoomSliderControl-ZoomSliderControl.html">ZoomSliderControl</a></li><li><a href="module-format_arcgis_EsriJSONFormat-EsriJSONFormat.html">EsriJSONFormat</a></li><li><a href="module-format_geoserver_GeoServerJSONFormat-GeoServerJSONFormat.html">GeoServerJSONFormat</a></li><li><a href="module-interactions_Draw_DragBoxInteraction-DragBoxInteraction.html">DragBoxInteraction</a></li><li><a href="module-interactions_Draw_DragZoomInteraction-DragZoomInteraction.html">DragZoomInteraction</a></li><li><a href="module-interactions_Draw_measure_AreaInteraction-AreaInteraction.html">AreaInteraction</a></li><li><a href="module-interactions_Draw_measure_DistanceInteraction-DistanceInteraction.html">DistanceInteraction</a></li><li><a href="module-interactions_SelectInteraction-SelectInteraction.html">SelectInteraction</a></li><li><a href="module-Layers_arcgis_ArcGISImageLayers-ArcGISImageLayers.html">ArcGISImageLayers</a></li><li><a href="module-Layers_arcgis_ArcgisLayerGroup-ArcgisLayerGroup.html">ArcgisLayerGroup</a></li><li><a href="module-Layers_arcgis_ArcGISRestLayer-ArcGISRestLayer.html">ArcGISRestLayer</a></li><li><a href="module-Layers_arcgis_ArcGISTileLayers-ArcGISTileLayers.html">ArcGISTileLayers</a></li><li><a href="module-Layers_geoserver_GeoImageLayer-GeoImageLayer.html">GeoImageLayer</a></li><li><a href="module-Layers_geoserver_GeoLayerGroup-GeoLayerGroup.html">GeoLayerGroup</a></li><li><a href="module-Layers_geoserver_GeoTileLayer-GeoTileLayer.html">GeoTileLayer</a></li><li><a href="module-Layers_GroupLayers-GroupLayers.html">GroupLayers</a></li><li><a href="module-Layers_ImageWMSLayer-ImageWMSLayer.html">ImageWMSLayer</a></li><li><a href="module-Layers_vectorCharts_ExtChartLayer-ExtChartLayer.html">ExtChartLayer</a></li><li><a href="module-Layers_VectorLayer-VectorLayer.html">VectorLayer</a></li><li><a href="module-Layers_WMTSLayer-WMTSLayer.html">WMTSLayer</a></li><li><a href="module-Layers_XYZLayer-XYZLayer.html">XYZLayer</a></li><li><a href="module-ol_compenents_MapSub-MapSub.html">MapSub</a></li><li><a href="module-overlay_charts_echarts_BarEChartOverlay-BarEChartOverlay.html">BarEChartOverlay</a></li><li><a href="module-overlay_charts_echarts_EChartOverlay-EChartOverlay.html">EChartOverlay</a></li><li><a href="module-style_IconStyle-IconStyle.html">IconStyle</a></li><li><a href="module-task_arcgis_ArcGISIdentifyTask-ArcGISIdentifyTask.html">ArcGISIdentifyTask</a></li><li><a href="module-task_arcgis_GeoserverIdentifyTask-GeoserverIdentifyTask.html">GeoserverIdentifyTask</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.2</a> on Mon May 27 2019 11:35:37 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

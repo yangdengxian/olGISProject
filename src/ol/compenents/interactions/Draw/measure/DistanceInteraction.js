@@ -1,8 +1,3 @@
-/**
- * 长度测量
- * @author ydx
- * @date 2019-04-09
- */
 import './measure.css';
 import Draw from 'ol/interaction/Draw'
 import VectorSource from 'ol/source/Vector';
@@ -17,9 +12,24 @@ import { getLength } from 'ol/sphere';
 import { unByKey } from 'ol/Observable';
 
 const source = new VectorSource();
-export default class DistanceInteraction extends Draw {
+
+/**
+ * @classdesc 长度测量
+ * @author ydx
+ * @date 2019-04-09
+ * @module interactions/Draw/measure/DistanceInteraction
+ * @extends Draw
+ */
+class DistanceInteraction extends Draw {
+    /**
+     * 
+     * @param {*} param 
+     * @param {string} param.id    测量工具id
+     * @param {Map} param.map   地图实例 （必填）
+     */
     constructor(param) {
         super({
+            id: param.id,
             source: source,
             type: "LineString",
             // 勾绘出要素的样式
@@ -44,6 +54,7 @@ export default class DistanceInteraction extends Draw {
             })
         });
         this.vectorLayer = new Vector({
+            id: "distanceVectorLayer",
             baseLayer: false,
             displayInLayerSwitcher: false,
             source: source,
@@ -75,11 +86,16 @@ export default class DistanceInteraction extends Draw {
         this.createMeasureTooltip();
     }
 
+    /**
+     * @description 添加测量要素图层
+     */
     addMeasureLayer() {
         this.map.addLayer(this.vectorLayer);
     }
 
-    // 创建帮助信息标签
+    /**
+     * @description 创建帮助信息标签
+     */
     createHelpTooltip() {
         if (this.helpTooltipElement) {
             this.helpTooltipElement.parentNode.removeChild(this.helpTooltipElement)
@@ -94,7 +110,9 @@ export default class DistanceInteraction extends Draw {
         this.map.addOverlay(this.helpTooltip)
     }
 
-    // 创建测量结果信息标签
+    /**
+     * @description 创建测量结果信息标签
+     */
     createMeasureTooltip() {
         //清除之前测量容器
         if (this.measureTooltipElement) {
@@ -111,10 +129,18 @@ export default class DistanceInteraction extends Draw {
         this.map.addOverlay(this.measureTooltip)
     }
 
+    /**
+     * @description 鼠标移动事件监听
+     * @param {*} evt 监听对象
+     */
     mouseoutHandler(evt) {
         this.helpTooltipElement.classList.add('hidden');
     }
 
+    /**
+     * @description 要素点移动事件监听
+     * @param {*} evt 监听对象
+     */
     pointerMoveHandler(evt) {
         if (evt.dragging) {
             return
@@ -127,6 +153,10 @@ export default class DistanceInteraction extends Draw {
         this.helpTooltipElement.classList.remove('hidden');
     }
 
+    /**
+     * @description 测量开始事件监听
+     * @param {*} evt 监听对象
+     */
     drawStartHandler(evt) {
         this.drawingFeature = evt.feature
         var tooltipCoord = evt.coordinate
@@ -139,6 +169,10 @@ export default class DistanceInteraction extends Draw {
         })
     }
 
+    /**
+     * @description 测量结束事件监听
+     * @param {*} evt 监听对象
+     */
     drawEndHandler(evt) {
         this.measureTooltipElement.className = 'tooltip tooltip-static'
         this.measureTooltip.setOffset([0, -7])
@@ -161,6 +195,10 @@ export default class DistanceInteraction extends Draw {
         this.helpTooltipElement.classList.add('hidden');
     }
 
+    /**
+     * @description 长度计算
+     * @param {LineString} line 线feature
+     */
     formatLength(line) {
         var length = getLength(line, {
             projection: this.getMap().getView().getProjection()
@@ -175,7 +213,7 @@ export default class DistanceInteraction extends Draw {
     }
 
     /**
-     * 清除测量图层
+     * @description 清除测量图层
      * @param {Object} evt 鼠标点击对象
      * @param {Feature} feature 选中要素
      */
@@ -185,3 +223,5 @@ export default class DistanceInteraction extends Draw {
         source.removeFeature(feature);
     }
 }
+
+export default DistanceInteraction;

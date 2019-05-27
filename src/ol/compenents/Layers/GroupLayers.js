@@ -1,12 +1,25 @@
-/**
- * 图层组
- * @author ydx
- * @date 2019-04-19
- */
 import LayerGroup from 'ol/layer/Group';
 import Collection from 'ol/Collection';
 
-export default class GroupLayers extends LayerGroup {
+/**
+ * @classdesc 图层组
+ * @author ydx
+ * @date 2019-04-19
+ * @module Layers/GroupLayers
+ * @extends LayerGroup
+ */
+class GroupLayers extends LayerGroup {
+    /**
+     * 
+     * @param {*} param 
+     * @param {string} param.id 
+     * @param {string} param.title 
+     * @param {boolean} param.baseLayer 是否基础底图
+     * @param {boolean} param.displayInLayerSwitcher 是否在控件显示
+     * @param {boolean} param.openInLayerSwitcher The openInLayerSwitcher property of an ol.layer.Group is used to code the visibility of the sublayers.
+     * @param {boolean} param.thmemeLayer 是否专题图
+     * @param {Array<layer>} param.layers 图层集
+     */
     constructor(param) {
         super({
             id: param.id,
@@ -15,17 +28,20 @@ export default class GroupLayers extends LayerGroup {
             displayInLayerSwitcher: param.displayInLayerSwitcher || true, //是否在控件显示
             openInLayerSwitcher: param.openInLayerSwitcher || true, //The openInLayerSwitcher property of an ol.layer.Group is used to code the visibility of the sublayers.
             thmemeLayer: param.thmemeLayer || true, //是否专题图
-            layers: [
+            layers: param.layers || [
 
             ]
         });
     };
+
     /**
-     * 添加图层
-     * @param {Array} layers 
+     * @description 添加图层
+     * @param {Array<layer>} layers 
      */
     addLayers(layers) {
         const collection = new Collection(layers);
         this.setLayers(collection);
     }
 }
+
+export default GroupLayers;

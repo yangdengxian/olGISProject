@@ -1,14 +1,19 @@
-/**
- * esri格式化
- * @author ydx
- * @date 2019-04-12
- */
 import GeoJSON from 'ol/format/GeoJSON';
 
-export default class GeoServerJSONFormat extends GeoJSON {
+/**
+ * @classdesc geojson格式化
+ * @author ydx
+ * @date 2019-04-12
+ * @module format/geoserver/GeoServerJSONFormat
+ * @extends GeoJSON
+ */
+class GeoServerJSONFormat extends GeoJSON {
+    /**
+     *  @param {*} param 
+     */
     constructor(param) {
         super(param);
     };
-    //重写父类方法
-    /*  */
 }
+
+export default GeoServerJSONFormat;

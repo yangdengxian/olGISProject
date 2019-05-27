@@ -3,7 +3,7 @@ import Config from './src/ol/config/config';
 import Util from './src/ol/utils/Util';
 import TranformUtil from './src/ol/utils/TransFormUtil';
 
-import MapSub from './src/ol/compenents/Map';
+import MapSub from './src/ol/compenents/MapSub';
 
 //esri离线切片服务
 import ArcGISTileLayers from './src/ol/compenents/Layers/arcgis/ArcGISTileLayer';
@@ -123,9 +123,11 @@ const {
     dragBoxInteraction: new DragBoxInteraction(),
     dragZoomInteraction: new DragZoomInteraction(),
     areaInteraction: new AreaInteraction({
+        id: "areaInteraction",
         map: map
     }),
     distanceInteraction: new DistanceInteraction({
+        id: "distanceInteraction",
         map: map
     }),
 }
@@ -214,8 +216,6 @@ map.getViewport().addEventListener('mouseout', (evt) => {
 const oL3DCesium = new OL3DCesium({
     map: map
 });
-//默认二维 ydx 2019-05-17
-oL3DCesium.setEnabled(false);
 
 // 菜单事件绑定
 const toolBarTask = new ToolBarTask({

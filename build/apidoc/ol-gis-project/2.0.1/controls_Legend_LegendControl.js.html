@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controls/Legend/LegendControl.js</title>
+
+    <script src="scripts/prettify.js"> </script>
+    <script src="scripts/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/tomorrow.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controls/Legend/LegendControl.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import 'ol-ext/dist/ol-ext.min.css';
+import './LegendControl.css';
+
+import Util from '../../../utils/Util';
+import Legend from 'ol-ext/control/Legend';
+import { DEVICE_PIXEL_RATIO as ol_has_DEVICE_PIXEL_RATIO } from 'ol/has'
+
+/**
+ * @classdesc 图例
+ * @author ydx
+ * @date 2019-04-10
+ * @module controls/Legend/LegendControl
+ * @extends Legend
+ */
+class LegendControl extends Legend {
+    /**
+     *  @param {*} options
+     *  @param {String} options.title title
+     *  @param {boolean} options.collapsed 初始是否关闭,默认：true
+     */
+    constructor(param) {
+        //width height
+        param.size = [30, 15];
+        //边距
+        param.margin = 5;
+        super(param);
+    }
+
+    /**
+     * @method
+     * @override
+     * @description 重写父类方法
+     */
+    refresh() {
+        var self = this;
+        var table = this._tableElement
+        table.innerHTML = '';
+        var width = this.get('size')[0] + 2 * this.get('margin');
+        var height = this.get('size')[1] + 2 * this.get('margin');
+
+        // Add a new row
+        function addRow(str, title, r, i) {
+            var row = document.createElement('li');
+            row.style.height = height + 'px';
+            row.addEventListener('click', function() {
+                self.dispatchEvent({ type: 'select', title: str, row: r, index: i });
+            });
+
+            var col = document.createElement('div');
+            row.appendChild(col);
+            col.style.height = height + 'px';
+
+            col = document.createElement('div');
+            if (title) {
+                row.className = 'ol-title';
+            } else {
+                //图层组名称 样式靠右 2019-04-24 ydx
+                if (r.typeGeom) {
+                    col.style.paddingLeft = width + 'px';
+                }
+            }
+            col.innerHTML = str || '';
+            row.appendChild(col);
+            table.appendChild(row);
+        }
+        if (this.get('title')) {
+            addRow(this.get('title'), true, {}, -1);
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = 5 * width;
+        canvas.height = (this._rows.length + 1) * height * ol_has_DEVICE_PIXEL_RATIO;
+        this._imgElement.innerHTML = '';
+        this._imgElement.append(canvas);
+        this._imgElement.style.height = (this._rows.length + 1) * height + 'px';
+        for (var i = 0, r; r = this._rows[i]; i++) {
+            addRow(r.title, false, r, i);
+            canvas = this.getStyleImage(r, canvas, i + (this.get('title') ? 1 : 0));
+        }
+
+    }
+
+    /**
+     * @method
+     * @description 添加图例行数
+     * @param {Array&lt;layer>} layers 图层集
+     */
+    addRows(layers) {
+        var __this = this;
+        layers = Util.sortArrayFuncs(layers, 1, "ol_uid");
+
+        //递归查询
+        promiseAddRow(layers[0], 0);
+
+        function promiseAddRow(layer, index) {
+            if (index === layers.length) return;
+
+            addRow({
+                title: layer.get("title"),
+            });
+
+            if (layer.getStyle) {
+                getStyle(layer).then((json) => {
+                    if (!json["styleArray"]) return;
+                    json["styleArray"].forEach(styleObj => {
+                        addRow({
+                            title: styleObj["label"],
+                            typeGeom: json["type"],
+                            style: styleObj["style"]
+                        });
+                    });
+                    promiseAddRow(layers[index + 1], index + 1)
+                });
+            } else {
+                layer.getLayersArray().forEach((obj, k) => {
+                    getStyle(obj).then((json) => {
+                        addRow({
+                            title: obj.get("title")
+                        });
+                        if (!json["styleArray"]) return;
+                        json["styleArray"].forEach(styleObj => {
+                            addRow({
+                                title: styleObj["label"],
+                                typeGeom: json["type"],
+                                style: styleObj["style"]
+                            });
+                        });
+
+                        if (k === (layer.getLayersArray().length - 1)) {
+                            promiseAddRow(layers[index + 1], index + 1);
+                        }
+                    });
+                })
+            }
+        }
+
+        function getStyle(layer) {
+            return layer.getStyle(layer.get("id")).then((json) => {
+                return json;
+            }, (error) => {
+                throw new Error(error);
+            });
+        }
+
+        function addRow(options) {
+            __this.addRow(options);
+        }
+
+
+    }
+
+}
+
+export default LegendControl;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controls_Legend_LegendControl.html">controls/Legend/LegendControl</a></li><li><a href="module-controls_overviewMap_OverviewMapControl.html">controls/overviewMap/OverviewMapControl</a></li><li><a href="module-controls_scalebar_ScaleBarControl.html">controls/scalebar/ScaleBarControl</a></li><li><a href="module-controls_switchLayer_BaseLayerSwitcherImageControl.html">controls/switchLayer/BaseLayerSwitcherImageControl</a></li><li><a href="module-controls_switchLayer_LayersSwitchControl.html">controls/switchLayer/LayersSwitchControl</a></li><li><a href="module-controls_zoomSlider_ZoomSliderControl.html">controls/zoomSlider/ZoomSliderControl</a></li><li><a href="module-format_arcgis_EsriJSONFormat.html">format/arcgis/EsriJSONFormat</a></li><li><a href="module-format_geoserver_GeoServerJSONFormat.html">format/geoserver/GeoServerJSONFormat</a></li><li><a href="module-interactions_Draw_DragBoxInteraction.html">interactions/Draw/DragBoxInteraction</a></li><li><a href="module-interactions_Draw_DragZoomInteraction.html">interactions/Draw/DragZoomInteraction</a></li><li><a href="module-interactions_Draw_measure_AreaInteraction.html">interactions/Draw/measure/AreaInteraction</a></li><li><a href="module-interactions_Draw_measure_DistanceInteraction.html">interactions/Draw/measure/DistanceInteraction</a></li><li><a href="module-interactions_SelectInteraction.html">interactions/SelectInteraction</a></li><li><a href="module-Layers_arcgis_ArcGISImageLayers.html">Layers/arcgis/ArcGISImageLayers</a></li><li><a href="module-Layers_arcgis_ArcgisLayerGroup.html">Layers/arcgis/ArcgisLayerGroup</a></li><li><a href="module-Layers_arcgis_ArcGISRestLayer.html">Layers/arcgis/ArcGISRestLayer</a></li><li><a href="module-Layers_arcgis_ArcGISTileLayers.html">Layers/arcgis/ArcGISTileLayers</a></li><li><a href="module-Layers_geoserver_GeoImageLayer.html">Layers/geoserver/GeoImageLayer</a></li><li><a href="module-Layers_geoserver_GeoLayerGroup.html">Layers/geoserver/GeoLayerGroup</a></li><li><a href="module-Layers_geoserver_GeoTileLayer.html">Layers/geoserver/GeoTileLayer</a></li><li><a href="module-Layers_GroupLayers.html">Layers/GroupLayers</a></li><li><a href="module-Layers_ImageWMSLayer.html">Layers/ImageWMSLayer</a></li><li><a href="module-Layers_vectorCharts_ExtChartLayer.html">Layers/vectorCharts/ExtChartLayer</a></li><li><a href="module-Layers_VectorLayer.html">Layers/VectorLayer</a></li><li><a href="module-Layers_WMTSLayer.html">Layers/WMTSLayer</a></li><li><a href="module-Layers_XYZLayer.html">Layers/XYZLayer</a></li><li><a href="module-ol_compenents_MapSub.html">ol/compenents/MapSub</a></li><li><a href="module-overlay_charts_echarts_BarEChartOverlay.html">overlay/charts/echarts/BarEChartOverlay</a></li><li><a href="module-overlay_charts_echarts_EChartOverlay.html">overlay/charts/echarts/EChartOverlay</a></li><li><a href="module-overlay_charts_echarts_PieEChartOverlay.html">overlay/charts/echarts/PieEChartOverlay</a></li><li><a href="module-style_IconStyle.html">style/IconStyle</a></li><li><a href="module-task_arcgis_ArcGISIdentifyTask.html">task/arcgis/ArcGISIdentifyTask</a></li><li><a href="module-task_arcgis_GeoserverIdentifyTask.html">task/arcgis/GeoserverIdentifyTask</a></li></ul><h3>Classes</h3><ul><li><a href="module-controls_Legend_LegendControl-LegendControl.html">LegendControl</a></li><li><a href="module-controls_overviewMap_OverviewMapControl-OverviewMapControl.html">OverviewMapControl</a></li><li><a href="module-controls_scalebar_ScaleBarControl-ScaleBarControl.html">ScaleBarControl</a></li><li><a href="module-controls_switchLayer_BaseLayerSwitcherImageControl-BaseLayerSwitcherImageControl.html">BaseLayerSwitcherImageControl</a></li><li><a href="module-controls_switchLayer_LayersSwitchControl-LayersSwitchControl.html">LayersSwitchControl</a></li><li><a href="module-controls_zoomSlider_ZoomSliderControl-ZoomSliderControl.html">ZoomSliderControl</a></li><li><a href="module-format_arcgis_EsriJSONFormat-EsriJSONFormat.html">EsriJSONFormat</a></li><li><a href="module-format_geoserver_GeoServerJSONFormat-GeoServerJSONFormat.html">GeoServerJSONFormat</a></li><li><a href="module-interactions_Draw_DragBoxInteraction-DragBoxInteraction.html">DragBoxInteraction</a></li><li><a href="module-interactions_Draw_DragZoomInteraction-DragZoomInteraction.html">DragZoomInteraction</a></li><li><a href="module-interactions_Draw_measure_AreaInteraction-AreaInteraction.html">AreaInteraction</a></li><li><a href="module-interactions_Draw_measure_DistanceInteraction-DistanceInteraction.html">DistanceInteraction</a></li><li><a href="module-interactions_SelectInteraction-SelectInteraction.html">SelectInteraction</a></li><li><a href="module-Layers_arcgis_ArcGISImageLayers-ArcGISImageLayers.html">ArcGISImageLayers</a></li><li><a href="module-Layers_arcgis_ArcgisLayerGroup-ArcgisLayerGroup.html">ArcgisLayerGroup</a></li><li><a href="module-Layers_arcgis_ArcGISRestLayer-ArcGISRestLayer.html">ArcGISRestLayer</a></li><li><a href="module-Layers_arcgis_ArcGISTileLayers-ArcGISTileLayers.html">ArcGISTileLayers</a></li><li><a href="module-Layers_geoserver_GeoImageLayer-GeoImageLayer.html">GeoImageLayer</a></li><li><a href="module-Layers_geoserver_GeoLayerGroup-GeoLayerGroup.html">GeoLayerGroup</a></li><li><a href="module-Layers_geoserver_GeoTileLayer-GeoTileLayer.html">GeoTileLayer</a></li><li><a href="module-Layers_GroupLayers-GroupLayers.html">GroupLayers</a></li><li><a href="module-Layers_ImageWMSLayer-ImageWMSLayer.html">ImageWMSLayer</a></li><li><a href="module-Layers_vectorCharts_ExtChartLayer-ExtChartLayer.html">ExtChartLayer</a></li><li><a href="module-Layers_VectorLayer-VectorLayer.html">VectorLayer</a></li><li><a href="module-Layers_WMTSLayer-WMTSLayer.html">WMTSLayer</a></li><li><a href="module-Layers_XYZLayer-XYZLayer.html">XYZLayer</a></li><li><a href="module-ol_compenents_MapSub-MapSub.html">MapSub</a></li><li><a href="module-overlay_charts_echarts_BarEChartOverlay-BarEChartOverlay.html">BarEChartOverlay</a></li><li><a href="module-overlay_charts_echarts_EChartOverlay-EChartOverlay.html">EChartOverlay</a></li><li><a href="module-style_IconStyle-IconStyle.html">IconStyle</a></li><li><a href="module-task_arcgis_ArcGISIdentifyTask-ArcGISIdentifyTask.html">ArcGISIdentifyTask</a></li><li><a href="module-task_arcgis_GeoserverIdentifyTask-GeoserverIdentifyTask.html">GeoserverIdentifyTask</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.2</a> on Mon May 27 2019 11:35:37 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,13 +1,21 @@
-/**
- * 鹰眼图
- * @author ydx
- * @date 2019-04-01
- */
 import './OverviewMapControl.css';
 import { OverviewMap } from 'ol/control';
 import View from 'ol/View';
 
-export default class OverviewMapControl extends OverviewMap {
+/**
+ * @classdesc 鹰眼图
+ * @author ydx
+ * @date 2019-04-01
+ * @module controls/overviewMap/OverviewMapControl
+ * @extends OverviewMap
+ */
+class OverviewMapControl extends OverviewMap {
+    /**
+     *  @param {*} options
+     *  @param {Array<layer>} options.layers 图层集
+     *  @param {boolean} options.collapsed 初始是否关闭鹰眼,默认：true
+     *  @param {Map} options.map 地图实例
+     */
     constructor(options) {
         options.className = 'ol-overviewmap ol-custom-overviewmap';
         options.collapseLabel = '\u00BB';
@@ -19,3 +27,5 @@ export default class OverviewMapControl extends OverviewMap {
         super(options);
     }
 }
+
+export default OverviewMapControl;

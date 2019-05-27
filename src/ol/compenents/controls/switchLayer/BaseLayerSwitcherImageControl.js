@@ -1,18 +1,29 @@
-/**
- * 底图切换
- * @author ydx
- * @date 2019-04-09
- */
 import 'ol-ext/dist/ol-ext.min.css';
 import './BaseLayerSwitcherImageControl.css';
 import LayerSwitcherImage from 'ol-ext/control/LayerSwitcherImage';
 import Collection from 'ol/Collection';
-export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
+
+/**
+ * @classdesc 底图切换
+ * @author ydx
+ * @date 2019-04-09
+ * @module controls/switchLayer/BaseLayerSwitcherImageControl
+ * @extends LayerSwitcherImage
+ */
+class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
+    /**
+     *  @param {*} options
+     *  @param {boolean} options.trash add a trash button to delete the layer, default false
+     *  @param {boolean} options.show_progress show a progress bar on tile layers, default false
+     */
     constructor(param) {
         super(param);
     }
 
-    //重写父类方法，只控制底图
+    /**
+     * @override
+     * @description 重写父类方法，只控制底图
+     */
     drawPanel_() {
         if (--this.dcount || this.dragging_) return;
         // Remove existing layers
@@ -32,7 +43,12 @@ export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
         this.drawList(this.panel_, collection);
     };
 
-    //重写父类的方法
+    /**
+     * @override
+     * @description 重写父类方法，只控制底图
+     * @param {Layer} l 当前图层
+     * @param {Array<layer>} layers 图层集
+     */
     switchLayerVisibility(l, layers) {
         if (!l.get('baseLayer')) {
             l.setVisible(!l.getVisible());
@@ -48,3 +64,5 @@ export default class BaseLayerSwitcherImageControl extends LayerSwitcherImage {
         }
     }
 }
+
+export default BaseLayerSwitcherImageControl;

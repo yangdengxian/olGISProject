@@ -1,19 +1,26 @@
-/**
- * geoservver图层组
- * @author ydx
- * @date 2019-04-21
- */
 import Util from '../../../utils/Util';
 import GroupLayers from '../GroupLayers';
 
-export default class GeoLayerGroup extends GroupLayers {
+/**
+ * @classdesc geoservver图层组
+ * @author ydx
+ * @date 2019-04-21
+ * @module Layers/geoserver/GeoLayerGroup
+ * @extends GroupLayers
+ */
+class GeoLayerGroup extends GroupLayers {
+    /**
+     * 
+     * @param {*} param 
+     */
     constructor(param) {
         super(param);
     }
 
     /**
-     * 获取图层元数据
+     * @description 获取图层元数据
      * @param {String} url 
+     * @returns {Promise} aysc function
      */
     getCapabitities(url) {
         return Util.ajaxGetReqeust(url, {
@@ -26,7 +33,7 @@ export default class GeoLayerGroup extends GroupLayers {
     }
 
     /**
-     * 添加图层，根据url查询图层数量 
+     * @description 添加图层，根据url查询图层数量 
      * @param {String} url eg: https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer
      */
     addImageLayers(url) {
@@ -94,3 +101,5 @@ export default class GeoLayerGroup extends GroupLayers {
 
 
 }
+
+export default GeoLayerGroup;

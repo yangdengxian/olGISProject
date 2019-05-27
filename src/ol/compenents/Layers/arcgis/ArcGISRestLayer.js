@@ -1,14 +1,22 @@
-/**
- * arcgis restful 服务扩展
- * @author ydx
- * @date 2019-04-11
- */
 import Util from '../../../utils/Util';
 import { ImageArcGISRest } from 'ol/source';
 import { assert } from 'ol/asserts';
 import { appendParams } from 'ol/uri';
 
-export default class ArcGISRestLayer extends ImageArcGISRest {
+/**
+ * @classdesc arcgis restful 服务扩展
+ * @author ydx
+ * @date 2019-04-11
+ * @module Layers/arcgis/ArcGISRestLayer
+ * @extends ImageArcGISRest
+ */
+class ArcGISRestLayer extends ImageArcGISRest {
+    /**
+     * 
+     * @param {*} param ImageArcGISRest.options
+     * @param {Object} param.params
+     * @param {Array<number>} param.params.layerIds   图层id
+     */
     constructor(param) {
         super(param);
         //可见图层
@@ -16,7 +24,16 @@ export default class ArcGISRestLayer extends ImageArcGISRest {
             this.layers = 'show:' + param.params.layerIds.join(',');
         }
     };
-    //重写父类方法
+
+    /**
+     * @override
+     * @description 重写父类方法
+     * @param {Array<number>} extent 范围 [xmax,ymax,xmin,ymin]
+     * @param {Array<number>} size [w,h]
+     * @param {*} pixelRatio 
+     * @param {string} projection 'ESPG:4326'
+     * @param {Object} params 
+     */
     getRequestUrl_(extent, size, pixelRatio, projection, params) {
         // ArcGIS Server only wants the numeric portion of the projection ID.
         var srid = projection.getCode().split(':').pop();
@@ -47,3 +64,4 @@ export default class ArcGISRestLayer extends ImageArcGISRest {
         return appendParams(modifiedUrl, params);
     };
 }
+export default ArcGISRestLayer;

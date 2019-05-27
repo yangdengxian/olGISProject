@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Legend/LegendControl.js</title>
+
+    <script src="scripts/prettify.js"> </script>
+    <script src="scripts/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/tomorrow.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Legend/LegendControl.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import 'ol-ext/dist/ol-ext.min.css';
+import './LegendControl.css';
+
+import Util from '../../../utils/Util';
+import Legend from 'ol-ext/control/Legend';
+import { DEVICE_PIXEL_RATIO as ol_has_DEVICE_PIXEL_RATIO } from 'ol/has'
+
+/**
+ * @classdesc 图例
+ * @author ydx
+ * @date 2019-04-10
+ * @module ol/compenents/controls/Legend/LegendControl
+ * @extends Legend
+ */
+class LegendControl extends Legend {
+    /**
+     *  @param {*} options
+     *  @param {String} options.title title
+     *  @param {boolean} options.collapsed 初始是否关闭,默认：true
+     */
+    constructor(param) {
+        //width height
+        param.size = [30, 15];
+        //边距
+        param.margin = 5;
+        super(param);
+    }
+
+    /**
+     * @method
+     * @override
+     * @description 重写父类方法
+     */
+    refresh() {
+        var self = this;
+        var table = this._tableElement
+        table.innerHTML = '';
+        var width = this.get('size')[0] + 2 * this.get('margin');
+        var height = this.get('size')[1] + 2 * this.get('margin');
+
+        // Add a new row
+        function addRow(str, title, r, i) {
+            var row = document.createElement('li');
+            row.style.height = height + 'px';
+            row.addEventListener('click', function() {
+                self.dispatchEvent({ type: 'select', title: str, row: r, index: i });
+            });
+
+            var col = document.createElement('div');
+            row.appendChild(col);
+            col.style.height = height + 'px';
+
+            col = document.createElement('div');
+            if (title) {
+                row.className = 'ol-title';
+            } else {
+                //图层组名称 样式靠右 2019-04-24 ydx
+                if (r.typeGeom) {
+                    col.style.paddingLeft = width + 'px';
+                }
+            }
+            col.innerHTML = str || '';
+            row.appendChild(col);
+            table.appendChild(row);
+        }
+        if (this.get('title')) {
+            addRow(this.get('title'), true, {}, -1);
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = 5 * width;
+        canvas.height = (this._rows.length + 1) * height * ol_has_DEVICE_PIXEL_RATIO;
+        this._imgElement.innerHTML = '';
+        this._imgElement.append(canvas);
+        this._imgElement.style.height = (this._rows.length + 1) * height + 'px';
+        for (var i = 0, r; r = this._rows[i]; i++) {
+            addRow(r.title, false, r, i);
+            canvas = this.getStyleImage(r, canvas, i + (this.get('title') ? 1 : 0));
+        }
+
+    }
+
+    /**
+     * @method
+     * @description 添加图例行数
+     * @param {Array&lt;layer>} layers 图层集
+     */
+    addRows(layers) {
+        var __this = this;
+        layers = Util.sortArrayFuncs(layers, 1, "ol_uid");
+
+        //递归查询
+        promiseAddRow(layers[0], 0);
+
+        function promiseAddRow(layer, index) {
+            if (index === layers.length) return;
+
+            addRow({
+                title: layer.get("title"),
+            });
+
+            if (layer.getStyle) {
+                getStyle(layer).then((json) => {
+                    if (!json["styleArray"]) return;
+                    json["styleArray"].forEach(styleObj => {
+                        addRow({
+                            title: styleObj["label"],
+                            typeGeom: json["type"],
+                            style: styleObj["style"]
+                        });
+                    });
+                    promiseAddRow(layers[index + 1], index + 1)
+                });
+            } else {
+                layer.getLayersArray().forEach((obj, k) => {
+                    getStyle(obj).then((json) => {
+                        addRow({
+                            title: obj.get("title")
+                        });
+                        if (!json["styleArray"]) return;
+                        json["styleArray"].forEach(styleObj => {
+                            addRow({
+                                title: styleObj["label"],
+                                typeGeom: json["type"],
+                                style: styleObj["style"]
+                            });
+                        });
+
+                        if (k === (layer.getLayersArray().length - 1)) {
+                            promiseAddRow(layers[index + 1], index + 1);
+                        }
+                    });
+                })
+            }
+        }
+
+        function getStyle(layer) {
+            return layer.getStyle(layer.get("id")).then((json) => {
+                return json;
+            }, (error) => {
+                throw new Error(error);
+            });
+        }
+
+        function addRow(options) {
+            __this.addRow(options);
+        }
+
+
+    }
+
+}
+
+export default LegendControl;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ol_compenents_controls_Legend_LegendControl.html">ol/compenents/controls/Legend/LegendControl</a></li><li><a href="module-ol_compenents_controls_overviewMap_OverviewMapControl.html">ol/compenents/controls/overviewMap/OverviewMapControl</a></li><li><a href="module-ol_compenents_controls_scalebar_ScaleBarControl.html">ol/compenents/controls/scalebar/ScaleBarControl</a></li><li><a href="module-ol_compenents_controls_switchLayer_BaseLayerSwitcherImageControl.html">ol/compenents/controls/switchLayer/BaseLayerSwitcherImageControl</a></li><li><a href="module-ol_compenents_controls_switchLayer_LayersSwitchControl.html">ol/compenents/controls/switchLayer/LayersSwitchControl</a></li><li><a href="module-ol_compenents_controls_zoomSlider_ZoomSliderControl.html">ol/compenents/controls/zoomSlider/ZoomSliderControl</a></li></ul><h3>Classes</h3><ul><li><a href="module-ol_compenents_controls_Legend_LegendControl-LegendControl.html">LegendControl</a></li><li><a href="module-ol_compenents_controls_overviewMap_OverviewMapControl-OverviewMapControl.html">OverviewMapControl</a></li><li><a href="module-ol_compenents_controls_scalebar_ScaleBarControl-ScaleBarControl.html">ScaleBarControl</a></li><li><a href="module-ol_compenents_controls_switchLayer_BaseLayerSwitcherImageControl-BaseLayerSwitcherImageControl.html">BaseLayerSwitcherImageControl</a></li><li><a href="module-ol_compenents_controls_switchLayer_LayersSwitchControl-LayersSwitchControl.html">LayersSwitchControl</a></li><li><a href="module-ol_compenents_controls_zoomSlider_ZoomSliderControl-ZoomSliderControl.html">ZoomSliderControl</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.2</a> on Fri May 24 2019 16:25:51 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

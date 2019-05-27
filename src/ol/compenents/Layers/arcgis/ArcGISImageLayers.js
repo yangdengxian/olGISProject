@@ -1,8 +1,3 @@
-/**
- * arcgis动态图层
- * @author ydx
- * @date 2019-04-09
- */
 import Util from '../../../utils/Util';
 import { Image as ImageLayer } from 'ol/layer';
 import ArcGISRestLayer from './ArcGISRestLayer';
@@ -13,7 +8,23 @@ import Stroke from 'ol/style/Stroke';
 import Circle from 'ol/style/Circle';
 import IconStyle from '../../style/IconStyle';
 
-export default class ArcGISImageLayers extends ImageLayer {
+/**
+ * @classdesc arcgis动态图层
+ * @author ydx
+ * @date 2019-04-09
+ * @module Layers/arcgis/ArcGISImageLayers
+ * @extends ImageLayer
+ */
+class ArcGISImageLayers extends ImageLayer {
+    /**
+     * 
+     * @param {string} url 必填*
+     * @param {*} params 
+     * @param {string} params.id
+     * @param {string} params.title
+     * @param {boolean} params.isBaseLayer
+     * @param {boolean} params.isThmemeLayer
+     */
     constructor(url, params) {
         super({
             id: params.id,
@@ -30,8 +41,9 @@ export default class ArcGISImageLayers extends ImageLayer {
     }
 
     /**
-     * 获取图层元数据
-     * @param {*} layerId 
+     * @description 获取图层元数据
+     * @param {string} layerId 
+     * @returns {Promise} aysc function
      */
     getCapabitities(layerId) {
         var url = this.getSource().getUrl(),
@@ -52,9 +64,10 @@ export default class ArcGISImageLayers extends ImageLayer {
         })
     };
     /**
-     * 获取配图样式
+     * @description 获取配图样式
      * @param {*} renderer 
      * @param {*} mapUrl 
+     * @returns {Object} styles
      */
     getStylesByType(renderer, mapUrl) {
         var type = renderer["uniqueValueInfos"] ?
@@ -207,9 +220,9 @@ export default class ArcGISImageLayers extends ImageLayer {
     }
 
     /**
-     * 获取样式
+     * @description 获取样式
      * @param {*} layerId 图层id
-     * @returns array
+     * @returns {Promise} aysc function
      */
     getStyle(layerId) {
         var __this = this;
@@ -227,3 +240,5 @@ export default class ArcGISImageLayers extends ImageLayer {
     }
 
 }
+
+export default ArcGISImageLayers;

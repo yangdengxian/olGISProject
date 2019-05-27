@@ -40,9 +40,10 @@ export default class ToolbarTask {
         var __this = this;
         var btnId = target.id.trim();
 
-        for (const key in toolBarInteractions) {
+        //2D
+        for (let key in toolBarInteractions) {
             if (toolBarInteractions.hasOwnProperty(key)) {
-                const toolBarInteraction = toolBarInteractions[key];
+                let toolBarInteraction = toolBarInteractions[key];
                 if (toolBarInteraction.setActive) {
                     toolBarInteraction.setActive(false);
                 }
@@ -80,11 +81,11 @@ export default class ToolbarTask {
                 break;
 
             case '2dViewBtn':
-                toolBarInteractions['oL3DCesium'].setEnabled(false);
+                toolBarInteractions['oL3DCesium'].__setEnabled(false);
                 break;
 
             case '3dViewBtn':
-                toolBarInteractions['oL3DCesium'].setEnabled(true);
+                toolBarInteractions['oL3DCesium'].__setEnabled(true);
                 break;
 
 

@@ -1,15 +1,19 @@
+import { Select } from 'ol/interaction';
 /**
- * 要素展示交互
+ * @classdesc 要素展示交互
  * @author ydx
  * @date 2019-04-12
+ * @module interactions/SelectInteraction
+ * @extends Select
  */
-
-import { Select } from 'ol/interaction';
-
-export default class SelectInteraction extends Select {
+class SelectInteraction extends Select {
+    /**
+     * @param {*} param 
+     */
     constructor(param) {
         super(param);
     }
 
-
 }
+
+export default SelectInteraction;

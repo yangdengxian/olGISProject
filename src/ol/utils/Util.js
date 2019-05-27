@@ -82,6 +82,10 @@ const Utill = {
         return array;
     },
 
+    copyArray(oldArray) {
+        return Array.concat([], oldArray);
+    },
+
     assign() {
         if (typeof Object.assign != 'function') {
             Object.assign = function(target) {

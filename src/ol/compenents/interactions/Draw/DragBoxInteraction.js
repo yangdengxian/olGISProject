@@ -1,8 +1,3 @@
-/**
- * 框选查询
- * @author ydx
- * @date 2019-04-08
- */
 import Config from '../../../config/config';
 import Util from '../../../utils/Util';
 import { always } from 'ol/events/condition';
@@ -11,18 +6,36 @@ import { DragBox, Select } from 'ol/interaction';
 import ArcGISIdentifyTask from '../../task/arcgis/ArcGISIdentifyTask';
 import GeoserverIdentifyTask from '../../task/geoserver/GeoserverIdentifyTask';
 
-export default class DragBoxInteraction extends DragBox {
+/**
+ * @classdesc 框选查询
+ * @author ydx
+ * @date 2019-04-08
+ * @module interactions/Draw/DragBoxInteraction
+ * @extends DragBox
+ */
+class DragBoxInteraction extends DragBox {
+    /**
+     * @param {*} param 
+     */
     constructor(param) {
         param = param || {};
         param.condition = always;
         super(param);
     }
 
+    /**
+     * @description 绘制开始监听
+     * @param {*} evt 监听对象
+     */
     drawStartHandler(evt) {
         var __this = this;
 
     }
 
+    /**
+     * @description 绘制结束监听
+     * @param {*} evt 监听对象
+     */
     drawEndHandler(evt) {
         var __this = this;
 
@@ -32,6 +45,11 @@ export default class DragBoxInteraction extends DragBox {
         }
     }
 
+    /**
+     * @description 初始化查询task
+     * @param {String} serverType 服务类型 'geoserver'、'arcgis'
+     * @param {Array<number>} extent 范围对象
+     */
     initQueryTask(serverType, extent) {
         var __this = this;
         switch (serverType) {
@@ -49,6 +67,10 @@ export default class DragBoxInteraction extends DragBox {
         }
     }
 
+    /**
+     * @description 初始Arcgis化查询task
+     * @param {Array<number>} extent 范围对象
+     */
     initArcGISQueryTask(extent) {
         var mapConfig = Config.getMapConfig(Util.getQueryString("App"));
         extent = this.getMap().getTransFormUtil()
@@ -73,6 +95,10 @@ export default class DragBoxInteraction extends DragBox {
         arcGISIdentifyTask.execute();
     }
 
+    /**
+     * @description 初始geoserver化查询task
+     * @param {Array<number>} extent 范围对象
+     */
     initGeoServerQueryTask(extent) {
         extent = this.getMap().getTransFormUtil()
             .transformByProjParm(extent, this.getMap().getView().getProjection(), Config.mapConfig.sourceProjection);
@@ -91,3 +117,5 @@ export default class DragBoxInteraction extends DragBox {
 
 
 }
+
+export default DragBoxInteraction;

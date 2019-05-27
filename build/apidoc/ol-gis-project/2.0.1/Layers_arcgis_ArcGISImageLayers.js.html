@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Layers/arcgis/ArcGISImageLayers.js</title>
+
+    <script src="scripts/prettify.js"> </script>
+    <script src="scripts/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/tomorrow.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Layers/arcgis/ArcGISImageLayers.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Util from '../../../utils/Util';
+import { Image as ImageLayer } from 'ol/layer';
+import ArcGISRestLayer from './ArcGISRestLayer';
+
+import Style from 'ol/style/Style';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Circle from 'ol/style/Circle';
+import IconStyle from '../../style/IconStyle';
+
+/**
+ * @classdesc arcgis动态图层
+ * @author ydx
+ * @date 2019-04-09
+ * @module Layers/arcgis/ArcGISImageLayers
+ * @extends ImageLayer
+ */
+class ArcGISImageLayers extends ImageLayer {
+    /**
+     * 
+     * @param {string} url 必填*
+     * @param {*} params 
+     * @param {string} params.id
+     * @param {string} params.title
+     * @param {boolean} params.isBaseLayer
+     * @param {boolean} params.isThmemeLayer
+     */
+    constructor(url, params) {
+        super({
+            id: params.id,
+            title: params.title,
+            baseLayer: params.isBaseLayer || false,
+            thmemeLayer: params.isThmemeLayer || true,
+            displayInLayerSwitcher: true,
+            source: new ArcGISRestLayer({
+                ratio: 1,
+                params: params.params || {},
+                url: url
+            })
+        });
+    }
+
+    /**
+     * @description 获取图层元数据
+     * @param {string} layerId 
+     * @returns {Promise} aysc function
+     */
+    getCapabitities(layerId) {
+        var url = this.getSource().getUrl(),
+            params = {
+                f: 'json'
+            };
+        //判断是否有参数
+        var requestParams = Util.getRequestParams(url);
+        if (Object.keys(requestParams).length) {
+            url = url.substring(0, url.lastIndexOf("?"));
+            params = Object.assign(params, requestParams);
+        }
+        return Util.ajaxGetReqeust(url + '/' + layerId, params).then((json) => {
+            json.mapUrl = url;
+            return json;
+        }, (error) => {
+            throw new Error(error);
+        })
+    };
+    /**
+     * @description 获取配图样式
+     * @param {*} renderer 
+     * @param {*} mapUrl 
+     * @returns {Object} styles
+     */
+    getStylesByType(renderer, mapUrl) {
+        var type = renderer["uniqueValueInfos"] ?
+            renderer["uniqueValueInfos"][0]["symbol"]["type"] :
+            (renderer["symbol"] ?
+                renderer["symbol"]["type"] :
+                renderer["type"]),
+            styles = {
+                type: "",
+                styleArray: []
+            };
+        switch (type) {
+            //Simple Marker Symbol:
+            case "esriSMS":
+                styles = {
+                    type: "Point",
+                    styleArray: [{
+                            "label": renderer["label"],
+                            style: [
+                                new Style({
+                                    image: new Circle({
+                                        radius: 7,
+                                        fill: new Fill({
+                                            color: renderer["symbol"]["color"],
+                                            size: renderer["symbol"]["size"]
+                                        }),
+                                        stroke: new Stroke({
+                                            color: renderer["symbol"]["outline"]["color"],
+                                            width: renderer["symbol"]["outline"]["width"]
+                                        }),
+                                    })
+                                })
+                            ]
+                        }
+
+                    ]
+                }
+                break;
+            case "classBreaks":
+                if (renderer["classBreakInfos"]) {
+                    styles.type = "Point";
+                    renderer["classBreakInfos"].forEach(valueInfos => {
+                        styles.styleArray.push({
+                            "label": valueInfos["label"],
+                            "style": [
+                                new Style({
+                                    fill: new Fill({
+                                        color: valueInfos["symbol"]["color"],
+                                        size: 4
+                                    }),
+                                    stroke: new Stroke({
+                                        color: valueInfos["symbol"]["outline"]["color"],
+                                        width: 1,
+                                    }),
+                                    image: new Circle({
+                                        radius: 7,
+                                        fill: new Fill({
+                                            color: valueInfos["symbol"]["outline"]["color"],
+                                        })
+                                    })
+                                })
+                            ]
+                        })
+                    });
+                }
+                break;
+
+            case "esriPMS":
+                if (renderer["uniqueValueInfos"]) {
+                    styles.type = "Point";
+                    renderer["uniqueValueInfos"].forEach(valueInfos => {
+                        valueInfos["symbol"]["url"] = mapUrl + valueInfos["symbol"]["url"];
+                        styles.styleArray.push({
+                            "label": valueInfos["label"],
+                            "style": [
+                                new Style({
+                                    image: new IconStyle({
+                                        src: valueInfos["symbol"]["url"],
+                                        size: [
+                                            valueInfos["symbol"]["width"],
+                                            valueInfos["symbol"]["height"]
+                                        ],
+
+                                    })
+                                })
+                            ]
+                        })
+                    });
+                } else {
+                    renderer["symbol"]["url"] = mapUrl + renderer["symbol"]["url"];
+                    styles = {
+                        type: "Point",
+                        styleArray: [{
+                            "label": renderer["label"],
+                            style: [new Style({
+                                image: new IconStyle({
+                                    src: renderer["symbol"]["url"],
+                                    size: [
+                                        renderer["symbol"]["width"],
+                                        renderer["symbol"]["height"]
+                                    ]
+                                })
+                            })]
+                        }]
+                    }
+                }
+                break;
+
+
+            case "esriSLS":
+                styles = {
+                    type: "LineString",
+                    styleArray: [{
+                            "label": renderer["label"],
+                            style: [new Style({
+                                stroke: new Stroke({
+                                    color: renderer["symbol"]["color"],
+                                    width: renderer["symbol"]["width"]
+                                })
+                            })]
+                        }
+
+                    ]
+                }
+                break
+            case "esriSFS":
+                styles = {
+                    type: "Polygon",
+                    styleArray: [{
+                            "label": renderer["label"],
+                            style: [new Style({
+                                fill: new Fill({
+                                    color: renderer["symbol"]["color"]
+                                }),
+                                stroke: new Stroke({
+                                    color: renderer["symbol"]["outline"]["color"],
+                                    width: renderer["symbol"]["outline"]["width"],
+                                })
+                            })]
+                        }
+
+                    ]
+                }
+
+                break;
+            default:
+                break;
+        }
+        return styles;
+    }
+
+    /**
+     * @description 获取样式
+     * @param {*} layerId 图层id
+     * @returns {Promise} aysc function
+     */
+    getStyle(layerId) {
+        var __this = this;
+        var renderer = null,
+            styleArray = [];
+        return this.getCapabitities(layerId).then((json) => {
+            if (json["drawingInfo"]) {
+                renderer = json["drawingInfo"]["renderer"];
+                styleArray = __this.getStylesByType(renderer, json["mapUrl"] + "/" + layerId + "/images/");
+            }
+            return styleArray;
+        }, (error) => {
+            throw new Error(error);
+        });
+    }
+
+}
+
+export default ArcGISImageLayers;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controls_Legend_LegendControl.html">controls/Legend/LegendControl</a></li><li><a href="module-controls_overviewMap_OverviewMapControl.html">controls/overviewMap/OverviewMapControl</a></li><li><a href="module-controls_scalebar_ScaleBarControl.html">controls/scalebar/ScaleBarControl</a></li><li><a href="module-controls_switchLayer_BaseLayerSwitcherImageControl.html">controls/switchLayer/BaseLayerSwitcherImageControl</a></li><li><a href="module-controls_switchLayer_LayersSwitchControl.html">controls/switchLayer/LayersSwitchControl</a></li><li><a href="module-controls_zoomSlider_ZoomSliderControl.html">controls/zoomSlider/ZoomSliderControl</a></li><li><a href="module-format_arcgis_EsriJSONFormat.html">format/arcgis/EsriJSONFormat</a></li><li><a href="module-format_geoserver_GeoServerJSONFormat.html">format/geoserver/GeoServerJSONFormat</a></li><li><a href="module-interactions_Draw_DragBoxInteraction.html">interactions/Draw/DragBoxInteraction</a></li><li><a href="module-interactions_Draw_DragZoomInteraction.html">interactions/Draw/DragZoomInteraction</a></li><li><a href="module-interactions_Draw_measure_AreaInteraction.html">interactions/Draw/measure/AreaInteraction</a></li><li><a href="module-interactions_Draw_measure_DistanceInteraction.html">interactions/Draw/measure/DistanceInteraction</a></li><li><a href="module-interactions_SelectInteraction.html">interactions/SelectInteraction</a></li><li><a href="module-Layers_arcgis_ArcGISImageLayers.html">Layers/arcgis/ArcGISImageLayers</a></li><li><a href="module-Layers_arcgis_ArcgisLayerGroup.html">Layers/arcgis/ArcgisLayerGroup</a></li><li><a href="module-Layers_arcgis_ArcGISRestLayer.html">Layers/arcgis/ArcGISRestLayer</a></li><li><a href="module-Layers_arcgis_ArcGISTileLayers.html">Layers/arcgis/ArcGISTileLayers</a></li><li><a href="module-Layers_geoserver_GeoImageLayer.html">Layers/geoserver/GeoImageLayer</a></li><li><a href="module-Layers_geoserver_GeoLayerGroup.html">Layers/geoserver/GeoLayerGroup</a></li><li><a href="module-Layers_geoserver_GeoTileLayer.html">Layers/geoserver/GeoTileLayer</a></li><li><a href="module-Layers_GroupLayers.html">Layers/GroupLayers</a></li><li><a href="module-Layers_ImageWMSLayer.html">Layers/ImageWMSLayer</a></li><li><a href="module-Layers_vectorCharts_ExtChartLayer.html">Layers/vectorCharts/ExtChartLayer</a></li><li><a href="module-Layers_VectorLayer.html">Layers/VectorLayer</a></li><li><a href="module-Layers_WMTSLayer.html">Layers/WMTSLayer</a></li><li><a href="module-Layers_XYZLayer.html">Layers/XYZLayer</a></li><li><a href="module-ol_compenents_MapSub.html">ol/compenents/MapSub</a></li><li><a href="module-overlay_charts_echarts_BarEChartOverlay.html">overlay/charts/echarts/BarEChartOverlay</a></li><li><a href="module-overlay_charts_echarts_EChartOverlay.html">overlay/charts/echarts/EChartOverlay</a></li><li><a href="module-overlay_charts_echarts_PieEChartOverlay.html">overlay/charts/echarts/PieEChartOverlay</a></li><li><a href="module-style_IconStyle.html">style/IconStyle</a></li><li><a href="module-task_arcgis_ArcGISIdentifyTask.html">task/arcgis/ArcGISIdentifyTask</a></li><li><a href="module-task_arcgis_GeoserverIdentifyTask.html">task/arcgis/GeoserverIdentifyTask</a></li></ul><h3>Classes</h3><ul><li><a href="module-controls_Legend_LegendControl-LegendControl.html">LegendControl</a></li><li><a href="module-controls_overviewMap_OverviewMapControl-OverviewMapControl.html">OverviewMapControl</a></li><li><a href="module-controls_scalebar_ScaleBarControl-ScaleBarControl.html">ScaleBarControl</a></li><li><a href="module-controls_switchLayer_BaseLayerSwitcherImageControl-BaseLayerSwitcherImageControl.html">BaseLayerSwitcherImageControl</a></li><li><a href="module-controls_switchLayer_LayersSwitchControl-LayersSwitchControl.html">LayersSwitchControl</a></li><li><a href="module-controls_zoomSlider_ZoomSliderControl-ZoomSliderControl.html">ZoomSliderControl</a></li><li><a href="module-format_arcgis_EsriJSONFormat-EsriJSONFormat.html">EsriJSONFormat</a></li><li><a href="module-format_geoserver_GeoServerJSONFormat-GeoServerJSONFormat.html">GeoServerJSONFormat</a></li><li><a href="module-interactions_Draw_DragBoxInteraction-DragBoxInteraction.html">DragBoxInteraction</a></li><li><a href="module-interactions_Draw_DragZoomInteraction-DragZoomInteraction.html">DragZoomInteraction</a></li><li><a href="module-interactions_Draw_measure_AreaInteraction-AreaInteraction.html">AreaInteraction</a></li><li><a href="module-interactions_Draw_measure_DistanceInteraction-DistanceInteraction.html">DistanceInteraction</a></li><li><a href="module-interactions_SelectInteraction-SelectInteraction.html">SelectInteraction</a></li><li><a href="module-Layers_arcgis_ArcGISImageLayers-ArcGISImageLayers.html">ArcGISImageLayers</a></li><li><a href="module-Layers_arcgis_ArcgisLayerGroup-ArcgisLayerGroup.html">ArcgisLayerGroup</a></li><li><a href="module-Layers_arcgis_ArcGISRestLayer-ArcGISRestLayer.html">ArcGISRestLayer</a></li><li><a href="module-Layers_arcgis_ArcGISTileLayers-ArcGISTileLayers.html">ArcGISTileLayers</a></li><li><a href="module-Layers_geoserver_GeoImageLayer-GeoImageLayer.html">GeoImageLayer</a></li><li><a href="module-Layers_geoserver_GeoLayerGroup-GeoLayerGroup.html">GeoLayerGroup</a></li><li><a href="module-Layers_geoserver_GeoTileLayer-GeoTileLayer.html">GeoTileLayer</a></li><li><a href="module-Layers_GroupLayers-GroupLayers.html">GroupLayers</a></li><li><a href="module-Layers_ImageWMSLayer-ImageWMSLayer.html">ImageWMSLayer</a></li><li><a href="module-Layers_vectorCharts_ExtChartLayer-ExtChartLayer.html">ExtChartLayer</a></li><li><a href="module-Layers_VectorLayer-VectorLayer.html">VectorLayer</a></li><li><a href="module-Layers_WMTSLayer-WMTSLayer.html">WMTSLayer</a></li><li><a href="module-Layers_XYZLayer-XYZLayer.html">XYZLayer</a></li><li><a href="module-ol_compenents_MapSub-MapSub.html">MapSub</a></li><li><a href="module-overlay_charts_echarts_BarEChartOverlay-BarEChartOverlay.html">BarEChartOverlay</a></li><li><a href="module-overlay_charts_echarts_EChartOverlay-EChartOverlay.html">EChartOverlay</a></li><li><a href="module-style_IconStyle-IconStyle.html">IconStyle</a></li><li><a href="module-task_arcgis_ArcGISIdentifyTask-ArcGISIdentifyTask.html">ArcGISIdentifyTask</a></li><li><a href="module-task_arcgis_GeoserverIdentifyTask-GeoserverIdentifyTask.html">GeoserverIdentifyTask</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.2</a> on Mon May 27 2019 11:35:37 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

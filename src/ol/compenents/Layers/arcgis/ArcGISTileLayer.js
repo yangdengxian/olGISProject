@@ -1,15 +1,19 @@
-/**
- * 加载esri切片地图
- * @author ydx
- * @date 2019-04-01
- */
 import Config from '../../../config/config';
 import { Group as LayerGroup, Tile as TileLayer } from 'ol/layer';
 import XYZ from 'ol/source/XYZ';
 
-
-export default class ArcGISTileLayers {
-    constructor() {
+/**
+ * @classdesc 加载esri切片地图
+ * @author ydx
+ * @date 2019-04-01
+ * @module Layers/arcgis/ArcGISTileLayers
+ */
+class ArcGISTileLayers {
+    /**
+     * @constructor
+     * @param {*} param
+     */
+    constructor(param) {
         this.ArcGISTileLayers = [
             new TileLayer({
                 title: "行政区划",
@@ -69,10 +73,18 @@ export default class ArcGISTileLayers {
         ];
     }
 
+    /**
+     * @description 获取图层集
+     * @returns {Array<TileLayer>} ArcGISTileLayers
+     */
     getTileLayers() {
         return this.ArcGISTileLayers;
     }
 
+    /**
+     * @description 获取图层组
+     * @returns {LayerGroup} LayerGroup
+     */
     getLayerGroup() {
         return new LayerGroup({
             visible: "true",
@@ -80,3 +92,5 @@ export default class ArcGISTileLayers {
         });
     }
 };
+
+export default ArcGISTileLayers;
