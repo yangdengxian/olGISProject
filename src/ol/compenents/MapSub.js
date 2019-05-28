@@ -29,9 +29,9 @@ class MapSub extends Map {
             target: param.targetId,
             controls: param.controls || [],
             layers: param.layers || [
-                /* new TileLayer({
-                    source: new OSM(),
-                }), */
+                /*  new TileLayer({
+                     source: new OSM(),
+                 }), */
             ],
             view: new View({
                 center: param.center || [0, 0],
@@ -62,6 +62,35 @@ class MapSub extends Map {
             }
         }
         return targetLayer;
+    }
+
+    /**
+     * @method
+     * @description 根据Id获取控件
+     * @param {String} controlId 
+     * @returns {Control} Control
+     */
+    getControlById(controlId) {
+        const controls = this.getControls().getArray();
+        let targetControl = null;
+        for (let i = 0; i < controls.length; i++) {
+            const control = controls[i];
+            if (control.get && control.get('id') == controlId) {
+                targetControl = control;
+                break;
+            }
+        }
+        return targetControl;
+    }
+
+    /**
+     * @method
+     * @description 根据Id获取交互工具
+     * @param {String} interactionId Id号
+     * @returns {Interaction} Interaction
+     */
+    getInteractionById(interactionId) {
+        return null;
     }
 
     /**

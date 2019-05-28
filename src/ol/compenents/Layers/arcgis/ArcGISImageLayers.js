@@ -35,7 +35,8 @@ class ArcGISImageLayers extends ImageLayer {
             source: new ArcGISRestLayer({
                 ratio: 1,
                 params: params.params || {},
-                url: url
+                url: url,
+                crossOrigin: 'anonymous'
             })
         });
     }

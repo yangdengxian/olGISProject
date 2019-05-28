@@ -88,6 +88,12 @@ export default class ToolbarTask {
                 toolBarInteractions['oL3DCesium'].__setEnabled(true);
                 break;
 
+            case 'printBtn':
+                var printControl = __this.map.getControlById('printControl');
+                if (printControl) {
+                    printControl.printByType('png');
+                }
+                break;
 
             default:
                 break;

@@ -55,6 +55,11 @@ UIView += "                                    <a href=\"#\" class=\"toolbar are
 UIView += "                                        <span class=\"glyphicon glyphicon-toolbar-area\"><\/span>&nbsp; 面积测量";
 UIView += "                                    <\/a>";
 UIView += "                                <\/li>";
+UIView += "                                <li>";
+UIView += "                                    <a href=\"#\" class=\"toolbar area\" id=\"printBtn\">";
+UIView += "                                        <span class=\"glyphicon glyphicon-toolbar-area\"><\/span>&nbsp; 打印";
+UIView += "                                    <\/a>";
+UIView += "                                <\/li>";
 UIView += "                            <\/ul>";
 UIView += "                        <\/li>";
 UIView += "                        <li class=\"dropdown\">";

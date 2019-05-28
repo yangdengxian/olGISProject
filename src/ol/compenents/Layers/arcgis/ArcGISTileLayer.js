@@ -1,6 +1,7 @@
 import Config from '../../../config/config';
-import { Group as LayerGroup, Tile as TileLayer } from 'ol/layer';
+import { Group as LayerGroup } from 'ol/layer';
 import XYZ from 'ol/source/XYZ';
+import TileLayer from '../TileLayer';
 
 /**
  * @classdesc 加载esri切片地图
@@ -19,7 +20,8 @@ class ArcGISTileLayers {
                 title: "行政区划",
                 baseLayer: true,
                 source: new XYZ({
-                    url: Config.LayersURL.TiledMapServiceLayerURL
+                    url: Config.LayersURL.TiledMapServiceLayerURL,
+                    crossOrigin: "Anonymous"
                 })
             }),
             new TileLayer({
@@ -27,7 +29,8 @@ class ArcGISTileLayers {
                 baseLayer: true,
                 displayInLayerSwitcher: false,
                 source: new XYZ({
-                    url: Config.LayersURL.TDTCVALayerURL
+                    url: Config.LayersURL.TDTCVALayerURL,
+                    crossOrigin: "Anonymous"
                 })
             }),
 
@@ -37,7 +40,8 @@ class ArcGISTileLayers {
                 baseLayer: true,
                 visible: false,
                 source: new XYZ({
-                    url: Config.LayersURL.TDTIMG
+                    url: Config.LayersURL.TDTIMG,
+                    crossOrigin: "Anonymous"
                 })
             }),
             new TileLayer({
@@ -46,7 +50,8 @@ class ArcGISTileLayers {
                 displayInLayerSwitcher: false,
                 visible: false,
                 source: new XYZ({
-                    url: Config.LayersURL.TDTCIA
+                    url: Config.LayersURL.TDTCIA,
+                    crossOrigin: "Anonymous"
                 })
             }),
 
@@ -56,7 +61,8 @@ class ArcGISTileLayers {
                 baseLayer: true,
                 visible: false,
                 source: new XYZ({
-                    url: Config.LayersURL.TDTTER
+                    url: Config.LayersURL.TDTTER,
+                    crossOrigin: "Anonymous"
                 })
             }),
             new TileLayer({
@@ -65,7 +71,8 @@ class ArcGISTileLayers {
                 visible: false,
                 displayInLayerSwitcher: false,
                 source: new XYZ({
-                    url: Config.LayersURL.TDTCTA
+                    url: Config.LayersURL.TDTCTA,
+                    crossOrigin: "Anonymous"
                 })
             }),
 

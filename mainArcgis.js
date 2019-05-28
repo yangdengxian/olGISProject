@@ -31,6 +31,8 @@ import BaseLayerSwitcherImageControl from './src/ol/compenents/controls/switchLa
 import ThemeLayersSwitchControl from './src/ol/compenents/controls/switchLayer/ThemeLayersSwitchControl';
 //图例
 import LegendControl from './src/ol/compenents/controls/Legend/LegendControl';
+//打印工具
+import PrintControl from './src/ol/compenents/controls/print/PrintControl';
 
 
 //框选缩放
@@ -93,6 +95,7 @@ const {
     baseLayerSwitcherImageControl,
     themeLayersSwitchControl,
     legendControl,
+    printControl,
     dragBoxInteraction,
     dragZoomInteraction,
     areaInteraction,
@@ -120,6 +123,10 @@ const {
         collapsed: true
     }),
 
+    printControl: new PrintControl({
+        id: "printControl"
+    }),
+
     dragBoxInteraction: new DragBoxInteraction(),
     dragZoomInteraction: new DragZoomInteraction(),
     areaInteraction: new AreaInteraction({
@@ -131,10 +138,6 @@ const {
         map: map
     }),
 }
-
-//图例
-
-map.addControl(legendControl);
 
 //设置底图图层
 const tileLayerGroup = arcGISTileLayers.getLayerGroup();
@@ -157,12 +160,14 @@ if (mapConfig.d_mapUrl[0]) {
 
 
 map.addLayer(groupLayers);
-
 //演示图层 ydx 2019-05-14
 map.addLayer(new GeoImageLayer(Config.WMSImageLayers["tkq"]));
 map.addLayer(new GeoImageLayer(Config.WMSImageLayers["ckq"]));
 //查询结果
 map.addLayer(vectorLayer);
+
+//图例
+map.addControl(legendControl);
 //添加鹰眼
 map.addControl(overviewMapControl);
 //添加比例尺
@@ -173,6 +178,8 @@ map.addControl(zoomSildweControl);
 map.addControl(baseLayerSwitcherImageControl);
 //专题图层控制
 map.addControl(themeLayersSwitchControl);
+//打印控件
+map.addControl(printControl);
 
 
 //框选
@@ -229,6 +236,7 @@ const toolBarTask = new ToolBarTask({
         dragBoxInteraction: dragBoxInteraction,
         //三维工具条   ydx  2019-05-17
         oL3DCesium: oL3DCesium
+
     }
 });
 toolBarTask.bindClickEvent();
