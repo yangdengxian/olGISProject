@@ -25,6 +25,12 @@ Open `index.html` to see the result.
 
 -----
 
+### 在webpack, Rollup, Browserify, or other module bundlers使用olGISProject
+
+````
+npm install ol-gis-project --save
+````
+
 **v1.0.6版本 二维框架**
 
 > * 工具类
