@@ -1,15 +1,26 @@
+import Tile from 'ol/layer/Tile';
+import XYZ from 'ol/source/XYZ';
+
 /**
- * 加载离线切片服务
+ * @classdesc 加载离线切片服务
  * @author ydx
  * @date 2019-03-28
+ * @module Layers/XYZLayer
+ * @extends Tile
  */
-import Tile from 'ol/layer/Tile';
-
-export default class XYZLayer extends Tile {
+class XYZLayer extends Tile {
+    /**
+     * 
+     * @param {*} param 
+     * @param {boolean} param.visible 是否可见，默认true
+     * @param {source} param.source xyz切片source new XYZ({...}) ,new OSM()
+     */
     constructor(param) {
         super({
             visible: param.visible || true,
-            source: param.source
+            source: new XYZ(param)
         })
     }
 }
+
+export default XYZLayer;

@@ -13,14 +13,22 @@ import { unByKey } from 'ol/Observable';
 const source = new VectorSource();
 
 /**
- * 面积测量
+ * @classdesc 面积测量
  * @author ydx
  * @date 2019-04-09
+ * @module interactions/Draw/measure/AreaInteraction
  * @extends Draw
  */
-export default class AreaInteraction extends Draw {
+class AreaInteraction extends Draw {
+    /**
+     * 
+     * @param {*} param 
+     * @param {string} param.id    测量工具id
+     * @param {Map} param.map   地图实例   （必填）
+     */
     constructor(param) {
         super({
+            id: param.id,
             baseLayer: false,
             displayInLayerSwitcher: false,
             source: source,
@@ -47,6 +55,7 @@ export default class AreaInteraction extends Draw {
             })
         });
         this.vectorLayer = new Vector({
+            id: "areaVectorLayer",
             baseLayer: false,
             displayInLayerSwitcher: false,
             source: source,
@@ -77,11 +86,16 @@ export default class AreaInteraction extends Draw {
         this.createMeasureTooltip();
     }
 
+    /**
+     * @description 添加测量要素图层
+     */
     addMeasureLayer() {
         this.map.addLayer(this.vectorLayer);
     }
 
-    // 创建帮助信息标签
+    /**
+     * @description 创建帮助信息标签
+     */
     createHelpTooltip() {
         if (this.helpTooltipElement) {
             this.helpTooltipElement.parentNode.removeChild(this.helpTooltipElement)
@@ -96,7 +110,9 @@ export default class AreaInteraction extends Draw {
         this.map.addOverlay(this.helpTooltip)
     }
 
-    // 创建测量结果信息标签
+    /**
+     * @description 创建测量结果信息标签
+     */
     createMeasureTooltip() {
         if (this.measureTooltipElement) {
             this.measureTooltipElement.parentNode.removeChild(this.measureTooltipElement)
@@ -111,10 +127,18 @@ export default class AreaInteraction extends Draw {
         this.map.addOverlay(this.measureTooltip)
     }
 
+    /**
+     * @description 鼠标移动事件监听
+     * @param {*} evt 监听对象
+     */
     mouseoutHandler(evt) {
         this.helpTooltipElement.classList.add('hidden');
     }
 
+    /**
+     * @description 要素点移动事件监听
+     * @param {*} evt 监听对象
+     */
     pointerMoveHandler(evt) {
         if (evt.dragging) {
             return
@@ -127,6 +151,10 @@ export default class AreaInteraction extends Draw {
         this.helpTooltipElement.classList.remove('hidden');
     }
 
+    /**
+     * @description 测量开始事件监听
+     * @param {*} evt 监听对象
+     */
     drawStartHandler(evt) {
         this.drawingFeature = evt.feature
         var tooltipCoord = evt.coordinate
@@ -139,6 +167,10 @@ export default class AreaInteraction extends Draw {
         })
     }
 
+    /**
+     * @description 测量结束事件监听
+     * @param {*} evt 监听对象
+     */
     drawEndHandler(evt) {
         this.measureTooltipElement.className = 'tooltip tooltip-static'
         this.measureTooltip.setOffset([0, -7])
@@ -160,6 +192,10 @@ export default class AreaInteraction extends Draw {
         this.helpTooltipElement.classList.add('hidden');
     }
 
+    /**
+     * @description 面积计算
+     * @param {polygon} polygon 面feature
+     */
     formatArea(polygon) {
         var area = getArea(polygon, {
             projection: this.getMap().getView().getProjection()
@@ -174,7 +210,7 @@ export default class AreaInteraction extends Draw {
     }
 
     /**
-     * 清除测量图层
+     * @description 清除测量图层
      * @param {Object} evt 鼠标点击对象
      * @param {Feature} feature 选中要素
      */
@@ -184,3 +220,5 @@ export default class AreaInteraction extends Draw {
         source.removeFeature(feature);
     }
 }
+
+export default AreaInteraction;

@@ -1,5 +1,5 @@
 /**
- * 工具类
+ * @description 工具类
  * @author ydx
  * @date 2019-04-09
  */
@@ -29,6 +29,19 @@ const Utill = {
         return theRequest;
     },
 
+    getParamString(param, key) {
+        var paramStr = "";
+        if (param instanceof String || param instanceof Number || param instanceof Boolean) {
+            paramStr += "&" + key + "='" + encodeURIComponent(param) + "'";
+        } else {
+            $.each(param, function(i) {
+                var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
+                paramStr += '&' + parseParam(this, k);
+            });
+        }
+        return paramStr.substr(1);
+    },
+
     getExtentArray(extentObj) {
         var extentArray = [];
         extentArray.push(extentObj["xmin"]);
@@ -45,7 +58,7 @@ const Utill = {
             data: param,
             // timeout: param.timeout || 2000, //超过2秒，放弃请求
             dataType: param.dataType || 'jsonp',
-            type: 'GET',
+            type: param.dataType || 'GET',
             cache: param.cache || true, //默认值: true，dataType 为 script 和 jsonp 时默认为 false。设置为 false 将不缓存此页面
             success: function(result) {
                 $defferd.resolve(result);
@@ -62,6 +75,56 @@ const Utill = {
         })
         return $defferd;
     },
+
+    ajaxPostReqeust(options) {
+        options = Object.assign({
+            async: true,
+            method: 'POST',
+            data: '',
+            headers: {},
+            url: window.location.href,
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(data) {
+                console.log('Ajax request fail');
+                console.log(data);
+            },
+            complete: function() {}
+        }, options);
+
+        return new Promise((resolve, reject) => {
+            // good bye IE 6,7
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // options.success(xhr.responseText);
+                        resolve(xhr.responseText);
+                    } else {
+                        // options.error(xhr.responseText);
+                        reject(xhr.responseText);
+                    }
+                    options.complete();
+                }
+            };
+
+            // var url = options.url + this.getParamString(options.data, options.url);
+            var url = options.url + "?" + options.data;
+
+            xhr.open(options.method, url, options.async);
+            for (var header in options.headers) {
+                xhr.setRequestHeader(header, options.headers[header]);
+            }
+
+            xhr.send(options.data);
+        })
+
+
+
+    },
+
     /**
      * 数组排序
      * @param {Array} array 数组（必选）
@@ -80,6 +143,10 @@ const Utill = {
             });
         }
         return array;
+    },
+
+    copyArray(oldArray) {
+        return Array.concat([], oldArray);
     },
 
     assign() {

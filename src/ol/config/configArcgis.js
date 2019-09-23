@@ -39,6 +39,11 @@ const Config = {
             id: "ckq_layer",
             url: "http://a6-geoserver.a6-dev.dev.pcep.cloud/geoserver/tkq_ckq",
             layerName: "tkq_ckq:ckq"
+        },
+        "mv_geo_welllhead": {
+            id: "mv_geo_welllhead",
+            url: "http://a6-geoserver.a6-dev.dev.pcep.cloud/geoserver/pecp",
+            layerName: "pecp:mv_geo_welllhead"
         }
 
     },

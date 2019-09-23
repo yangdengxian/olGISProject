@@ -1,3 +1,17 @@
+.ol-control.ol-print {
+    display: none;
+    top: .5em;
+    left: 3em
+}
+
+.ol-layerswitcher-image.ol-collapsed button,
+.ol-layerswitcher-image.ol-unselectable.ol-control.ol-forceopen.ol-collapsed button,
+.ol-layerswitcher-image.ol-unselectable.ol-control.ol-forceopen button {
+    height: 2.2em;
+    width: 2.2em;
+    line-height: 2.2em;
+}
+
 .ol-control.ol-layerswitcher {
     top: 2.6em;
 }

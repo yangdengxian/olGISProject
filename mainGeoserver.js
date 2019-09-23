@@ -1,52 +1,33 @@
-const serverType = 'geoserver';
+import './src/project/mianCss.js';
 import Config from './src/ol/config/config';
 import Util from './src/ol/utils/Util';
 import TranformUtil from './src/ol/utils/TransFormUtil';
+import MapSub from './src/ol/compenents/MapSub';
+import { within as Within, intersects as Intersects } from 'ol/format/filter';
 
-import MapSub from './src/ol/compenents/Map';
+//controls
+import {
+    OverviewMapControl,
+    scaleBarControl,
+    zoomSilderControl,
+    baseLayerSwitcherImageControl,
+    themeLayersSwitchControl,
+    printControl,
+    legendControl
+} from './src/project/mainControls';
+//layers
+import { GeoTileLayers, VectorLayer, GeoImageLayer, GeoTileLayer } from './src/project/mainLayers';
+//interactions
+import { DragZoomInteraction, DragBoxInteraction, AreaInteraction, DistanceInteraction } from './src/project/mainInteractions';
 
-//esri离线切片服务
-import ArcGISTileLayers from './src/ol/compenents/Layers/arcgis/ArcGISTileLayer';
-//图层组
-import ArcgisLayerGroup from './src/ol/compenents/Layers/arcgis/ArcgisLayerGroup';
-//geoserver image
-import GeoImageLayer from './src/ol/compenents/Layers/geoserver/GeoImageLayer';
-//图层组
-import GeoLayerGroup from './src/ol/compenents/Layers/geoserver/GeoLayerGroup';
-import GroupLayers from './src/ol/compenents/Layers/GroupLayers';
-
-//要素图层
-import VectorLayer from './src/ol/compenents/Layers/VectorLayer';
-
-//鹰眼图
-import OverviewMapControl from './src/ol/compenents/controls/overviewMap/OverviewMapControl';
-//比例尺
-import ScaleBarControl from './src/ol/compenents/controls/scalebar/ScaleBar';
-//导航条
-import ZoomSildweControl from './src/ol/compenents/controls/zoomSlider/ZoomSlider';
-//底图切换
-import BaseLayerSwitcherImageControl from './src/ol/compenents/controls/switchLayer/BaseLayerSwitcherImageControl';
-//图层控制
-import ThemeLayersSwitchControl from './src/ol/compenents/controls/switchLayer/ThemeLayersSwitchControl';
-//图例
-import LegendControl from './src/ol/compenents/controls/Legend/LegendControl';
-
-
-//框选缩放
-import DragZoomInteraction from './src/ol/compenents/interactions/Draw/DragZoomInteraction';
-//框选查询
-import DragBoxInteraction from './src/ol/compenents/interactions/Draw/DragBoxInteraction';
-//测量
-import AreaInteraction from './src/ol/compenents/interactions/Draw/measure/AreaInteraction';
-import DistanceInteraction from './src/ol/compenents/interactions/Draw/measure/DistanceInteraction';
-
+//弹窗覆盖物
+import { wellPopupFeatureOverlay, workerPopupFeatureOverlay, planePopupFeatureOverlay, bufferOverlay } from './src/project/mainOverlays';
 
 //菜单
 import ToolBarTask from './src/ol/compenents/task/ToolBarTask';
-
-//消息机制
-import GIS_Event_RFMPON from './src/project/js/rfmp/GIS_Event_RFMPON';
-
+import WorkerFeatureLayer from './src/project/js/featureLayers/WorkerFeatureLayer.js';
+import PlaneFeatureLayer from './src/project/js/featureLayers/PlaneFeatureLayer.js';
+import GeoserverIdentifyTask from './src/ol/compenents/task/geoserver/GeoserverIdentifyTask.js';
 
 //获取配置范围
 const mapConfig = Config.getMapConfig(Util.getQueryString("App"));
@@ -59,69 +40,219 @@ const map = new MapSub({
         source: 'EPSG:4326',
         destination: Config.mapConfig["projection"],
     })
-})
+});
 
+//layers
 const {
-    arcGISTileLayers,
-    vectorLayer,
-    mapServer,
-    d_mapServer,
-    groupLayers, //专题图层组
+    //单井要素层
+    wellFeatureLayer,
+    //无人机实时定位图层
+    planePositionFeatureLayer,
+    //集输管线现场巡检人员实时定位
+    workerPositionFeatureLayer,
+    //集输管道要素层
+    pipelineFeatureLayer,
+    //OGM要素层
+    ogmFeatureLayer,
+    //CPF要素层
+    cpfFeatureLayer,
+    //单井层
+    cpeWellImageLayer,
+    //集输管道层
+    pipelineImageLayer,
+    //OGM层
+    ogmImageLayer,
+    //地形地貌图、影像图、行政区划图集合
+    geoTileLayers,
+    //国界
+    boundaryPolyImageLayer,
 } = {
-    arcGISTileLayers: new ArcGISTileLayers(),
-    vectorLayer: new VectorLayer({
-        id: "queryFeaturesLayer",
+    wellFeatureLayer: new VectorLayer({
+        id: "wellFeatureLayer",
         map: map
     }),
-    mapServer: new GeoImageLayer({
-        id: 'geoserverFeature',
-        url: mapConfig["mapUrl"],
-        layerName: mapConfig["layerName"]
+    //airplane position
+    planePositionFeatureLayer: new PlaneFeatureLayer({
+        id: "planePositionFeatureLayer",
+        map: map,
+        intervalTime: 20
+    }),
+    //巡检人员定位
+    workerPositionFeatureLayer: new WorkerFeatureLayer({
+        id: "workerPositionFeatureLayer",
+        map: map,
+        intervalTime: 10
+    }),
+    pipelineFeatureLayer: new VectorLayer({
+        id: "pipelineFeatureLayer",
+        map: map
+    }),
+    ogmFeatureLayer: new VectorLayer({
+        id: "ogmFeatureLayer",
+        map: map
+    }),
+    cpfFeatureLayer: new VectorLayer({
+        id: "cpfFeatureLayer",
+        map: map
+    }),
 
+    cpeWellImageLayer: new GeoImageLayer({
+        id: "wellsImage",
+        title: "wellsImage",
+        isThmemeLayer: true,
+        displayInLayerSwitcher: true,
+        url: mapConfig.mapUrl,
+        layerNames: ['tab_geo_welllhead'],
+        projection: map.getView().getProjection(),
     }),
-    d_mapServer: new ArcgisLayerGroup({
-        id: "wellPotionsGroupLayer"
+
+    pipelineImageLayer: new GeoImageLayer({
+        id: "pipelineImage",
+        title: "pipelineImage",
+        isThmemeLayer: true,
+        displayInLayerSwitcher: true,
+        url: mapConfig.mapUrl,
+        layerNames: ['pipeline_line_tab'],
+        projection: map.getView().getProjection(),
     }),
-    groupLayers: new GroupLayers({
-        id: "themeGroupLayer",
-        title: "专题图层组"
-    })
+
+    ogmImageLayer: new GeoImageLayer({
+        id: "ogmImage",
+        title: "ogmImage",
+        isThmemeLayer: true,
+        displayInLayerSwitcher: true,
+        url: mapConfig.mapUrl,
+        layerNames: ['ogm_poly_tab'],
+        projection: map.getView().getProjection(),
+    }),
+
+    geoTileLayers: new GeoTileLayers(),
+
+    boundaryPolyImageLayer: new GeoImageLayer({
+        id: "boundaryPolyImage",
+        title: "boundaryPolyImage",
+        isThmemeLayer: false,
+        displayInLayerSwitcher: false,
+        url: mapConfig.mapUrl,
+        layerNames: ['Iraq_administration_a_free'],
+        projection: map.getView().getProjection(),
+    }),
 }
+//baseLayers
+const tileLayerGroup = geoTileLayers.getLayerGroup();
+map.setLayerGroup(tileLayerGroup);
+map.getView().fit(
+    map.getTransFormUtil()
+    .transformExtent(
+        Util.getExtentArray(mapConfig["mapFullExtent"])));
+//poly
+map.addLayer(boundaryPolyImageLayer);
+map.addLayer(ogmImageLayer);
+ogmImageLayer.on('singleclick', evt => {
+    const bufferPoly = bufferOverlay.createBuffer(bufferOverlay.createGeometry(evt.event.coordinate), 100);
+    const identifyTask = new GeoserverIdentifyTask(
+        mapConfig["mapUrl"], {
+            filter: Intersects(mapConfig["geometryName"], bufferPoly, Config.mapConfig.projection),
+            featurePrefix: mapConfig["featurePrefix"],
+            queryNames: ["ogm_poly_tab"],
+            srsName: Config.mapConfig.projection
+        }
+    );
+    identifyTask.execute().then(features => {
+        if (Array.isArray(features) && features.length) {
+            openFeaturePopup(evt.event.coordinate, features[0], wellPopupFeatureOverlay);
+        }
+    });
+});
+//line
+map.addLayer(pipelineImageLayer);
+pipelineImageLayer.on('singleclick', evt => {
+    const bufferPoly = bufferOverlay.createBuffer(bufferOverlay.createGeometry(evt.event.coordinate), 100);
+    const identifyTask = new GeoserverIdentifyTask(
+        mapConfig["mapUrl"], {
+            filter: Intersects(mapConfig["geometryName"], bufferPoly, Config.mapConfig.projection),
+            featurePrefix: mapConfig["featurePrefix"],
+            queryNames: ["pipeline_line_tab"],
+            srsName: Config.mapConfig.projection
+        }
+    );
+    identifyTask.execute().then(features => {
+        if (Array.isArray(features) && features.length) {
+            openFeaturePopup(evt.event.coordinate, features[0], wellPopupFeatureOverlay);
+        }
+    });
+});
+//point
+map.addLayer(cpeWellImageLayer);
+cpeWellImageLayer.on('singleclick', evt => {
+    const bufferPoly = bufferOverlay.createBuffer(bufferOverlay.createGeometry(evt.event.coordinate), 1000);
+    const identifyTask = new GeoserverIdentifyTask(
+        mapConfig["mapUrl"], {
+            filter: Within(mapConfig["geometryName"], bufferPoly, Config.mapConfig.projection),
+            featurePrefix: mapConfig["featurePrefix"],
+            queryNames: mapConfig["queryNames"],
+            srsName: Config.mapConfig.projection
+        }
+    );
+    identifyTask.execute().then(features => {
+        if (Array.isArray(features) && features.length) {
+            openFeaturePopup(evt.event.coordinate, features[0], wellPopupFeatureOverlay);
+        }
+
+    });
+});
+map.addLayer(cpfFeatureLayer);
+map.addLayer(ogmFeatureLayer);
+map.addLayer(pipelineFeatureLayer);
+map.addLayer(workerPositionFeatureLayer);
+workerPositionFeatureLayer.loadFeatures();
+map.addLayer(planePositionFeatureLayer);
+planePositionFeatureLayer.loadFeatures();
+planePositionFeatureLayer.on("singleclick", (evt) => {
+    var sb = '<video width="600" height="400" controls=true autoplay loop>';
+    sb += '<source src=' + Config.files.videoUrl + ' type="audio/mp4">';
+    sb += '</video>';
+    planePopupFeatureOverlay.openPopup(evt.feature.getGeometry().getFirstCoordinate(), sb);
+});
+planePositionFeatureLayer.on('change', e => {
+    planePopupFeatureOverlay.closePopup();
+
+});
+map.addLayer(wellFeatureLayer);
 
 const {
     overviewMapControl,
-    scaleBarControl,
-    zoomSildweControl,
-    baseLayerSwitcherImageControl,
-    themeLayersSwitchControl,
-    legendControl,
+} = {
+    overviewMapControl: new OverviewMapControl({
+        map: map,
+        layers: geoTileLayers.getTileLayers(),
+        collapsed: true, //初始是否关闭鹰眼
+    }),
+};
+//controls
+map.addControl(overviewMapControl);
+//添加比例尺
+map.addControl(scaleBarControl);
+//添加导航条
+map.addControl(zoomSilderControl);
+//底图切换
+map.addControl(baseLayerSwitcherImageControl);
+//专题图层控制
+map.addControl(themeLayersSwitchControl);
+//打印控件
+map.addControl(printControl);
+//图例
+map.addControl(legendControl);
+Config.mapLayerStyles.forEach(style => {
+    legendControl.addRow(style);
+});
+
+const {
     dragBoxInteraction,
     dragZoomInteraction,
     areaInteraction,
     distanceInteraction,
 } = {
-    overviewMapControl: new OverviewMapControl({
-        layers: arcGISTileLayers.getTileLayers(),
-        collapsed: true, //初始是否关闭鹰眼
-        map: map
-    }),
-    scaleBarControl: new ScaleBarControl({
-        minWidth: 140,
-        units: "metric"
-    }),
-
-    zoomSildweControl: new ZoomSildweControl(),
-    baseLayerSwitcherImageControl: new BaseLayerSwitcherImageControl({
-        trash: true,
-        show_progress: true
-    }),
-    themeLayersSwitchControl: new ThemeLayersSwitchControl(),
-    legendControl: new LegendControl({
-        title: '图例',
-        // style: getFeatureStyle,
-        collapsed: true
-    }),
-
     dragBoxInteraction: new DragBoxInteraction(),
     dragZoomInteraction: new DragZoomInteraction(),
     areaInteraction: new AreaInteraction({
@@ -130,39 +261,8 @@ const {
     distanceInteraction: new DistanceInteraction({
         map: map
     }),
+
 }
-
-
-//设置底图图层
-const tileLayerGroup = arcGISTileLayers.getLayerGroup();
-map.setLayerGroup(tileLayerGroup);
-map.getView().fit(
-    map.getTransFormUtil()
-    .transformExtent(
-        Util.getExtentArray(mapConfig["mapFullExtent"])));
-
-if (mapConfig.d_mapUrl[0]) {
-    d_mapServer.addImageLayers(mapConfig.d_mapUrl[0], {}).then((layers) => {});
-    groupLayers.addLayers([d_mapServer, mapServer]);
-} else {
-    groupLayers.addLayers([mapServer]);
-}
-
-map.addLayer(groupLayers);
-map.addLayer(vectorLayer);
-
-//添加鹰眼
-map.addControl(overviewMapControl);
-//添加比例尺
-map.addControl(scaleBarControl);
-//添加导航条
-map.addControl(zoomSildweControl);
-//地图切换
-map.addControl(baseLayerSwitcherImageControl);
-//专题图层控制
-map.addControl(themeLayersSwitchControl);
-//图例
-map.addControl(legendControl);
 
 //框选
 map.addInteraction(dragZoomInteraction);
@@ -186,20 +286,10 @@ distanceInteraction.setActive(false);
 distanceInteraction.on('drawstart', distanceInteraction.drawStartHandler);
 distanceInteraction.on('drawend', distanceInteraction.drawEndHandler);
 
-map.on('pointermove', (evt) => {
-    if (areaInteraction.getActive()) {
-        areaInteraction.pointerMoveHandler(evt);
-    } else if (distanceInteraction.getActive()) {
-        distanceInteraction.pointerMoveHandler(evt);
-    }
-});
-map.getViewport().addEventListener('mouseout', (evt) => {
-    if (areaInteraction.getActive()) {
-        areaInteraction.pointerMoveHandler(evt);
-    } else if (distanceInteraction.getActive()) {
-        distanceInteraction.pointerMoveHandler(evt);
-    }
-});
+//弹窗覆盖物
+map.addOverlay(wellPopupFeatureOverlay);
+map.addOverlay(workerPopupFeatureOverlay);
+map.addOverlay(planePopupFeatureOverlay);
 
 // 菜单事件绑定
 const toolBarTask = new ToolBarTask({
@@ -215,10 +305,74 @@ const toolBarTask = new ToolBarTask({
 });
 toolBarTask.bindClickEvent();
 
-//消息机制
-const gIS_Event_RFMPON = new GIS_Event_RFMPON({
-    map: map
+//地图事件
+map.on('pointermove', (evt) => {
+    measurePointerMoveHandler(evt);
 });
 
-gIS_Event_RFMPON.send('mapRendered', true);
-gIS_Event_RFMPON.on();
+map.on('singleclick', e => {
+    map.forEachFeatureAtPixel(e.pixel, feature => {
+        switch (feature.get("pid")) {
+            case "planePositionFeatureLayer":
+                planePositionFeatureLayer.dispatchEvent({
+                    type: "singleclick",
+                    feature: feature
+                });
+                break;
+
+            case "workerPositionFeatureLayer":
+                workerPositionFeatureLayer.dispatchEvent({
+                    type: "singleclick",
+                    feature: feature
+                });
+                break;
+        }
+
+    });
+
+    cpeWellImageLayer.dispatchEvent({
+        type: "singleclick",
+        event: e
+    });
+
+    pipelineImageLayer.dispatchEvent({
+        type: "singleclick",
+        event: e
+    });
+
+    ogmImageLayer.dispatchEvent({
+        type: "singleclick",
+        event: e
+    });
+});
+
+/**
+ * @description 测量回调函数
+ * @param {*} evt 
+ */
+function measurePointerMoveHandler(evt) {
+    if (areaInteraction.getActive()) {
+        areaInteraction.pointerMoveHandler(evt);
+    } else if (distanceInteraction.getActive()) {
+        distanceInteraction.pointerMoveHandler(evt);
+    }
+}
+
+/**
+ * @description 打开弹窗
+ * @param {Coordinate} coordinate 弹框位置
+ * @param {*} mapFeature 
+ * @param {PopupFeatureOverlay} popupFeatureOverlay
+ */
+function openFeaturePopup(coordinate, mapFeature, popupFeatureOverlay) {
+    if (!mapFeature.getId()) return;
+    var content = "",
+        properties = mapFeature.getProperties();
+    for (const key in properties) {
+        if (properties.hasOwnProperty(key) && (typeof properties[key] != 'object')) {
+            const value = properties[key];
+            content += key + "：" + value + "<br>";
+        }
+    }
+    popupFeatureOverlay.openPopup(coordinate, content);
+}

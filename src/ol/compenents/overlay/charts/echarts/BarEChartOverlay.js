@@ -1,10 +1,3 @@
-/**
- * 柱状图
- * @author ydx
- * @date 2019-04-15
- * 
- */
-
 import EChartOverlay from './EChartOverlay';
 
 const __colorArray = [
@@ -15,7 +8,20 @@ const __colorArray = [
     '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#FF0000'
 ];
 
-export default class BarEChartOverlay extends EChartOverlay {
+/**
+ * @classdesc ol-echarts柱状图
+ * @author ydx
+ * @date 2019-04-15
+ * @module overlay/charts/echarts/BarEChartOverlay
+ * @extends EChartOverlay
+ */
+class BarEChartOverlay extends EChartOverlay {
+    /**
+     * 
+     * @param {*} param EChartOverlay.param
+     * @param {features} param.features 数据集 必填*
+     * @param {map} param.map 地图实例 必填*
+     */
     constructor(param) {
         super(getOptions(param.features, param.map));
     }
@@ -155,3 +161,5 @@ function setSeries(features, options, map) {
         })
     });
 }
+
+export default BarEChartOverlay;

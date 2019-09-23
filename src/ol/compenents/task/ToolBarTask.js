@@ -40,10 +40,13 @@ export default class ToolbarTask {
         var __this = this;
         var btnId = target.id.trim();
 
-        for (const key in toolBarInteractions) {
+        //2D
+        for (let key in toolBarInteractions) {
             if (toolBarInteractions.hasOwnProperty(key)) {
-                const toolBarInteraction = toolBarInteractions[key];
-                toolBarInteraction.setActive(false);
+                let toolBarInteraction = toolBarInteractions[key];
+                if (toolBarInteraction.setActive) {
+                    toolBarInteraction.setActive(false);
+                }
             }
         }
 
@@ -77,6 +80,12 @@ export default class ToolbarTask {
                 toolBarInteractions['areaInteraction'].setActive(true);
                 break;
 
+            case 'printBtn':
+                var printControl = __this.map.getControlById('printControl');
+                if (printControl) {
+                    printControl.printByType('png');
+                }
+                break;
 
             default:
                 break;

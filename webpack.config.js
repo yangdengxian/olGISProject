@@ -1,19 +1,26 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 //自定义参数，根据serverType选择文件打包
 const argv = require('yargs').argv;
 
 module.exports = {
+    context: __dirname,
     mode: argv.mode || 'development',
     devtool: 'source-map',
     entry: [
         'babel-polyfill', //js with async/await
-        argv.serverType == "geoserver" ? "./mainGeoserver.js" : "./mainArcgis.js",
+        "./projects/" + argv.serverType + "/" + argv.serverType + ".js",
     ],
     output: {
-        path: __dirname + '/build',
-        filename: 'bundle.js'
+        path: __dirname + '/build/front/GIS/' + argv.serverType,
+        filename: '[name].js',
+        sourcePrefix: ''
+    },
+    node: {
+        // Resolve node module use of fs
+        fs: "empty"
     },
     module: {
         rules: [{
@@ -51,7 +58,6 @@ module.exports = {
             },
         ],
     },
-
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
@@ -59,16 +65,17 @@ module.exports = {
             template: './index.html',
             favicon: './images/ico/favicon.ico', // 添加小图标
             inject: true //自动注入
-        })
+        }),
     ],
     devServer: {
         contentBase: path.join(__dirname, '/'),
         publicPath: "/",
-        port: 80,
+        // port: 8081,
         host: '0.0.0.0',
         inline: true,
         hot: true,
         //浏览器显示错误信息
-        overlay: true
+        overlay: true,
+
     },
 };
