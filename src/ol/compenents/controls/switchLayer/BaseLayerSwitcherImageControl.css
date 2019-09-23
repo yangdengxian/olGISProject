@@ -11,6 +11,7 @@
     background-image: url('../../../../../images/tools/basemap/baseIcon.png');
     background-repeat: no-repeat;
     background-position: center;
-    height: 34px;
-    width: 34px;
+    height: 2.2em;
+    width: 2.2em;
+    line-height: 2.2em;
 }

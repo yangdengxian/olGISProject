@@ -8,6 +8,6 @@ import '../../../src/ol/plugins/polyfill/polyfill.js?features=requestAnimationFr
 //UI
 import '../compenents/UI/UIView';
 
-import Config from './configArcgis';
-// import Config from './configGeroserver';
+// import Config from './configArcgis';
+import Config from './configGeroserver';
 export default Config;

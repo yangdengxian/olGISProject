@@ -1,20 +1,27 @@
-/**
- * arcgis图层组
- * @author ydx
- * @date 2019-04-21
- */
 import Util from '../../../utils/Util';
 import GroupLayers from '../GroupLayers';
 import ArcgisImageLayers from './ArcGISImageLayers';
 
-export default class ArcgisLayerGroup extends GroupLayers {
+/**
+ * @classdesc arcgis图层组
+ * @author ydx
+ * @date 2019-04-21
+ * @module Layers/arcgis/ArcgisLayerGroup
+ * @extends GroupLayers
+ */
+class ArcgisLayerGroup extends GroupLayers {
+    /**
+     * 
+     * @param {*} param GroupLayers.options
+     */
     constructor(param) {
         super(param);
     }
 
     /**
-     * 获取图层元数据
+     * @description 获取图层元数据
      * @param {String} url 
+     * @returns {Promise} aysc function
      */
     getCapabitities(url) {
         return Util.ajaxGetReqeust(url, {
@@ -27,7 +34,7 @@ export default class ArcgisLayerGroup extends GroupLayers {
     }
 
     /**
-     * 添加图层，根据url查询图层数量 
+     * @description 添加图层，根据url查询图层数量 
      * @param {String} url eg: https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer
      */
     addImageLayers(url) {
@@ -74,7 +81,7 @@ export default class ArcgisLayerGroup extends GroupLayers {
 
                 }
             });
-            imageLayers = Util.sortArrayFuncs(imageLayers, 0, "ol_uid");
+            // imageLayers = Util.sortArrayFuncs(imageLayers, 0, "ol_uid");
             __this.addLayers(imageLayers);
             return imageLayers;
         }, (error) => {
@@ -93,3 +100,5 @@ export default class ArcgisLayerGroup extends GroupLayers {
     }
 
 }
+
+export default ArcgisLayerGroup;

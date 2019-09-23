@@ -2309,6 +2309,7 @@
 }
 
 .ol-control.ol-print {
+    display: none;
     top: .5em;
     left: 3em
 }

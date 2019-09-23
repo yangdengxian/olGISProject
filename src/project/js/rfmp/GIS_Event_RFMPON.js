@@ -70,5 +70,11 @@ export default class GIS_Event_RFMPON {
             multipoint = new MultiPoint(points);
             __this.map.getView().fit(multipoint);
         }, true);
+
+        //切换二维地图缩放级别，客户端postMessage
+        /* window.addEventListener('message', event => {
+            const data = event.data;
+            __this.map.getView().setZoom(data.zoom || 9);
+        }); */
     }
 }

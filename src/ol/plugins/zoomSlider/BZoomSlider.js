@@ -44,6 +44,8 @@ export default class BZoomSlider {
 
         this.duration_ = this.options['duration'] !== undefined ? this.options['duration'] : 200;
 
+        this.displayObject = this.options['displayObject'];
+
         this.viewHint = {
             ANIMATING: 0,
             INTERACTING: 1,
@@ -72,35 +74,35 @@ export default class BZoomSlider {
             'hmap-zoom-slider-button hmap-zoom-slider-translate-n' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             translateContent
         );
-        translateN.setAttribute('title', '向上平移');
+        translateN.setAttribute('title', this.displayObject["moveUp"]);
         this.listen(translateN, 'click', this.handletranslateClick_.bind(this, 'translateN'));
         var translateS = this.createElement(
             'div',
             'hmap-zoom-slider-button hmap-zoom-slider-translate-s' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             translateContent
         );
-        translateS.setAttribute('title', '向下平移');
+        translateS.setAttribute('title', this.displayObject["moveDown"]);
         this.listen(translateS, 'click', this.handletranslateClick_.bind(this, 'translateS'));
         var translateW = this.createElement(
             'div',
             'hmap-zoom-slider-button hmap-zoom-slider-translate-w' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             translateContent
         );
-        translateW.setAttribute('title', '向左平移');
+        translateW.setAttribute('title', this.displayObject["moveLeft"]);
         this.listen(translateW, 'click', this.handletranslateClick_.bind(this, 'translateW'));
         var translateE = this.createElement(
             'div',
             'hmap-zoom-slider-button hmap-zoom-slider-translate-e' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             translateContent
         );
-        translateE.setAttribute('title', '向右平移');
+        translateE.setAttribute('title', this.displayObject["moveRight"]);
         this.listen(translateE, 'click', this.handletranslateClick_.bind(this, 'translateE'));
         var zoomIn = this.createElement(
             'div',
             'hmap-zoom-slider-zoom-in' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             silderContent
         );
-        zoomIn.setAttribute('title', '放大');
+        zoomIn.setAttribute('title', this.displayObject["zoomIn"]);
         this.listen(zoomIn, 'click', this.handleZoomClick_.bind(this, 1));
 
         var zoomOut = this.createElement(
@@ -108,7 +110,7 @@ export default class BZoomSlider {
             'hmap-zoom-slider-zoom-out' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             silderContent
         );
-        zoomOut.setAttribute('title', '缩小');
+        zoomOut.setAttribute('title', this.displayObject["zoomOut"]);
         this.listen(zoomOut, 'click', this.handleZoomClick_.bind(this, -1));
 
         var slider = this.createElement(
@@ -131,9 +133,9 @@ export default class BZoomSlider {
             'slider-background-mask' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE,
             slider
         );
-        sliderBackgroundMask.setAttribute('title', '缩放到此级别');
+        sliderBackgroundMask.setAttribute('title', this.displayObject["zoomTo"]);
         this.sliderBar = this.createElement('div', 'slider-bar' + ' ' + BASE_CLASS_NAME.CLASS_SELECTABLE, slider);
-        this.sliderBar.setAttribute('title', '滑动缩放地图');
+        this.sliderBar.setAttribute('title', this.displayObject["zoomWheel"]);
 
         this.silderContent = silderContent;
 

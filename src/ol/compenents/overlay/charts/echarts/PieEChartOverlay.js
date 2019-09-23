@@ -1,9 +1,3 @@
-/**
- * 饼图
- * @author ydx
- * @date 2019-04-15
- * 
- */
 import EChartOverlay from './EChartOverlay';
 
 const __colorArray = [
@@ -14,7 +8,14 @@ const __colorArray = [
     '#ECF0F1', '#616A6B', '#EAF2F8', '#4A235A', '#FF0000'
 ];
 
-export default class PieEChartOverlay extends EChartOverlay {
+/**
+ * @classdesc ol-echarts饼图
+ * @author ydx
+ * @date 2019-04-15
+ * @module overlay/charts/echarts/PieEChartOverlay
+ * @extends EChartOverlay
+ */
+class PieEChartOverlay extends EChartOverlay {
     constructor(param) {
         super(getOptions(param.features, param.map));
     }
@@ -88,3 +89,5 @@ function setSeries(features, options, map) {
         return data;
     }
 }
+
+export default PieEChartOverlay;

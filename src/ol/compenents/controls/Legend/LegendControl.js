@@ -1,19 +1,21 @@
-/**
- * 图例
- * @author ydx
- * @date 2019-04-10
- */
-import 'ol-ext/dist/ol-ext.min.css';
 import './LegendControl.css';
 
 import Util from '../../../utils/Util';
 import Legend from 'ol-ext/control/Legend';
 import { DEVICE_PIXEL_RATIO as ol_has_DEVICE_PIXEL_RATIO } from 'ol/has'
 
-export default class LegendControl extends Legend {
+/**
+ * @classdesc 图例
+ * @author ydx
+ * @date 2019-04-10
+ * @module controls/Legend/LegendControl
+ * @extends Legend
+ */
+class LegendControl extends Legend {
     /**
-     * 构造函数
-     * @param {Object} param 初始化参数
+     *  @param {*} options
+     *  @param {String} options.title title
+     *  @param {boolean} options.collapsed 初始是否关闭,默认：true
      */
     constructor(param) {
         //width height
@@ -24,7 +26,9 @@ export default class LegendControl extends Legend {
     }
 
     /**
-     * 动态更新图例
+     * @method
+     * @override
+     * @description 重写父类方法
      */
     refresh() {
         var self = this;
@@ -75,8 +79,9 @@ export default class LegendControl extends Legend {
     }
 
     /**
-     * 添加图例行
-     * @param {Array<layer>} layers 图层组
+     * @method
+     * @description 添加图例行数
+     * @param {Array<layer>} layers 图层集
      */
     addRows(layers) {
         var __this = this;
@@ -94,6 +99,7 @@ export default class LegendControl extends Legend {
 
             if (layer.getStyle) {
                 getStyle(layer).then((json) => {
+                    if (!json["styleArray"]) return;
                     json["styleArray"].forEach(styleObj => {
                         addRow({
                             title: styleObj["label"],
@@ -109,6 +115,7 @@ export default class LegendControl extends Legend {
                         addRow({
                             title: obj.get("title")
                         });
+                        if (!json["styleArray"]) return;
                         json["styleArray"].forEach(styleObj => {
                             addRow({
                                 title: styleObj["label"],
@@ -141,3 +148,5 @@ export default class LegendControl extends Legend {
     }
 
 }
+
+export default LegendControl;
