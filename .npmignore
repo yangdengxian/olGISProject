@@ -2,17 +2,8 @@ node_modules
 build
 examples
 test
-index.html
-.babelrc
-karma.conf.js
-mainArcgis.js
-mainGeoserver.js
-mainTest.js
-package-lock.json
-package.json
 readme.md
 webpack.common.js
-webpack.config.js
 webpack.config.test.js
 webpack.dev.js
 webpack.prod.js
