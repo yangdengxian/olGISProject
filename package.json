@@ -1,14 +1,13 @@
 {
     "name": "ol-gis-project",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "description": "OpenLayers with Webpack",
     "main": "mainArcgis.js",
     "scripts": {
         "build": "webpack --config webpack.config.js --mode development --serverType geoserver",
         "start": "webpack-dev-server --config webpack.config.js --mode development --serverType geoserver --watch",
         "dev": "http-server -p 80",
-        "apidoc": "jsdoc -c jsdoc/conf.json -P package.json -d build/apidoc",
-        "publish": "npm profile disable-2fa && npm publish"
+        "apidoc": "jsdoc -c jsdoc/conf.json -P package.json -d build/apidoc"
     },
     "repository": {
         "type": "git",
