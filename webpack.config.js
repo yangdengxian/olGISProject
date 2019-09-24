@@ -11,7 +11,7 @@ module.exports = {
     devtool: 'source-map',
     entry: [
         'babel-polyfill', //js with async/await
-        "./projects/" + argv.serverType + "/" + argv.serverType + ".js",
+        "./mainGeoserver.js",
     ],
     output: {
         path: __dirname + '/build/front/GIS/' + argv.serverType,
