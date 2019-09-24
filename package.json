@@ -7,9 +7,13 @@
         "build": "webpack --config webpack.config.js --mode development --serverType geoserver",
         "start": "webpack-dev-server --config webpack.config.js --mode development --serverType geoserver --watch",
         "dev": "http-server -p 80",
-        "apidoc": "jsdoc -c jsdoc/conf.json -P package.json -d build/apidoc"
+        "apidoc": "jsdoc -c jsdoc/conf.json -P package.json -d build/apidoc",
+        "publish": "npm profile disable-2fa && npm publish"
     },
-    "repository": "https://github.com/yangdengxian/olGISProject.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yangdengxian/olGISProject.git"
+    },
     "devDependencies": {
         "@babel/core": "^7.5.5",
         "@babel/preset-env": "^7.5.5",
@@ -49,7 +53,6 @@
         "ol": "^5.3.3",
         "ol-echarts": "^1.3.6",
         "ol-ext": "^3.1.4",
-        "ol-gis-project": "^1.0.6",
         "olcs": "^2.9.0",
         "open-sans-fonts": "^1.5.1",
         "popper.js": "^1.15.0",
