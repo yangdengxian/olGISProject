@@ -1,6 +1,4 @@
-import ImageLayer from 'ol/layer/Image';
-import ImageWMS from 'ol/source/ImageWMS';
-
+import { Image as ImageLayer } from 'ol/layer';
 /**
  * @classdesc wms动态服务
  * @author ydx
@@ -22,10 +20,7 @@ class ImageWMSLayer extends ImageLayer {
     },
      */
     constructor(param) {
-        let source = new ImageWMS(param.source);
-        let options = Object.assign({}, param);
-        options.source = source;
-        super(options);
+        super(param);
     }
 };
 

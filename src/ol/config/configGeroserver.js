@@ -3,12 +3,7 @@
  * @author ydx
  * @date 2019-03-22
  */
-import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
-import Fill from 'ol/style/Fill';
-import Stroke from 'ol/style/Stroke';
-import Circle from 'ol/style/Circle';
-
 
 const Config = {
     serverType: 'geoserver',
@@ -32,19 +27,19 @@ const Config = {
     mapTileUrl: {
         TianDiTu: {
             Normal: {
-                Map: "http://t{s}.tianditu.com/DataServer?T=vec_w&X={x}&Y={y}&L={z}&tk={key}",
-                Annotion: "http://t{s}.tianditu.com/DataServer?T=cva_w&X={x}&Y={y}&L={z}&tk={key}"
+                Map: "http://t0.tianditu.com/DataServer?T=vec_w&X={x}&Y={y}&L={z}&tk=您的key",
+                Annotion: "http://t0.tianditu.com/DataServer?T=cva_w&X={x}&Y={y}&L={z}&tk=您的key"
             },
             Satellite: {
-                Map: "http://t{s}.tianditu.com/DataServer?T=img_w&X={x}&Y={y}&L={z}&tk={key}",
-                Annotion: "http://t{s}.tianditu.com/DataServer?T=cia_w&X={x}&Y={y}&L={z}&tk={key}"
+                Map: "http://t0.tianditu.com/DataServer?T=img_w&X={x}&Y={y}&L={z}&tk=您的key",
+                Annotion: "http://t0.tianditu.com/DataServer?T=cia_w&X={x}&Y={y}&L={z}&tk=您的key"
             },
             Terrain: {
-                Map: "http://t{s}.tianditu.com/DataServer?T=ter_w&X={x}&Y={y}&L={z}&tk={key}",
-                Annotion: "http://t{s}.tianditu.com/DataServer?T=cta_w&X={x}&Y={y}&L={z}&tk={key}"
+                Map: "http://t0.tianditu.com/DataServer?T=ter_w&X={x}&Y={y}&L={z}&tk=您的key",
+                Annotion: "http://t0.tianditu.com/DataServer?T=cta_w&X={x}&Y={y}&L={z}&tk=您的key"
             },
             Subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
-            key: "174705aebfe31b79b3587279e211cb9a"
+            key: "您的key"
         },
 
         GaoDe: {
@@ -94,130 +89,20 @@ const Config = {
             Subdomains: ['a', 'b', 'c']
         },
 
-        A4: {
-            Normal: {
-                Map: "http://a4.petrochina/A4Service/WMTS/TDTVEC/MapServer/tile/{z}/{y}/{x}",
-                Annotion: "http://a4.petrochina/A4Service/WMTS/TDTCVA/MapServer/tile/{z}/{y}/{x}"
-            },
-            Satellite: {
-                Map: "http://a4.petrochina/A4Service/WMTS/TDTIMG/MapServer/tile/{z}/{y}/{x}",
-                Annotion: "http://t{s}.tianditu.com/DataServer?T=cia_w&X={x}&Y={y}&L={z}&tk={key}"
-            },
-            Terrain: {
-                Map: "http://a4.petrochina/A4Service/WMTS/TDTTER/MapServer/tile/{z}/{y}/{x}",
-                Annotion: "http://a4.petrochina/A4Service/WMTS/TDTCTA/MapServer/tile/{z}/{y}/{x}"
-            }
-        }
     },
 
-    //layers Styles
-    mapLayerStyles: [{
-        title: "wellFeatures",
-        typeGeom: 'Point',
-        style: new Style({
-            image: new Icon({
-                src: "../../../images/tools/path/multi.png",
-                imgSize: [22, 30],
-                crossOrigin: 'anonymous',
-                anchor: [0.5, 1],
-                opacity: 1
-            })
-        })
-    }, {
-        title: "workerLocation",
-        typeGeom: 'Point',
-        style: new Style({
-            fill: new Fill({
-                color: 'rgba(125, 125, 125, 0.2)'
-            }),
-            stroke: new Stroke({
-                color: '#ffcc33',
-                width: 2
-            }),
-            image: new Circle({
-                radius: 7,
-                fill: new Fill({
-                    color: '#ffcc33'
-                })
-            })
-        })
-    }, {
-        title: "UAVLocation",
-        typeGeom: 'Point',
-        style: new Style({
-            fill: new Fill({
-                color: 'rgba(125, 125, 125, 0.2)'
-            }),
-            stroke: new Stroke({
-                color: '#355858',
-                width: 2
-            }),
-            image: new Circle({
-                radius: 7,
-                fill: new Fill({
-                    color: '#355858'
-                })
-            })
-        })
-    }, {
-        title: "wellsImage",
-        typeGeom: 'Point',
-        style: new Style({
-            fill: new Fill({
-                color: 'rgba(125, 125, 125, 0.2)'
-            }),
-            stroke: new Stroke({
-                color: '#FF0000',
-                width: 2
-            }),
-            image: new Circle({
-                radius: 7,
-                fill: new Fill({
-                    color: '#FF0000'
-                })
-            })
-        })
-    }, {
-        title: "pipelineImage",
-        typeGeom: 'LineString',
-        style: new Style({
-            stroke: new Stroke({
-                color: '#0000FF',
-                width: 1
-            }),
-            image: new Circle({
-                radius: 7,
-                fill: new Fill({
-                    color: '#0000FF'
-                })
-            })
-        })
-    }, {
-        title: "ogmImage",
-        typeGeom: 'Polygon',
-        style: new Style({
-            fill: new Fill({
-                color: '#AAAAAA'
-            }),
-            stroke: new Stroke({
-                color: '#000000',
-                width: 1
-            }),
-            image: new Circle({
-                radius: 7,
-                fill: new Fill({
-                    color: '#000000'
-                })
-            })
-        })
-    }],
-
-    files: {
-        videoUrl: "../../../examples/video/CPF1.MP4",
-
-    }
 };
 
+function getImageStyle(imagePath) {
+    var img = new Image();
+    img.src = imagePath;
+    var icon = new Icon({
+        img: img,
+        imgSize: [20, 20]
+    });
+
+    return icon;
+}
 ////配置专题图层应用关系
 
 
@@ -231,7 +116,7 @@ function getMapConfig(App) {
             mapConfig = {
                 mapUrl: "http://localhost:8085/geoserver2.15/cpe",
                 layerName: 'localhost:osm',
-                mapFullExtent: { "xmin": 117.42, "ymin": 38.68, "xmax": 121.10, "ymax": 39.98, "spatialReference": { "wkid": 4326 } },
+                mapFullExtent: { "xmin": 115.42, "ymin": 39.48, "xmax": 118.10, "ymax": 40.48, "spatialReference": { "wkid": 4326 } },
                 wellId: 0
             };
             break;
@@ -239,12 +124,8 @@ function getMapConfig(App) {
         default:
             mapConfig = {
                 mapUrl: "http://localhost:8085/geoserver2.15/cpe",
-                // mapUrl: "http://11.11.78.134:8083/geoserver/cpe",
-                geometryName: "coordinates",
-                featurePrefix: "cpe",
-                layerNames: ['tab_geo_welllhead' /**, 'pipeline_line_tab', 'ogm_poly_tab' */ ], //图层组名称
-                queryNames: ['tab_geo_welllhead' /**, 'pipeline_line_tab', 'ogm_poly_tab' */ ], //查询图层名称
-                mapFullExtent: { "xmin": 47.2306, "ymin": 31.6437, "xmax": 47.5465, "ymax": 31.7188, "spatialReference": { "wkid": 4326 } },
+                layerName: 'localhost:osm',
+                mapFullExtent: { "xmin": 115.42, "ymin": 39.48, "xmax": 118.10, "ymax": 40.48, "spatialReference": { "wkid": 4326 } },
                 wellId: 0
             };
             break;
@@ -270,106 +151,8 @@ function getLanguageConfig(language) {
 
 }
 
-// 根据地图服务配置图层别名
-function getLayerAlias(App, layerId) {
-    var layerAlias;
-    switch (App) {
-        case 'DZ':
-            switch (layerId) {
-                default: layerAlias = "unknown";
-                break;
-            }
-            break;
-        case 'KF': //开发图
-            switch (layerId) {
-                case 0: // 根据地图服务设置井ID
-                    layerAlias = "well";
-                    break;
-                default:
-                    layerAlias = "unknown";
-                    break;
-            }
-            break;
-        case 'GZ': //构造图
-            switch (layerId) {
-                case 0: // 根据地图服务设置井ID
-                    layerAlias = "well";
-                    break;
-                default:
-                    layerAlias = "unknown";
-                    break;
-            }
-            break;
-        default:
-            layerAlias = "unknown";
-            break;
-    }
-    return layerAlias;
-}
 
-// 根据地图服务配置图层应用关键字
-// App:应用模块，layerId：图层ID，attributes：属性列，fields：列名，aliasFields：别名
-function getLayerAppKey(App, layerId, attributes) {
-    var layerAppKey;
-    switch (App) {
-        case 'DZ':
-            switch (layerId) {
-                case 0: // 根据地图服务设置井ID
-                    layerAppKey = {
-                        fields: { ID: attributes.ID, NAME: attributes.NAME },
-                        aliasFields: { ID: attributes.ID, NAME: attributes.NAME }
-                    };
-                    break;
-                default:
-                    layerAppKey = { fields: { ID: null, NAME: null }, aliasFields: { ID: null, NAME: null } };
-                    break;
-            }
-            break;
-        case 'KF': //开发图
-            switch (layerId) {
-                case 0: // 根据地图服务设置井ID
-                    layerAppKey = {
-                        fields: { ID: attributes.ID, NAME: attributes.NAME },
-                        aliasFields: { ID: attributes.ID, NAME: attributes.NAME }
-                    };
-                    break;
-                default:
-                    layerAppKey = { fields: { ID: null, NAME: null }, aliasFields: { ID: null, NAME: null } };
-                    break;
-            }
-            break;
-        case 'GZ': //构造图
-            switch (layerId) {
-                case 0: // 根据地图服务设置井ID
-                    layerAppKey = {
-                        fields: { ID: attributes.ID, NAME: attributes.NAME },
-                        aliasFields: { ID: attributes.ID, NAME: attributes.NAME }
-                    };
-                    break;
-                default:
-                    layerAppKey = { fields: { ID: null, NAME: null }, aliasFields: { ID: null, NAME: null } };
-                    break;
-            }
-            break;
-        default:
-            switch (layerId) {
-                case 0: // 根据地图服务设置井ID
-                    layerAppKey = {
-                        fields: { ID: attributes.ID, NAME: attributes.NAME },
-                        aliasFields: { ID: attributes.ID, NAME: attributes.NAME }
-                    };
-                    break;
-                default:
-                    layerAppKey = { fields: { ID: null, NAME: null }, aliasFields: { ID: null, NAME: null } };
-                    break;
-            }
-            break;
-    }
-    return layerAppKey;
-}
 
 Config.getMapConfig = getMapConfig;
-Config.getLayerAlias = getLayerAlias;
-Config.getLayerAppKey = getLayerAppKey;
 
 export default Config;

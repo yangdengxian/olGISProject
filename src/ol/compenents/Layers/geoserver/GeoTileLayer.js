@@ -1,13 +1,13 @@
-import WMTSLayer from '../WMTSLayer';
+import TMSLayer from '../tile/TMSLayer';
 
 /**
- * @classdesc geosever 栅格图层
+ * @classdesc geosever 栅格切片图层
  * @author ydx
  * @date 2019-04-13
  * @module Layers/geoserver/GeoTileLayer
- * @extends WMTSLayer
+ * @extends TMSLayer
  */
-class GeoTileLayer extends WMTSLayer {
+class GeoTileLayer extends TMSLayer {
     /**
      * 
      * @param {object} param 
@@ -25,13 +25,12 @@ class GeoTileLayer extends WMTSLayer {
             displayInLayerSwitcher: param.displayInLayerSwitcher || false,
             source: {
                 url: param.url + "/wms",
-                params: {
+                params: Object.assign({
                     'FORMAT': 'image/png',
                     'VERSION': '1.1.1',
                     'tiled': true,
-                    "LAYERS": param.layers,
                     "exceptions": 'application/vnd.ogc.se_inimage',
-                },
+                }, param.params),
                 serverType: 'geoserver',
                 crossOrigin: 'anonymous'
             }

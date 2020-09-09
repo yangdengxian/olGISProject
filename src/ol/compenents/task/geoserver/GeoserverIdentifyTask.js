@@ -1,6 +1,7 @@
 import QueryTask from '../QueryTask';
 import WFST from '../../format/WFST';
-
+import Utill from '../../../utils/Util';
+import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @classdesc geoserver范围查询
  * @author ydx
@@ -42,23 +43,43 @@ class GeoserverIdentifyTask extends QueryTask {
 
     /**
      * @description 查询函数
-     * @param {function} successCallBack 
-     * @param {function} errorCallBack 
+     * @param {Object} options 自定义参数
+     * @param {String} type 请求方式 Get or Post
      */
-    execute(successCallBack, errorCallBack) {
+    execute(options, type) {
         var __this = this;
-        return __this.wfst.loadFeatures({
-            featurePrefix: __this.params.featurePrefix,
-            featureTypes: __this.params.featureTypes, //
-            srsName: __this.params.srsName,
-            filter: __this.params.filter
-        }).then(features => {
-            return features;
-        }, error => {
-            return error;
-        });
-    }
+        if (type && type.toUpperCase() === 'GET') {
+            var param = Object.assign(__this.params, options);
+            delete param.featureTypes;
+            delete param.featurePrefix;
+            delete param.filter;
+            return Utill.ajaxGetReqeust(__this.url, param).then(result => {
+                if (Array.isArray(result.features) && result.features.length) {
+                    result.features.forEach((feature, index) => {
+                        result.features[index] = (new GeoJSON()).readFeature(feature);
+                    });
+                    return result.features;
+                } else {
+                    new Error("Couldn't find any data");
+                }
+            }, error => {
+                return error;
+            });
+        } else {
+            return __this.wfst.loadFeatures(Object.assign({
+                featurePrefix: __this.params.featurePrefix,
+                featureTypes: __this.params.featureTypes, //
+                srsName: __this.params.srsName,
+                filter: __this.params.filter,
+                cql_filter: __this.params.cql_filter
+            }, options)).then(features => {
+                return features;
+            }, error => {
+                return error;
+            });
+        }
 
+    }
 
 }
 

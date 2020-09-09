@@ -6,7 +6,7 @@
 import $ from 'jquery/dist/jquery';
 
 const Utill = {
-    getQueryString(name, url) {
+    getQueryString: function(name, url) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         //var a = window.location.search.substr(1);
         var r = url ? url.match(reg) : window.location.search.substr(1).match(reg);
@@ -16,7 +16,7 @@ const Utill = {
         return null;
     },
 
-    getRequestParams(oldUrl) {
+    getRequestParams: function(oldUrl) {
         var url = oldUrl || location.search; //获取url中"?"符后的字串
         var theRequest = {};
         if (url.indexOf("?") != -1) {
@@ -29,7 +29,7 @@ const Utill = {
         return theRequest;
     },
 
-    getParamString(param, key) {
+    getParamString: function(param, key) {
         var paramStr = "";
         if (param instanceof String || param instanceof Number || param instanceof Boolean) {
             paramStr += "&" + key + "='" + encodeURIComponent(param) + "'";
@@ -42,7 +42,7 @@ const Utill = {
         return paramStr.substr(1);
     },
 
-    getExtentArray(extentObj) {
+    getExtentArray: function(extentObj) {
         var extentArray = [];
         extentArray.push(extentObj["xmin"]);
         extentArray.push(extentObj["ymin"]);
@@ -51,14 +51,14 @@ const Utill = {
         return extentArray;
     },
 
-    ajaxGetReqeust(url, param) {
+    ajaxGetReqeust: function(url, param) {
         var $defferd = $.Deferred();
         $.ajax({
             url: url,
             data: param,
             // timeout: param.timeout || 2000, //超过2秒，放弃请求
-            dataType: param.dataType || 'jsonp',
-            type: param.dataType || 'GET',
+            dataType: param.dataType || 'json',
+            type: 'GET',
             cache: param.cache || true, //默认值: true，dataType 为 script 和 jsonp 时默认为 false。设置为 false 将不缓存此页面
             success: function(result) {
                 $defferd.resolve(result);
@@ -76,7 +76,7 @@ const Utill = {
         return $defferd;
     },
 
-    ajaxPostReqeust(options) {
+    ajaxPostReqeust: function(options) {
         options = Object.assign({
             async: true,
             method: 'POST',
@@ -131,7 +131,7 @@ const Utill = {
      * @param {Number} decsOrAsc 升降序（升序1，降序0）默认升序
      * @param {String} prop 数组对象（根据对象属性排序）可选
      */
-    sortArrayFuncs(array, decsOrAsc, prop) {
+    sortArrayFuncs: function(array, decsOrAsc, prop) {
         if (!array || !array.length) return array;
         if (!prop) {
             array.sort((a, b) => {
@@ -145,11 +145,11 @@ const Utill = {
         return array;
     },
 
-    copyArray(oldArray) {
+    copyArray: function(oldArray) {
         return Array.concat([], oldArray);
     },
 
-    assign() {
+    assign: function() {
         if (typeof Object.assign != 'function') {
             Object.assign = function(target) {
                 'use strict';
@@ -171,11 +171,68 @@ const Utill = {
                 return target;
             };
         }
+    },
+
+    /**
+     * 日期格式化
+     * @param {*} fmt 
+     */
+    dateFormat: function(fmt) {
+        var date = new Date();
+        var o = {
+            "M+": date.getMonth() + 1, //月份 
+            "d+": date.getDate(), //日 
+            "h+": date.getHours(), //小时 
+            "m+": date.getMinutes(), //分 
+            "s+": date.getSeconds(), //秒 
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度 
+            "S": date.getMilliseconds() //毫秒 
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    },
+    /**
+     * geoserver 返回结果日期格式转化
+     * @param {*} oldDate 旧日期
+     * @param {*} fmt 格式化模板
+     */
+    getLocalDateString: function(oldDate, fmt) {
+        var RegExp = null;
+        switch (fmt) {
+            case 'yyyy-MM-dd':
+                RegExp = /((((19|20)\d{2})-(0?(1|[3-9])|1[012])-(0?[1-9]|[12]\d|30))|(((19|20)\d{2})-(0?[13578]|1[02])-31)|(((19|20)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|((((19|20)([13579][26]|[2468][048]|0[48]))|(2000))-0?2-29))$/;
+                //日期yyyy-MM-dd格式化
+                if (typeof oldDate == 'string' && RegExp.test(oldDate.substring(0, oldDate.length - 1))) {
+                    oldDate = oldDate.substring(0, oldDate.length - 1);
+                }
+                break;
+
+            case 'yyyy-MM-dd hh:mm:ss':
+
+                break;
+
+            default:
+                RegExp = /((((19|20)\d{2})-(0?(1|[3-9])|1[012])-(0?[1-9]|[12]\d|30))|(((19|20)\d{2})-(0?[13578]|1[02])-31)|(((19|20)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|((((19|20)([13579][26]|[2468][048]|0[48]))|(2000))-0?2-29))$/;
+                //日期yyyy-MM-dd格式化
+                if (typeof oldDate == 'string' && RegExp.test(oldDate.substring(0, oldDate.length - 1))) {
+                    oldDate = oldDate.substring(0, oldDate.length - 1);
+                }
+                break;
+        }
+
+        return oldDate;
     }
+
 
 };
 //重写,解决IE不兼容问题
 Utill.assign();
-
 
 export default Utill;

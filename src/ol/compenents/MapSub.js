@@ -1,8 +1,8 @@
 import Map from 'ol/Map';
 import View from 'ol/View';
 
-/* import TileLayer from 'ol/layer/Tile.js';
-import OSM from 'ol/source/OSM.js'; */
+import TileLayer from 'ol/layer/Tile.js';
+import OSM from 'ol/source/OSM.js';
 /**
  * @classdesc 地图加载
  * @author ydx
@@ -27,9 +27,9 @@ class MapSub extends Map {
             target: param.targetId,
             controls: param.controls || [],
             layers: param.layers || [
-                /* new TileLayer({
+                new TileLayer({
                     source: new OSM(),
-                }), */
+                }),
             ],
             view: new View({
                 center: param.center || [0, 0],

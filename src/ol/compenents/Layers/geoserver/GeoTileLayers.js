@@ -1,9 +1,7 @@
 import Config from '../../../config/config';
 import { Group as LayerGroup } from 'ol/layer';
 import XYZ from 'ol/source/XYZ';
-import TileLayer from '../TileLayer';
-import TileWMS from 'ol/source/TileWMS';
-import Utill from '../../../utils/Util';
+import TileLayer from '../tile/TileLayer';
 
 /**
  * @classdesc 加载切片地图
@@ -18,53 +16,62 @@ class GeoTileLayers {
      */
     constructor(param) {
         this.GeoTileLayers = [
-            //administrativeLayer
             new TileLayer({
-                title: "administrativeLayer",
+                title: "行政区划",
                 baseLayer: true,
                 source: new XYZ({
-                    url: Config.mapTileUrl.Google.Normal.Map.en,
+                    url: Config.mapTileUrl.TianDiTu.Normal.Map,
+                    crossOrigin: "Anonymous"
+                })
+            }),
+            new TileLayer({
+                title: "行政区划",
+                baseLayer: true,
+                displayInLayerSwitcher: false,
+                source: new XYZ({
+                    url: Config.mapTileUrl.TianDiTu.Normal.Annotion,
                     crossOrigin: "Anonymous"
                 })
             }),
 
-            //imageLayer
+            //影像
             new TileLayer({
-                title: "imageLayer",
+                title: "影像",
                 baseLayer: true,
                 visible: false,
                 source: new XYZ({
-                    url: Config.mapTileUrl.Google.Satellite.Map.en,
+                    url: Config.mapTileUrl.TianDiTu.Satellite.Map,
+                    crossOrigin: "Anonymous"
+                })
+            }),
+            new TileLayer({
+                title: "影像",
+                baseLayer: true,
+                displayInLayerSwitcher: false,
+                visible: false,
+                source: new XYZ({
+                    url: Config.mapTileUrl.TianDiTu.Satellite.Annotion,
                     crossOrigin: "Anonymous"
                 })
             }),
 
-            //哈法亚油田
+            //地形图
             new TileLayer({
-                title: "imageLayer",
+                title: "地形图",
+                baseLayer: true,
+                visible: false,
+                source: new XYZ({
+                    url: Config.mapTileUrl.TianDiTu.Terrain.Map,
+                    crossOrigin: "Anonymous"
+                })
+            }),
+            new TileLayer({
+                title: "地形图",
                 baseLayer: true,
                 visible: false,
                 displayInLayerSwitcher: false,
-                source: new TileWMS({
-                    url: Config.getMapConfig(Utill.getQueryString("App"))["mapUrl"] + "/wms",
-                    params: {
-                        FORMAT: 'image/png',
-                        VERSION: '1.1.0',
-                        tiled: true,
-                        STYLES: '',
-                        LAYERS: 'cpe:cpe_image_3857',
-                    }
-                })
-            }),
-
-
-            //terrainLayer
-            new TileLayer({
-                title: "terrainLayer",
-                baseLayer: true,
-                visible: false,
                 source: new XYZ({
-                    url: Config.mapTileUrl.A4.Terrain.Map,
+                    url: Config.mapTileUrl.TianDiTu.Terrain.Annotion,
                     crossOrigin: "Anonymous"
                 })
             }),

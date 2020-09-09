@@ -48,7 +48,7 @@ class ArcGISIdentifyTask extends QueryTask {
      */
     execute(successCallBack, errorCallBack) {
         var __this = this;
-        __this.ajaxGetReqeust(__this.url, __this.params).then(successCallBack || __this.successCallBack.bind(this), errorCallBack || __this.errorCallBack.bind(this));
+        return __this.ajaxGetReqeust(__this.url, __this.params).then(successCallBack || __this.successCallBack.bind(this), errorCallBack || __this.errorCallBack.bind(this));
     }
 
     /**

@@ -1,6 +1,6 @@
 /**
  * zoomSlider插件
- * @autho ydx
+ * @author ydx
  * @date 2019-04-02
  */
 import Control from 'ol/control/Control';
