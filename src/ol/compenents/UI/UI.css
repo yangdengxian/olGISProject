@@ -31,7 +31,7 @@
 }
 
 .navbar .container-fluid .navbar-collapse ul.navbar-nav li a>span {
-    background-image: url(../../../../images/tools/public_icon.png);
+    background-image: url(../../images/tools/public_icon.png);
     background-repeat: no-repeat;
     display: inline-block;
     height: 12px;

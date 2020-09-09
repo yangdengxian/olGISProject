@@ -22,12 +22,13 @@ class VectorLayer extends Vector {
     constructor(param) {
         super({
             id: param.id,
-            baseLayer: false,
-            thmemeLayer: false,
-            displayInLayerSwitcher: false,
+            title: param.title,
+            baseLayer: param.isBaseLayer || false,
+            thmemeLayer: param.isThmemeLayer || false,
+            displayInLayerSwitcher: param.displayInLayerSwitcher || false,
             source: new VectorSource(),
             // 矢量图层样式
-            /* style: new Style({
+            style: param.style || new Style({
                 fill: new Fill({
                     color: 'rgba(125, 125, 125, 0.2)'
                 }),
@@ -41,7 +42,7 @@ class VectorLayer extends Vector {
                         color: '#ffcc33'
                     })
                 })
-            }), */
+            }),
             // updateWhileAnimating: true
         });
         this.map = param.map;

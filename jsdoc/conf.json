@@ -1,0 +1,30 @@
+{
+    "opts": {
+        "template": "jsdoc/templates/default",
+        "encoding": "utf8",
+        "destination": "build/apidoc",
+        "recurse": true
+    },
+    "plugins": ["jsdoc/plugins/markdown"],
+    "recurseDepth": 10,
+    "source": {
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_",
+        "include": [
+            "src/ol/compenents"
+        ],
+        "exclude": [
+            "src/ol/compenents/task/arcgis/ArcGISQueryTask.js"
+        ]
+
+    },
+    "sourceType": "module",
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}

@@ -7,3 +7,7 @@ webpack.common.js
 webpack.config.test.js
 webpack.dev.js
 webpack.prod.js
+karma.conf.js
+GIS平台说明.docx
+.npmrc
+test

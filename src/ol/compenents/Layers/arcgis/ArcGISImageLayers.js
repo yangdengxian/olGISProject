@@ -1,5 +1,6 @@
 import Util from '../../../utils/Util';
-import { Image as ImageLayer } from 'ol/layer';
+
+import ImageLayer from '../ImageWMSLayer';
 import ArcGISRestLayer from './ArcGISRestLayer';
 
 import Style from 'ol/style/Style';
@@ -31,7 +32,7 @@ class ArcGISImageLayers extends ImageLayer {
             title: params.title,
             baseLayer: params.isBaseLayer || false,
             thmemeLayer: params.isThmemeLayer || true,
-            displayInLayerSwitcher: true,
+            displayInLayerSwitcher: params.displayInLayerSwitcher || true,
             source: new ArcGISRestLayer({
                 ratio: 1,
                 params: params.params || {},

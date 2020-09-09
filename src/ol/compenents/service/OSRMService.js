@@ -11,72 +11,59 @@ class OSRMService extends OSRM {
     /**
      * @param {Object} param 
      * @param {String} param.url request url
-     * @param {Boolean} [param.steps=true,false] Returned route steps for each route leg
-     * @param {String} [param.alternatives=false,true, Number] Search for alternative routes. Passing a number alternatives=n searches for up to n alternative routes. *
-     * @param {String} [param.overview=simplified] Returned route geometry format (influences overview and per step)
-     * @param {String} [param.geometries=polyline, geojson] Returned route geometry format (influences overview and per step)
+     * @param {Boolean}param.profile travel type
+     * @param {Number} param.timeout] 
      */
     constructor(param) {
-        super({
-            url: param.url
-        })
-        this.steps = param.steps || true;
-        this.alternatives = param.alternatives || false;
-        this.overview = param.overview || 'simplified';
-        this.geometries = param.geometries || 'polyline';
+        super(param)
     }
 
     /**
      * @description 导航
-     * @param {*} coordinates 起始点经纬度坐标
+     * @param {*} params 参数
+     * @param {*} params.coordinates 起始点经纬度坐标
+     * @param {*} params.alternatives ...
      * @param {function} callback
      */
-    routeService(coordinates, callback) {
-        this.route({
-            coordinates: coordinates,
-            steps: this.steps,
-            alternatives: this.alternatives,
-            overview: this.overview,
-            geometries: this.geometries
-        }, callback)
+    routeService(params, callback) {
+        const options = Object.assign({}, params);
+        this.route(options, callback);
     }
 
     /**
      * @description 旅行家算法
-     * @param {*} coordinates 起始点经纬度坐标
+     * @param {*} params 参数
+     * @param {*} params.coordinates 起始点经纬度坐标
      * @param {*} callback 
      */
-    tripService(coordinates, callback) {
-        this.trip({
-            coordinates: coordinates,
-            steps: this.steps,
-            overview: this.overview,
-            geometries: this.geometries
-        }, callback);
+    tripService(params, callback) {
+        const options = Object.assign({}, params);
+        this.trip(options, callback);
     }
 
     /**
      * @description 地图匹配，绑路
-     * @param {*} coordinates 坐标
-     * @param {*} timestamps 
+     * @param {*} params 参数
+     * @param {*} params.coordinates 起始点经纬度坐标
+     * @param {*} params.timestamps 
      * @param {*} callback 
      */
-    matchService(coordinates, timestamps, callback) {
-        this.match({
-            coordinates: coordinates,
-            timestamps: timestamps,
-            steps: this.steps,
-            overview: this.overview,
-            geometries: this.geometries
-        }, callback);
+    matchService(params, callback) {
+        const options = Object.assign({}, params);
+        this.match(options, callback);
     }
 
-    tableService(coordinates, sources, destinations, callback) {
-        this.table({
-            coordinates: coordinates,
-            sources: sources,
-            destinations: destinations
-        }, callback);
+    /**
+     * @description Computes the duration of the fastest route between all pairs of supplied coordinates. Returns the durations or distances or both between the coordinate pairs. Note that the distances are not the shortest distance between two coordinates, but rather the distances of the fastest routes. Duration is in seconds and distances is in meters.
+     * @param {*} params 参数
+     * @param {*} params.coordinates 起始点经纬度坐标
+     * @param {*} params.sources 
+     * @param {*} params.destinations 
+     * @param {*} callback 
+     */
+    tableService(params, callback) {
+        const options = Object.assign({}, params);
+        this.table(options, callback);
     }
 
     tileService() {

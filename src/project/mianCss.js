@@ -5,4 +5,4 @@ import 'ol/ol.css';
 //ol-ext
 // import 'ol-ext/dist/ol-ext.min.css';
 
-import '../../css/common.css';
+import '../ol/css/common.css';

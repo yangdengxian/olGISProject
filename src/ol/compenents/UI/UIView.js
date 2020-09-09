@@ -16,11 +16,11 @@ switch (Util.getQueryString("language")) {
         document.write(UIView_en);
         break;
 
-    case "zh_CN":
+    case "zh":
         document.write(UIView_zh);
         break;
 
     default:
-        document.write(UIView_en);
+        document.write(UIView_zh);
         break;
 }

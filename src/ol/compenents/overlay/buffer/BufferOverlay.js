@@ -21,6 +21,7 @@ class BufferOverlay {
      * @description 创建缓冲区
      * @param {Geometry} geom geometry
      * @param {Number} distance 缓冲半径
+     * @returns geometry
      */
     createBuffer(geom, distance) {
         let jstsGeom = this.jsts.read(geom);

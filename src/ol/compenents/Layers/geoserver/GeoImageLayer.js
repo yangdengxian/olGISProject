@@ -1,5 +1,5 @@
 import ImageWMSLayer from '../ImageWMSLayer';
-
+import ImageWMS from 'ol/source/ImageWMS';
 /**
  * @classdesc geosever 栅格图层
  * @author ydx
@@ -26,12 +26,12 @@ class GeoImageLayer extends ImageWMSLayer {
             baseLayer: param.isBaseLayer || false,
             thmemeLayer: param.isThmemeLayer || false,
             displayInLayerSwitcher: param.displayInLayerSwitcher || false,
-            source: {
+            source: new ImageWMS({
                 url: param.url + '/wms',
-                params: { LAYERS: param.layerNames },
+                params: param.params,
                 serverType: 'geoserver',
                 crossOrigin: 'anonymous',
-            },
+            }),
         })
     }
 };

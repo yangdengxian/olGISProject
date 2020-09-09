@@ -12,6 +12,9 @@ module.exports = {
     entry: [
         'babel-polyfill', //js with async/await
         "./mainGeoserver.js",
+        // "./src/project/mainWMTS.js",
+        // "./src/project/mainWMTS4326.js",
+        // "./src/project/mainWMTS900913.js",
     ],
     output: {
         path: __dirname + '/build/front/GIS/' + argv.serverType,
@@ -63,7 +66,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: './index.html',
             template: './index.html',
-            favicon: './images/ico/favicon.ico', // 添加小图标
+            favicon: './src/ol/images/ico/favicon.ico', // 添加小图标
             inject: true //自动注入
         }),
     ],
@@ -76,6 +79,11 @@ module.exports = {
         hot: true,
         //浏览器显示错误信息
         overlay: true,
-
+        proxy: {
+            '/geoserver/': {
+                target: 'http://localhost:8080/',
+                changeOrigin: true,
+            },
+        }
     },
 };

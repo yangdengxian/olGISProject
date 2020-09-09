@@ -94,7 +94,7 @@ class DragBoxInteraction extends DragBox {
                 layersIds: mapConfig["arcgisQueryLayerIds"]
             }
         );
-        arcGISIdentifyTask.execute();
+        return arcGISIdentifyTask.execute();
     }
 
     /**
@@ -113,11 +113,7 @@ class DragBoxInteraction extends DragBox {
                 srsName: Config.mapConfig.projection
             }
         );
-        geoserverIdentifyTask.execute().then(features => {
-            __this.successCallBack(features);
-        }, error => {
-            __this.errorCallBack(error);
-        })
+        return geoserverIdentifyTask.execute();
     }
 
     /**

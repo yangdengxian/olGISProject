@@ -52,13 +52,29 @@ class LegendControl extends Legend {
             col = document.createElement('div');
             if (title) {
                 row.className = 'ol-title';
+                col.innerHTML = str || '';
             } else {
                 //图层组名称 样式靠右 2019-04-24 ydx
                 if (r.typeGeom) {
-                    col.style.paddingLeft = width + 'px';
+                    if (r.style.image_ && r.style.image_.getImage() &&
+                        r.style.image_.getImage().tagName.toUpperCase() === "IMG") {
+                        var img = r.style.image_.getImage();
+                        var span = document.createElement('span');
+                        var imageSize = r.style.image_.getSize();
+                        img.width = imageSize ? imageSize[0] : 20;
+                        img.height = imageSize ? imageSize[1] : 20;
+                        col.appendChild(img);
+                        span.innerHTML = str || '';
+                        col.appendChild(span);
+                    } else {
+                        col.style.paddingLeft = width + 'px';
+                        col.innerHTML = str || '';
+                    }
+                } else {
+                    col.innerHTML = str || '';
                 }
             }
-            col.innerHTML = str || '';
+
             row.appendChild(col);
             table.appendChild(row);
         }
