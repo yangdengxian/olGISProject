@@ -4,7 +4,7 @@ This example demonstrates how the `ol` package can be used with webpack.
 
 Clone the project.
 
-    git clone http://git.epai.io/A6/front/5201gis-ol-front.git
+    git clone https://github.com/yangdengxian/olGISProject.git
 
 Install the project dependencies.
 
