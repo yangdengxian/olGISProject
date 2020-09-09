@@ -8,7 +8,7 @@ Clone the project.
 
 Install the project dependencies.
 
-    cd 5201gis-ol-front
+    cd olGISProject
     npm install
 
 Create a bundle for the browser.
