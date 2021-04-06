@@ -1,7 +1,7 @@
 import Util from '../../../utils/Util';
 
 import ImageLayer from '../ImageWMSLayer';
-import ArcGISRestLayer from './ArcGISRestLayer';
+import ArcGISRestLayer from '../../source/arcgis/ImageArcGISRestSource';
 
 import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';

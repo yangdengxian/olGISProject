@@ -202,7 +202,7 @@ class RouteAnimateService {
     }
 
     /**
-     * @description
+     * @description 获取动画路径
      * @param {*} second
      */
     [LineAnimate](second) {

@@ -16,9 +16,7 @@ const Config = {
     },
     //esriTileLayer
 
-   
+
 };
 
-
-Config.getMapConfig = getMapConfig;
 export default Config;

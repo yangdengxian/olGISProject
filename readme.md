@@ -4,11 +4,11 @@ This example demonstrates how the `ol` package can be used with webpack.
 
 Clone the project.
 
-    git clone https://github.com/yangdengxian/olGISProject.git
+    git clone http://git.epai.io/A6/front/5201gis-ol-front.git
 
 Install the project dependencies.
 
-    cd olGISProject
+    cd 5201gis-ol-front
     npm install
 
 Create a bundle for the browser.
@@ -125,6 +125,33 @@ npm install gis-ol-front --save
 **v3.0.0版本**
 
 > * 新增矢量切片服务 
+
+**v3.1.0版本**
+
+> * 新增cesium组件
+
+**v3.1.2版本**
+
+> * 图层bug修改
+
+**v3.1.3版本**
+
+> * 矢量图层bug修改
+
+**v3.2.0版本**
+
+> * 聚合工具
+> * 鼠标右键工具
+> 
+
+**v3.2.1版本**
+
+> * arcgis服务接口优化
+
+**v3.2.2版本**
+
+> * js apidoc文档优化
+
 
 ### 地图实例化
 ```javascript

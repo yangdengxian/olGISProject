@@ -80,16 +80,8 @@ class WMTSLayer extends VectorTileLayer {
             }),
             wrapX: true
         });
-
-        super({
-            id: options.id,
-            title: options.title,
-            baseLayer: options.isBaseLayer || false,
-            thmemeLayer: options.isThmemeLayer || false,
-            displayInLayerSwitcher: options.displayInLayerSwitcher || false,
-            visible: options.visible || true,
-            source: source
-        });
+        param.source = source;
+        super(param);
     }
 }
 

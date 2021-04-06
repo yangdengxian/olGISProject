@@ -1,4 +1,4 @@
-/* import OSRMService from "../../src/ol/compenents/service/OSRMService";
+import OSRMService from "../../src/ol/compenents/service/OSRMService";
 
 describe("wfst", function() {
     it("insert", function() {
@@ -13,4 +13,4 @@ describe("wfst", function() {
             console.log(result);
         });
     });
-}) */
+})
