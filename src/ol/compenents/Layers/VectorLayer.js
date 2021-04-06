@@ -30,7 +30,7 @@ class VectorLayer extends Vector {
             // 矢量图层样式
             style: param.style || new Style({
                 fill: new Fill({
-                    color: 'rgba(125, 125, 125, 0.2)'
+                    color: 'rgba(255, 250, 205, 0.5)'
                 }),
                 stroke: new Stroke({
                     color: '#ffcc33',
@@ -54,6 +54,14 @@ class VectorLayer extends Vector {
      */
     addFeatures(features) {
         this.getSource().addFeatures(features);
+    }
+
+    /**
+     * @description 获取要素
+     * @returns {Array<Feature>} features 
+     */
+    getFeatures() {
+        return this.getSource().getFeatures();
     }
 
     /**

@@ -1,0 +1,71 @@
+.navbar {
+    height: 30px;
+}
+
+.navbar .container-fluid {
+    height: 30px;
+}
+
+.navbar .container-fluid .navbar-collapse {
+    height: 30px;
+}
+
+.navbar .container-fluid .navbar-collapse ul.navbar-nav {
+    height: 30px;
+}
+
+.navbar .container-fluid .navbar-collapse ul.navbar-nav li {
+    height: 30px;
+}
+
+.navbar .container-fluid .navbar-collapse ul.navbar-nav li a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
+    color: #000;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+.navbar .container-fluid .navbar-collapse ul.navbar-nav li a>span {
+    background-image: url(../Assets/images/tools/public_icon.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+}
+
+li a>span.glyphicon-toolbar-pan {
+    background-position: -218px -10px;
+}
+
+li a>span.glyphicon-toolbar-zoomIn {
+    background-position: -234px -10px;
+}
+
+li a>span.glyphicon-toolbar-zoomOut {
+    background-position: -250px -10px;
+}
+
+li a>span.glyphicon-toolbar-fullScreen {
+    background-position: -266px -10px;
+}
+
+li a>span.glyphicon-toolbar-extent {
+    background-position: -298px -10px;
+}
+
+li a>span.glyphicon-toolbar-measure {
+    background-position: -394px -10px;
+}
+
+li a>span.glyphicon-toolbar-distance {
+    background-position: -410px -10px;
+}
+
+li a>span.glyphicon-toolbar-area {
+    background-position: -490px -10px;
+}

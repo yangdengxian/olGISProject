@@ -125,9 +125,7 @@ class WFST extends WFS {
      */
     getQueryNode(options) {
         //是否传入主键featureId
-        if (!options.featureId) {
-            return this.writeGetFeature(options);
-        } else {
+        if (options.featureId || options.featureIds) {
             //主键查询
             let request = XmlUtil.createElementNS('wfs:GetFeature', {
                 service: options.service,
@@ -144,17 +142,41 @@ class WFST extends WFS {
 
             let query = request.appendChild(XmlUtil.createElementNS('wfs:Query', {
                 typeName: options.featurePrefix + ":" + options.featureTypes[0],
-                srsName: options.srsName
+                srsName: options.srsName,
+                propertyNames: options.propertyNames || '*'
             }));
+
+            //查询字段
+            if (options.propertyNames && Array.isArray(options.propertyNames)) {
+                options.propertyNames.forEach(propertyName => {
+                    let propertyNameNode = XmlUtil.createElementNS("PropertyName");
+                    propertyNameNode.innerHTML = propertyName;
+                    query.appendChild(propertyNameNode);
+                });
+            }
 
             let filter = XmlUtil.createElementNS("ogc:Filter");
+            //单条查询
+            if (options.featureId) {
+                filter.appendChild(XmlUtil.createElementNS('ogc:FeatureId', {
+                    fid: options.featureId
+                }));
+            }
+            //多条查询
+            if (options.featureIds && Array.isArray(options.featureIds)) {
+                options.featureIds.forEach(featureId => {
+                    filter.appendChild(XmlUtil.createElementNS('ogc:FeatureId', {
+                        fid: featureId
+                    }));
+                })
+            }
 
-            filter.appendChild(XmlUtil.createElementNS('ogc:FeatureId', {
-                fid: options.featureId
-            }));
             query.appendChild(filter);
 
             return request;
+        } else {
+            //普通属性查询
+            return this.writeGetFeature(options);
         }
 
     }

@@ -1,3 +1,6 @@
+/**
+ * @module ol/compenents/MapSub
+ */
 import Map from 'ol/Map';
 import View from 'ol/View';
 
@@ -5,10 +8,34 @@ import TileLayer from 'ol/layer/Tile.js';
 import OSM from 'ol/source/OSM.js';
 /**
  * @classdesc 地图加载
+ *
+ *      import MapSub from 'gis-ol-front/src/ol/compenents/MapSub';
+ *      import TranformUtil from 'gis-ol-front/src/ol/utils/TransFormUtil';
+ *      import TileLayer from 'gis-ol-front/src/ol/compenents/Layers/tile/TileLayer';
+ *      import OSM from 'ol/source/OSM';
+ *
+ *       //初始化地图
+ *       const map = new MapSub({
+ *           targetId: 'map', //地图容器Id
+ *           projection: 'EPSG: 3857',
+ *           layers: [
+ *              new TileLayer({
+ *                  source: new OSM()
+ *              })
+ *           ]
+ *           transFormUtil: new TranformUtil({
+ *                source: 'EPSG:4326',
+ *                destination: 'EPSG: 3857',
+ *           })
+ *       });
+ *
+ *        //地图定位
+ *        map.getView().fit([114.23,32.44,115.67,34.66]);
+ *
  * @author ydx
  * @date 2019-03-22
- * @module ol/compenents/MapSub
  * @extends Map
+ * @api
  */
 class MapSub extends Map {
     /**

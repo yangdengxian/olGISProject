@@ -27,18 +27,11 @@ class XYZLayer extends VectorTileLayer {
             default:
                 break;
         }
-        super({
-            id: param.id,
-            title: param.title,
-            baseLayer: param.isBaseLayer || false,
-            thmemeLayer: param.isThmemeLayer || false,
-            displayInLayerSwitcher: param.displayInLayerSwitcher || false,
-            visible: param.visible || true,
-            source: new VectorTileSource({
-                format: format,
-                url: param.url
-            })
+        param.source = new VectorTileSource({
+            format: format,
+            url: param.url
         })
+        super(param);
     }
 };
 

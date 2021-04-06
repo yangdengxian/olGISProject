@@ -1,5 +1,5 @@
 /**
- * @description 坐标转换
+ * @classdesc 坐标转换
  * @author ydx
  * @date 2019-04-18
  */
@@ -7,6 +7,12 @@ import { fromLonLat, toLonLat, transform, transformExtent } from 'ol/proj';
 import proj4 from 'proj4';
 
 export default class TransFormUtil {
+    /**
+     * @description 坐标转换
+     * @param {Object} param 
+     * @param {String} param.source   原坐标 'EPSG:4326'
+     * @param {String} param.destination   目标坐标系 'EPSG:3857' 
+     */
     constructor(params) {
         this.proj4textObj = {
             "21423": { "srtext": "PROJCS[\"Beijing 1954 \/ Gauss-Kruger zone 23\",GEOGCS[\"Beijing 1954\",DATUM[\"Beijing_1954\",SPHEROID[\"Krassowsky 1940\",6378245,298.3,AUTHORITY[\"EPSG\",\"7024\"]],TOWGS84[15.8,-154.4,-82.3,0,0,0,0],AUTHORITY[\"EPSG\",\"6214\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4214\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",135],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",23500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AUTHORITY[\"EPSG\",\"21423\"]]", "proj4text": "+proj=tmerc +lat_0=0 +lon_0=135 +k=1 +x_0=23500000 +y_0=0 +ellps=krass +towgs84=15.8,-154.4,-82.3,0,0,0,0 +units=m +no_defs ", "srid": 21423 },

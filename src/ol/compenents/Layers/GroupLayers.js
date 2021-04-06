@@ -21,17 +21,7 @@ class GroupLayers extends LayerGroup {
      * @param {Array<layer>} param.layers 图层集
      */
     constructor(param) {
-        super({
-            id: param.id,
-            title: param.title,
-            baseLayer: param.baseLayer || false, //是否基础底图
-            displayInLayerSwitcher: param.displayInLayerSwitcher || true, //是否在控件显示
-            openInLayerSwitcher: param.openInLayerSwitcher || true, //The openInLayerSwitcher property of an ol.layer.Group is used to code the visibility of the sublayers.
-            thmemeLayer: param.thmemeLayer || true, //是否专题图
-            layers: param.layers || [
-
-            ]
-        });
+        super(param);
     };
 
     /**

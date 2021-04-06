@@ -1,9 +1,11 @@
 import './src/project/mianCss.js';
 import Config from './src/ol/config/config';
-import Util from './src/ol/utils/Util';
+// import Util from './src/ol/utils/Util';
 import TranformUtil from './src/ol/utils/TransFormUtil';
 import MapSub from './src/ol/compenents/MapSub';
-import OSRMService from './src/ol/compenents/service/OSRMService';
+//三维 ydx 2019-05-14
+// import OL3DCesium from './src/cesium/widgets/OL3DCesium'
+// import OSRMService from './src/ol/compenents/service/OSRMService';
 //controls
 import {
     OverviewMapControl,
@@ -14,79 +16,45 @@ import {
     printControl,
     legendControl,
 } from './src/project/mainControls';
+import ContextmenuControl from './src/ol/compenents/controls/contextMenu/ContextmenuControl'
 //layers
-import { GeoTileLayers, GeoTileLayer, GeoImageLayer } from './src/project/mainLayers';
 import XYZLayer from './src/ol/compenents/Layers/tile/raster/XYZLayer';
-import WMTSLayer from './src/ol/compenents/Layers/tile/vector/WMTSLayer'
+import AnimatedCluster from './src/ol/compenents/Layers/cluster/AnimatedClusterLayer'
+import Cluster from 'ol/source/Cluster'
+import Vector from 'ol/source/Vector'
+import Style from 'ol/style/Style';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Text from 'ol/style/Text';
+import Circle from 'ol/style/Circle';
+import Feature from 'ol/Feature'
+import Point from 'ol/geom/Point'
 
-const mapServerUrl = "http://localhost:8080/geoserver/localhost/";
+
+
 //获取配置范围
-const mapConfig = Config.getMapConfig(Util.getQueryString('App'));
-
-const osrmService = new OSRMService({
-    url: 'https://router.project-osrm.org',
-});
-//栅格wms服务
-/* const geoserverWMSLayer = new GeoImageLayer({
-    id: "geoserverWMSLayer",
-    title: "geoserverWMSLayer",
-    url: mapServerUrl,
-    params: {
-        layers: "localhost:planet_osm_roads",
-    },
-}); 
-//栅格切片
-const cityRasterTilesLayer = new GeoTileLayer({
-    url: '/geoserver/localhost',
-    params: {
-        layers: 'localhost:planet_osm_roads',
-        STYLES: 'line',
-    },
-})*/
+const mapConfig = Config.mapConfig;
 const cityRasterTilesLayer = new XYZLayer({
-        id: "GLOBAL_WEBMERCATOR",
-        title: "GLOBAL_WEBMERCATOR",
-        url: 'http://10.88.104.240:8060/wmts/Gaode/GLOBAL_WEBMERCATOR/{z}/{x}/{y}.png',
-    }),
-    cityVectorTilesLayer = new WMTSLayer({
-        id: "cityVectorTilesLayer",
-        title: "cityVectorTilesLayer",
-        url: '/geoserver/gwc/service/wmts',
-        format: 'application/vnd.mapbox-vector-tile',
-        // format: 'application/json;type=geojson',
-        layer: 'localhost:planet_osm_roads',
-        gridsetName: 'EPSG:90013',
-        style: 'line'
-    })
-
+    id: "GLOBAL_WEBMERCATOR",
+    title: "GLOBAL_WEBMERCATOR",
+    url: 'http://10.88.104.240:8060/wmts/Gaode/GLOBAL_WEBMERCATOR/{z}/{x}/{y}.png',
+});
 //初始化地图
 const map = new MapSub({
     targetId: 'map',
     projection: Config.mapConfig['projection'],
-    layers: [cityRasterTilesLayer, cityVectorTilesLayer],
+    layers: [cityRasterTilesLayer, /* wellImageLayer */ ],
     transFormUtil: new TranformUtil({
         source: 'EPSG:4326',
         destination: Config.mapConfig['projection'],
     }),
 });
-
-//layers
-const {
-    //地形地貌图、影像图、行政区划图集合
-    geoTileLayers,
-} = {
-    geoTileLayers: new GeoTileLayers(),
-};
-
-//baseLayers
-// const tileLayerGroup = geoTileLayers.getLayerGroup();
-// map.setLayerGroup(tileLayerGroup);
-map.getView().fit(map.getTransFormUtil().transformExtent(Util.getExtentArray(mapConfig['mapFullExtent'])));
+map.getView().fit(map.getTransFormUtil().transformExtent(mapConfig['extent']));
 
 const { overviewMapControl } = {
     overviewMapControl: new OverviewMapControl({
         map: map,
-        layers: geoTileLayers.getTileLayers(),
+        layers: [cityRasterTilesLayer],
         collapsed: true, //初始是否关闭鹰眼
     }),
 };
@@ -104,17 +72,67 @@ map.addControl(themeLayersSwitchControl);
 map.addControl(printControl);
 //图例
 map.addControl(legendControl);
-// osrm
-osrmService.routeService({
-        coordinates: [
-            [13.38886, 52.517037],
-            [13.428555, 52.523219],
-        ],
-        geometries: 'geojson',
-    },
-    (errors, results) => {
-        if (!errors) {
-            results;
-        }
+
+var clusterSource = new Cluster({
+    distance: 40,
+    source: new Vector()
+});
+// Animated cluster layer
+var clusterLayer = new AnimatedCluster({
+    name: 'Cluster',
+    source: clusterSource,
+    animationDuration: 700,
+    map: map
+});
+map.addLayer(clusterLayer);
+// add 2000 features
+addFeatures(2000);
+// Addfeatures to the cluster
+function addFeatures(nb) {
+    var ext = map.getView().calculateExtent(map.getSize());
+    var features = [];
+    for (var i = 0; i < nb; ++i) {
+        features[i] = new Feature(new Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]));
+        features[i].set('id', i);
+        features[i].setStyle(new Style({
+            image: new Circle({
+                stroke: new Stroke({
+                    color: "rgba(0,0,192,0.5)",
+                    width: 2
+                }),
+                fill: new Fill({
+                    color: "rgba(0,0,192,0.3)"
+                }),
+                radius: 5
+            }),
+            text: new Text({
+                text: "123",
+                fill: new Fill({
+                    color: '#000'
+                })
+            })
+        }))
     }
-);
+    clusterSource.getSource().clear();
+    clusterSource.getSource().addFeatures(features);
+}
+
+var contextmenu = new ContextmenuControl({
+    width: 170,
+    defaultItems: true, // defaultItems are (for now) Zoom In/Zoom Out
+    items: [{
+            text: 'Center map here',
+            classname: 'some-style-class', // add some CSS rules
+            callback: center // `center` is your callback function
+        },
+        {
+            text: 'Add a Marker',
+            classname: 'some-style-class', // you can add this icon with a CSS class
+            // instead of `icon` property (see next line)
+            icon: 'img/marker.png', // this can be relative or absolute
+            callback: marker
+        },
+        '-' // this is a separator
+    ]
+});
+map.addControl(contextmenu);

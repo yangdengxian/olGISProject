@@ -1,24 +1,23 @@
 // Karma configuration
-// Generated on Tue Apr 16 2019 14:01:22 GMT+0800 (GMT+08:00)
+// Generated on Tue Mar 02 2021 11:11:35 GMT+0800 (GMT+08:00)
+
 module.exports = function(config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
 
-        client: {
-            captureConsole: true // 设置由 terminal 捕捉 browser 的输出
-        },
+
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha', "chai"],
+        frameworks: ['jasmine'],
 
 
         // list of files / patterns to load in the browser
         files: [
-            'test/**/*.test.js'
+            'test/**/*.test.js',
+            'test/**/*.spec.js'
         ],
-
 
         // list of files / patterns to exclude
         exclude: [
@@ -29,7 +28,8 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'test/**/*.test.js': ['webpack']
+            'test/**/*.test.js': ['webpack'],
+            'test/**/*.spec.js': ['webpack']
         },
 
 

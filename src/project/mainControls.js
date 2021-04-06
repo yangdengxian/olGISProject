@@ -35,19 +35,19 @@ const {
         displayObject: languageObject.zoomBarDisplayObject
     }),
     baseLayerSwitcherImageControl: new BaseLayerSwitcherImageControl({
-        title: "baseLayerSwitch",
+        title: "基础图层控件",
         trash: true,
         show_progress: true
     }),
     themeLayersSwitchControl: new ThemeLayersSwitchControl({
-        title: "themeLayersSwitch"
+        title: "专题图层控件"
     }),
     printControl: new PrintControl({
         id: "printControl"
     }),
 
     legendControl: new LegendControl({
-        title: 'legend',
+        title: '图例',
         collapsed: true
     }),
 };
