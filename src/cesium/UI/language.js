@@ -1,4 +1,4 @@
-import Util from '../../utils/Util';
+import { getQueryString } from '../Utils/Util';
 
 let languageObject = {
     zoomBarDisplayObject: {
@@ -35,7 +35,7 @@ let languageObject = {
 };
 
 //语言国际化适配
-switch (Util.getQueryString("language")) {
+switch (getQueryString("language")) {
     case "en":
 
         break;

@@ -20,6 +20,7 @@ class GeoTileLayer extends TMSLayer {
             id: param.id,
             visible: true,
             title: param.title,
+            visible: params.visible || false,
             baseLayer: param.isBaseLayer || false,
             thmemeLayer: param.isThmemeLayer || false,
             displayInLayerSwitcher: param.displayInLayerSwitcher || false,

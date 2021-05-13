@@ -152,6 +152,13 @@ npm install gis-ol-front --save
 
 > * js apidoc文档优化
 
+**v4.0.0版本**
+
+> * 平台优化
+
+**v4.1.0版本**
+
+> * 平台目录结构调整
 
 ### 地图实例化
 ```javascript

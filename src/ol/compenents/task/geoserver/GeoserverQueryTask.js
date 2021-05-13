@@ -4,7 +4,7 @@
  * @date 2019-10-22
  */
 import QueryTask from '../QueryTask';
-import Utill from '../../../utils/Util';
+import { ajaxGetReqeust } from '../../../utils/Util';
 
 
 export default class GeoserverQueryTask extends QueryTask {
@@ -41,21 +41,11 @@ export default class GeoserverQueryTask extends QueryTask {
     execute(options) {
         var __this = this;
         var param = Object.assign(this.params, options);
-        return Utill.ajaxGetReqeust(__this.url, param).then(features => {
+        return ajaxGetReqeust(__this.url, param).then(features => {
             return features;
         }, error => {
             return error;
         });
-        /* return __this.wfst.loadFeatures({
-            featurePrefix: __this.params.featurePrefix,
-            featureTypes: __this.params.featureTypes, //
-            srsName: __this.params.srsName,
-            cql_filter: __this.params.cql_filter
-        }).then(features => {
-            return features;
-        }, error => {
-            return error;
-        }); */
     }
 
 }

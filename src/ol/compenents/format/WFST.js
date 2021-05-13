@@ -1,6 +1,8 @@
 import { WFS } from 'ol/format';
-import Util from '../../utils/Util';
-import XmlUtil from '../../utils/XmlUtil';
+import {
+    ajaxPostReqeust
+} from '../../utils/Util';
+import XmlUtil from './XmlFormat';
 import Feature from 'ol/Feature';
 import GML from 'ol/format/GML3';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -77,7 +79,7 @@ class WFST extends WFS {
      * @param {GML} gmlNode 
      */
     save(gmlNode) {
-        return Util.ajaxPostReqeust({
+        return ajaxPostReqeust({
             data: new XMLSerializer().serializeToString(gmlNode),
             url: this.url
         }).then((result) => {
@@ -108,7 +110,7 @@ class WFST extends WFS {
             outputFormat: this.outputFormat,
             maxFeatures: options.maxFeatures || this.maxFeatures
         });
-        return Util.ajaxPostReqeust({
+        return ajaxPostReqeust({
             data: new XMLSerializer().serializeToString(this.getQueryNode(options)),
             url: this.url
         }).then((json) => {

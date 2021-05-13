@@ -6,7 +6,7 @@ import proj4 from 'proj4';
  * @author ydx
  * @date 2019-12-12
  * @module proj/CustomProjection
- * @extends Legend
+ * @extends 
  */
 class CustomProjection {
     /**

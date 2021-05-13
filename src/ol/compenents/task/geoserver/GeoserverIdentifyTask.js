@@ -1,6 +1,6 @@
 import QueryTask from '../QueryTask';
 import WFST from '../../format/WFST';
-import Utill from '../../../utils/Util';
+import { ajaxGetReqeust } from '../../../utils/Util';
 import GeoJSON from 'ol/format/GeoJSON';
 /**
  * @classdesc geoserver范围查询
@@ -53,7 +53,7 @@ class GeoserverIdentifyTask extends QueryTask {
             delete param.featureTypes;
             delete param.featurePrefix;
             delete param.filter;
-            return Utill.ajaxGetReqeust(__this.url, param).then(result => {
+            return ajaxGetReqeust(__this.url, param).then(result => {
                 if (Array.isArray(result.features) && result.features.length) {
                     result.features.forEach((feature, index) => {
                         result.features[index] = (new GeoJSON()).readFeature(feature);

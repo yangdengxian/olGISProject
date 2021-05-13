@@ -10,7 +10,7 @@ class ImageWMSLayer extends ImageLayer {
     /**
      * 
      * @param {*} param 
-     * @param {boolean} param.visible 是否可见，默认true
+     * @param {boolean} param.visible 是否可见，默认false
      * @param {source} param.source  ImageWMS.Options: {
                 url: param.url + '/wms',
                 params: { LAYERS: param.layerName },

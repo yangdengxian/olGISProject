@@ -10,7 +10,7 @@ import OSM from 'ol/source/OSM.js';
  * @classdesc 地图加载
  *
  *      import MapSub from 'gis-ol-front/src/ol/compenents/MapSub';
- *      import TranformUtil from 'gis-ol-front/src/ol/utils/TransFormUtil';
+ *      import TranformUtil from 'gis-ol-front/src/ol/compenents/proj/TransFormUtil';
  *      import TileLayer from 'gis-ol-front/src/ol/compenents/Layers/tile/TileLayer';
  *      import OSM from 'ol/source/OSM';
  *

@@ -20,7 +20,6 @@ class MeasureWidget {
         var cartesian = null;
         var floatingPoint;
         var entities = that.olCesium.getDataSourceDisplay().defaultDataSource.entities;
-
         // 取消双击事件-追踪该位置
         // handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
@@ -45,8 +44,9 @@ class MeasureWidget {
                 positions.push(cartesian.clone());
             }
             positions.push(cartesian);
+
             //在三维场景中添加Label
-            var textDisance = distance + "千米";
+            var textDisance = distance + "千米" + "  X  ";
             floatingPoint = entities.add({
                 name: '空间直线距离',
                 position: positions[positions.length - 1],
@@ -66,12 +66,12 @@ class MeasureWidget {
                     pixelOffset: new Cesium.Cartesian2(20, -20),
                 }
             });
+
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
         handler.setInputAction(function(movement) {
             handler.destroy(); //关闭事件句柄
             positions.pop(); //最后一个点无效
-
         }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
         var PolyLinePrimitive = (function() {

@@ -14,6 +14,7 @@ class GroupLayers extends LayerGroup {
      * @param {*} param 
      * @param {string} param.id 
      * @param {string} param.title 
+     * @param {string} param.visible 
      * @param {boolean} param.baseLayer 是否基础底图
      * @param {boolean} param.displayInLayerSwitcher 是否在控件显示
      * @param {boolean} param.openInLayerSwitcher The openInLayerSwitcher property of an ol.layer.Group is used to code the visibility of the sublayers.

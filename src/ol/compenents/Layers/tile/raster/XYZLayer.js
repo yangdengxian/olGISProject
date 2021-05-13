@@ -12,7 +12,7 @@ class XYZLayer extends TileLayer {
     /**
      * 
      * @param {*} param 
-     * @param {boolean} param.visible 是否可见，默认true
+     * @param {boolean} param.visible 是否可见，默认false
      * @param {source} param.source xyz切片source new XYZ({...}) ,new OSM()
      */
     constructor(param) {

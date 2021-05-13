@@ -13,6 +13,7 @@ class GeoImageLayer extends ImageWMSLayer {
      * @param {*} param 
      * @param {string} param.id 
      * @param {string} param.title 
+     * @param {string} param.visible 
      * @param {boolean} param.isBaseLayer 是否基础底图
      * @param {boolean} param.displayInLayerSwitcher 是否在控件显示
      * @param {boolean} param.isThmemeLayer 是否专题图
@@ -23,6 +24,7 @@ class GeoImageLayer extends ImageWMSLayer {
         super({
             id: param.id,
             title: param.title,
+            visible: params.visible || false,
             baseLayer: param.isBaseLayer || false,
             thmemeLayer: param.isThmemeLayer || false,
             displayInLayerSwitcher: param.displayInLayerSwitcher || false,

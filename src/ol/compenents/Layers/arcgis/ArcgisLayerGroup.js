@@ -1,4 +1,4 @@
-import Util from '../../../utils/Util';
+import { ajaxGetReqeust } from '../../../utils/Util';
 import GroupLayers from '../GroupLayers';
 import ArcgisImageLayers from './ArcGISImageLayers';
 
@@ -24,7 +24,7 @@ class ArcgisLayerGroup extends GroupLayers {
      * @returns {Promise} aysc function
      */
     getCapabitities(url) {
-        return Util.ajaxGetReqeust(url, {
+        return ajaxGetReqeust(url, {
             f: 'json'
         }).then((json) => {
             return json;
@@ -81,7 +81,6 @@ class ArcgisLayerGroup extends GroupLayers {
 
                 }
             });
-            // imageLayers = Util.sortArrayFuncs(imageLayers, 0, "ol_uid");
             __this.addLayers(imageLayers);
             return imageLayers;
         }, (error) => {

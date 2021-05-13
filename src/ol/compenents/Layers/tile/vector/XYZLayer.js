@@ -13,7 +13,7 @@ class XYZLayer extends VectorTileLayer {
     /**
      * 
      * @param {*} param 
-     * @param {boolean} param.visible 是否可见，默认true
+     * @param {boolean} param.visible 是否可见，默认false
      * @param {url} param.url  http://localhost/{z}/{x}/{y}.pbf
      * @param {string} param.format 'geojson','pbf' 默认pbf（mvt）
      */

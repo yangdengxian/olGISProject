@@ -7,11 +7,11 @@ import 'jquery/dist/jquery.min';
 import 'bootstrap/dist/js/bootstrap.min';
 import UIView_zh from './UIView_zh';
 import UIView_en from './UIView_es';
-import Util from '../../utils/Util';
+import { getQueryString } from '../../utils/Util';
 
 
 //语言国际化适配
-switch (Util.getQueryString("language")) {
+switch (getQueryString("language")) {
     case "en":
         document.write(UIView_en);
         break;

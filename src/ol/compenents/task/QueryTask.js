@@ -1,7 +1,7 @@
 /**
  * 查询工具
  */
-import Util from '../../utils/Util';
+import { ajaxGetReqeust } from '../../utils/Util';
 import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
@@ -24,7 +24,7 @@ export default class QueryTask {
     }
 
     ajaxGetReqeust(url, param) {
-        return Util.ajaxGetReqeust(url, param);
+        return ajaxGetReqeust(url, param);
     };
 
     //获取查询样式

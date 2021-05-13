@@ -1,6 +1,6 @@
 {
     "name": "gis-ol-front",
-    "version": "3.2.2",
+    "version": "4.1.1",
     "description": "openlayers",
     "keywords": [
         "openlayers",
@@ -8,7 +8,7 @@
     ],
     "main": "mainGeoserver.js",
     "bugs": {
-        "email": "1053522419@qq.com"
+        "email": "yangdengxian@cnpc.com.cn"
     },
     "scripts": {
         "build": "webpack --config webpack.config.js --mode development",
@@ -19,7 +19,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/yangdengxian/olGISProject.git"
+        "url": "http://git.epai.io/A6/front/5201gis-ol-front.git"
     },
     "devDependencies": {
         "@babel/core": "^7.12.3",

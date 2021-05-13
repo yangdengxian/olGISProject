@@ -1,7 +1,7 @@
 import '../src/project/mianCss.js';
 import Config from '../src/ol/config/config';
 // import Util from '../src/ol/utils/Util';
-import TranformUtil from '../src/ol/utils/TransFormUtil';
+import TransFormUtil from '../src/ol/compenents/proj/TransFormUtil';
 import MapSub from '../src/ol/compenents/MapSub';
 
 //layers
@@ -44,7 +44,7 @@ const map = new MapSub({
     targetId: 'map',
     projection: Config.mapConfig['projection'],
     layers: [cityRasterTilesLayer],
-    transFormUtil: new TranformUtil({
+    transFormUtil: new TransFormUtil({
         source: 'EPSG:4326',
         destination: Config.mapConfig['projection'],
     }),

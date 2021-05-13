@@ -1,7 +1,7 @@
 import Config from '../../../config/config';
-import Util from '../../../utils/Util';
+import { getQueryString } from '../../../utils/Util';
 import { always } from 'ol/events/condition';
-import { DragBox, Select } from 'ol/interaction';
+import { DragBox } from 'ol/interaction';
 
 import { bbox as bboxFilter } from 'ol/format/filter';
 
@@ -74,7 +74,7 @@ class DragBoxInteraction extends DragBox {
      * @param {Array<number>} extent 范围对象
      */
     initArcGISQueryTask(extent) {
-        var mapConfig = Config.getMapConfig(Util.getQueryString("App"));
+        var mapConfig = Config.getMapConfig(getQueryString("App"));
         extent = this.getMap().getTransFormUtil()
             .transformByProjParm(extent, this.getMap().getView().getProjection(), Config.mapConfig.sourceProjection);
         var geometry = {
@@ -103,7 +103,7 @@ class DragBoxInteraction extends DragBox {
      */
     initGeoServerQueryTask(extent) {
         var __this = this;
-        var mapConfig = Config.getMapConfig(Util.getQueryString("App"));
+        var mapConfig = Config.getMapConfig(getQueryString("App"));
         var geoserverIdentifyTask = new GeoserverIdentifyTask(
             mapConfig["mapUrl"], {
                 map: this.getMap(),

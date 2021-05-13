@@ -1,6 +1,6 @@
 import './LegendControl.css';
 
-import Util from '../../../utils/Util';
+import { sortArrayFuncs } from '../../../utils/Util';
 import Legend from 'ol-ext/control/Legend';
 import { DEVICE_PIXEL_RATIO as ol_has_DEVICE_PIXEL_RATIO } from 'ol/has'
 
@@ -101,7 +101,7 @@ class LegendControl extends Legend {
      */
     addRows(layers) {
         var __this = this;
-        layers = Util.sortArrayFuncs(layers, 1, "ol_uid");
+        layers = sortArrayFuncs(layers, 1, "ol_uid");
 
         //递归查询
         promiseAddRow(layers[0], 0);

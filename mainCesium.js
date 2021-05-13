@@ -7,7 +7,7 @@ import 'ol/ol.css';
 import './src/cesium/UI/map.css';
 import Config from './src/ol/config/config';
 import './src/cesium/UI/UIView';
-import TranformUtil from './src/ol/utils/TransFormUtil';
+import TransFormUtil from './src/ol/compenents/proj/TransFormUtil';
 import MapSub from './src/ol/compenents/MapSub';
 
 //layers
@@ -78,7 +78,7 @@ const map = new MapSub({
     targetId: 'map',
     projection: Config.mapConfig['projection'],
     layers: [terrainLayer, satelliteLayer, administratorLayer],
-    transFormUtil: new TranformUtil({
+    transFormUtil: new TransFormUtil({
         source: 'EPSG:4326',
         destination: Config.mapConfig['projection'],
     }),
@@ -196,8 +196,18 @@ nameOverlay.style.backgroundColor = "black";
 
 var handler = new Cesium.ScreenSpaceEventHandler(ol3DCesium.scene_.canvas);
 
-handler.setInputAction(function(movement) {
+/* handler.setInputAction(function(movement) {
 
     var feature = ol3DCesium.scene_.pick(movement.position);
     feature.id.model.color = Cesium.Color.YELLOW;
-}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK); */
+
+Cesium.Label.enableRightToLeftDetection = true;
+var labelEntity = {
+    label: {
+        id: 'my label',
+        text: '标签',
+        position: new Cesium.Cartesian3(116.403981, 39.914603, 100)
+    }
+};
+entities.add(labelEntity)

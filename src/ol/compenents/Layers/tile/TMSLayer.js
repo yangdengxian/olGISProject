@@ -12,7 +12,7 @@ class TMSLayer extends TileLayer {
     /**
      * 
      * @param {*} param 
-     * @param {boolean} param.visible 是否可见，默认true
+     * @param {boolean} param.visible 是否可见，默认false
      * @param {source} param.source  TileWMS.Options: {
         url: 'http://localhost:8083/geoserver2.15/gwc/service/wms?',
         params: {

@@ -1,4 +1,7 @@
-import Util from '../../../utils/Util';
+import {
+    getRequestParams,
+    ajaxGetReqeust
+} from '../../../utils/Util';
 
 import ImageLayer from '../ImageWMSLayer';
 import ArcGISRestLayer from '../../source/arcgis/ImageArcGISRestSource';
@@ -30,9 +33,10 @@ class ArcGISImageLayers extends ImageLayer {
         super({
             id: params.id,
             title: params.title,
+            visible: params.visible || false,
             baseLayer: params.isBaseLayer || false,
-            thmemeLayer: params.isThmemeLayer || true,
-            displayInLayerSwitcher: params.displayInLayerSwitcher || true,
+            thmemeLayer: params.isThmemeLayer || false,
+            displayInLayerSwitcher: params.displayInLayerSwitcher || false,
             source: new ArcGISRestLayer({
                 ratio: 1,
                 params: params.params || {},
@@ -53,12 +57,12 @@ class ArcGISImageLayers extends ImageLayer {
                 f: 'json'
             };
         //判断是否有参数
-        var requestParams = Util.getRequestParams(url);
+        var requestParams = getRequestParams(url);
         if (Object.keys(requestParams).length) {
             url = url.substring(0, url.lastIndexOf("?"));
             params = Object.assign(params, requestParams);
         }
-        return Util.ajaxGetReqeust(url + '/' + layerId, params).then((json) => {
+        return ajaxGetReqeust(url + '/' + layerId, params).then((json) => {
             json.mapUrl = url;
             return json;
         }, (error) => {

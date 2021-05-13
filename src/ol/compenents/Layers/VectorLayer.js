@@ -23,6 +23,7 @@ class VectorLayer extends Vector {
         super({
             id: param.id,
             title: param.title,
+            visible: params.visible || false,
             baseLayer: param.isBaseLayer || false,
             thmemeLayer: param.isThmemeLayer || false,
             displayInLayerSwitcher: param.displayInLayerSwitcher || false,

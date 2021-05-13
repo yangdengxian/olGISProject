@@ -1,4 +1,4 @@
-import Util from '../../../utils/Util';
+import { getRequestParams } from '../../../utils/Util';
 import { ImageArcGISRest } from 'ol/source';
 import { assert } from 'ol/asserts';
 import { appendParams } from 'ol/uri';
@@ -49,7 +49,7 @@ class ImageArcGISRestSource extends ImageArcGISRest {
 
         var url = this.url_;
         //判断是否有参数
-        var requestParams = Util.getRequestParams(url);
+        var requestParams = getRequestParams(url);
         if (Object.keys(requestParams).length) {
             url = url.substring(0, url.lastIndexOf('?'));
             params = Object.assign(params, requestParams);

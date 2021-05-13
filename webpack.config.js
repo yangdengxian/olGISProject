@@ -16,7 +16,11 @@ module.exports = {
     entry: [
         'babel-polyfill', //js with async/await
         // "./test/vectorTileLayer.js",
-        "./mainCesium.js",
+        // "./mainCesium.js",
+        //"./mainGeoserver.js",
+        "./demo/Identify_TileWMS.js",  // 展示 QueryTaskUtil.identifyWMS 对 'ol/source/TileWMS' 数据的 Identify 功能
+        //"./demo/Identify_MapServer.js",  // 展示 QueryTaskUtil.identifyMapServer 对 ArcGIS 的 MapServer 数据的 Identify 功能
+        //"./demo/PagingQuery_MapServer.js",  // 展示 QueryTaskUtil.pagingQueryMapServer 对 ArcGIS 的 MapServer 数据的 分页查询 功能
     ],
     output: {
         path: __dirname + '/build',
