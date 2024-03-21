@@ -9,4 +9,6 @@ GIS平台说明.docx
 .npmrc
 .npmignore
 .gitignore
-test
+src
+jsdoc
+public

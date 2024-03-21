@@ -1,17 +1,18 @@
 {
   "name": "ol-gis-project",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "generate-types": "tsc --project config/tsconfig-build.json",
     "apidoc": "jsdoc jsdoc/index.md -c jsdoc/conf.json -P package.json -d build/apidoc",
     "preview": "vite preview",
     "http-server": "npm run apidoc && cd build && http-server -p 8088"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/yangdengxian/olGISProject.git"
+    "type": "git",
+    "url": "https://github.com/yangdengxian/olGISProject.git"
   },
   "devDependencies": {
     "vite": "^5.1.6"
@@ -33,6 +34,7 @@
     "ol-ext": "^4.0.17",
     "popper.js": "^1.16.1",
     "proj4": "^2.10.0",
-    "qs": "^6.12.0"
+    "qs": "^6.12.0",
+    "typescript": "^5.4.3"
   }
 }

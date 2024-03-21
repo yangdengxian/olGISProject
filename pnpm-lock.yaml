@@ -56,6 +56,9 @@ dependencies:
   qs:
     specifier: ^6.12.0
     version: 6.12.0
+  typescript:
+    specifier: ^5.4.3
+    version: 5.4.3
 
 devDependencies:
   vite:
@@ -3736,6 +3739,12 @@ packages:
 
   /tweetnacl@0.14.5:
     resolution: {integrity: sha512-KXXFFdAbFXY4geFIwoyNK+f5Z1b7swfXABfL7HXCmoIWMKU3dmS26672A4EeQtDzLKy7SXmfBu51JolvEKwtGA==}
+    dev: false
+
+  /typescript@5.4.3:
+    resolution: {integrity: sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
     dev: false
 
   /uc.micro@1.0.6:

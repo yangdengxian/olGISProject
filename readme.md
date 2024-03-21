@@ -164,6 +164,9 @@ npm install ol-gis-project --save
 **v5.0.0版本**
 > * ol版本升级，v9
 
+**v5.1.0版本**
+> * 支持ts版本
+
 ### 地图实例化
 ```javascript
 
