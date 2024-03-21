@@ -1,6 +1,5 @@
 {
   "name": "ol-gis-project",
-  "private": true,
   "version": "5.0.0",
   "type": "module",
   "scripts": {
