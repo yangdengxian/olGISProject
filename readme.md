@@ -1,23 +1,23 @@
-# OpenLayers + Webpack
+# OpenLayers + Webpack/Vite
 
 This example demonstrates how the `ol` package can be used with webpack.
 
 Clone the project.
 
-    git clone http://git.epai.io/A6/front/5201gis-ol-front.git
+    git clone https://github.com/yangdengxian/olGISProject.git
 
 Install the project dependencies.
 
-    cd 5201gis-ol-front
-    npm install
+    cd olGISProject
+    pnpm install
 
 Create a bundle for the browser.
 
-    npm run build
+    pnpm run build
 
 Start the project
 
-    npm run start
+    pnpm run start
 
 Open `index.html` to see the result.
 
@@ -28,7 +28,7 @@ Open `index.html` to see the result.
 ### 在webpack, Rollup, Browserify, or other module bundlers使用olGISProject
 
 ````
-npm install gis-ol-front --save
+npm install ol-gis-project --save
 ````
 
 **v1.0.0版本 二维框架**
@@ -112,7 +112,7 @@ npm install gis-ol-front --save
 
 **v2.1.3版本**
 
-> * 瑞飞切片缓存
+> * 切片缓存
 
 **v2.1.4版本**
 
@@ -167,24 +167,28 @@ npm install gis-ol-front --save
 ### 地图实例化
 ```javascript
 
-import MapSub from 'gis-ol-front/src/ol/compenents/MapSub';
-import TranformUtil from 'gis-ol-front/src/ol/utils/TransFormUtil';
-import GeoTileLayers from 'gis-ol-front/src/ol/compenents/Layers/geoserver/GeoTileLayers'; 
+import MapSub from 'ol-gis-project/src/ol/compenents/MapSub';
 
 //初始化地图
-const layers = new GeoTileLayers().getTileLayers();
 const map = new MapSub({
-    targetId: 'map', //地图容器Id
-    projection: 'EPSG: 3857',
-    layers: [layers]
-    transFormUtil: new TranformUtil({
-        source: 'EPSG:4326',
-        destination: 'EPSG: 3857',
-    })
+    layers: [
+        //影像图
+        new TileLayer({
+            source: new XYZ({
+                url: `https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png`
+            }),
+            title: "影像图",
+        }),
+    ],
+    target: 'map',
+    view: new View({
+        center: [
+            113.50, 22.84
+        ],
+        zoom: 16,
+        projection: 'EPSG:4326'
+    }),
 });
-
-//地图定位
-map.getView().fit([114.23,32.44,115.67,34.66]);
 
 ```
 
