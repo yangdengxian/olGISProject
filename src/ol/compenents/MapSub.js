@@ -2,10 +2,8 @@
  * @module ol/compenents/MapSub
  */
 import Map from 'ol/Map';
-import View from 'ol/View';
+import { extend as OlExtend, createEmpty as OlCreateEmpty} from 'ol/extent';
 
-import TileLayer from 'ol/layer/Tile.js';
-import OSM from 'ol/source/OSM.js';
 /**
  * @classdesc 地图加载
  *
@@ -38,34 +36,8 @@ import OSM from 'ol/source/OSM.js';
  * @api
  */
 class MapSub extends Map {
-    /**
-     * @description 地图加载
-     * @param {Object} param 
-     * @param {String} param.targetId   地图容器Id （必填）
-     * @param {Array<control>} param.controls   地图control集 
-     * @param {Array<layer>} param.layers   地图图层集 
-     * @param {Array<Number>} param.center   地图中心点
-     * @param {String} param.projection   地图坐标系 'ESPG:3857'
-     * @param {Number} param.maxZoom   最大级别
-     * @param {Number} param.minZoom   最小级别
-     */
     constructor(param) {
-        super({
-            target: param.targetId,
-            controls: param.controls || [],
-            layers: param.layers || [
-                new TileLayer({
-                    source: new OSM(),
-                }),
-            ],
-            view: new View({
-                center: param.center || [0, 0],
-                zoom: param.zoom || 7,
-                projection: param.projection,
-                minZoom: param.minZoom || 4,
-                maxZoom: param.maxZoom || 18,
-            }),
-        });
+        super(param);
         //坐标转换工具
         this.transFormUtil = param.transFormUtil;
     }
@@ -115,7 +87,7 @@ class MapSub extends Map {
      * @returns {Interaction} Interaction
      */
     getInteractionById(interactionId) {
-        return null;
+        return interactionId;
     }
 
     /**
@@ -140,6 +112,45 @@ class MapSub extends Map {
             })
         }
     }
+
+    getZoom() {
+        return this.getView().getZoom();
+    }
+
+    getCurrentExtent() {
+        return this.getView().calculateExtent(this.getSize());
+    }
+    
+    getCurrentBound() {
+        const extent = this.getCurrentExtent();
+        const bound = {
+            west: extent[0],
+            south: extent[1],
+            east: extent[2],
+            north: extent[3]
+        }
+        return bound;
+    }
+
+    /**
+     * 根据features获取地图
+     * @param {*} features 
+     * @returns 
+     */
+    getExtentByFeatrues(features) {
+        const extent = OlCreateEmpty();
+        if (features.length > 0) {
+            features.forEach((feature) => {
+                OlExtend(extent, feature.getGeometry()?.getExtent());
+            });
+        } else {
+            console.log("No features in the layer.");
+        }
+        return extent;
+    }
+    
+    
+
 }
 
 export default MapSub;

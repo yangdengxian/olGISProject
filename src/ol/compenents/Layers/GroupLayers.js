@@ -25,13 +25,25 @@ class GroupLayers extends LayerGroup {
         super(param);
     };
 
-    /**
-     * @description 添加图层
-     * @param {Array<layer>} layers 
-     */
     addLayers(layers) {
-        const collection = new Collection(layers);
+        const oldLayers = this.getLayers().getArray();
+        const newLayers = oldLayers.concat(layers);
+        const collection = new Collection(newLayers,{
+            unique: true
+        });
+
         this.setLayers(collection);
+    }
+
+
+    /**
+     * 是否存在相同图层
+     * @param l 
+     * @returns 
+     */
+    hasLayer(l) {
+        const oldLayers = this.getLayers().getArray(); 
+        return oldLayers.find((v) => (v.id || v.get("id")) == l.id)
     }
 }
 

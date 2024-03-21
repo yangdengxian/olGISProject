@@ -159,6 +159,10 @@ npm install gis-ol-front --save
 **v4.1.0版本**
 
 > * 平台目录结构调整
+>
+
+**v5.0.0版本**
+> * ol版本升级，v9
 
 ### 地图实例化
 ```javascript
@@ -184,9 +188,6 @@ map.getView().fit([114.23,32.44,115.67,34.66]);
 
 ```
 
-### 组件API文档地址
-[gis-ol-front][6]
-
 ### 相关参考
 
 [openlayers][1]
@@ -197,12 +198,8 @@ map.getView().fit([114.23,32.44,115.67,34.66]);
 
 [ol-ext][4]
 
-[ol-cesium][5]
-
 
   [1]: https://github.com/openlayers/openlayers
   [2]: https://github.com/Esri/arcgis-to-geojson-utils
   [3]: https://github.com/sakitam-fdd/ol3Echarts
   [4]: https://github.com/Viglino/ol-ext
-  [5]: https://github.com/openlayers/ol-cesium
-  [6]: http://www.dev.pcep.cloud/front/GIS/build/apidoc/gis-ol-front/1.10.5/
