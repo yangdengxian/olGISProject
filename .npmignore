@@ -3,11 +3,10 @@ build
 examples
 test
 readme.md
-webpack.common.js
-webpack.config.test.js
-webpack.dev.js
-webpack.prod.js
+pnpm-lock.yaml
 karma.conf.js
 GIS平台说明.docx
 .npmrc
+.npmignore
+.gitignore
 test
