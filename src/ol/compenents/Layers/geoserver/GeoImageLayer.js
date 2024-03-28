@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ImageWMSLayer from './ImageWMSLayer';
+import ImageWMSLayer from '../ImageWMSLayer';
 import ImageWMS from 'ol/source/ImageWMS';
 /**
  * @classdesc geosever 栅格图层
