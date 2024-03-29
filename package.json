@@ -1,6 +1,6 @@
 {
   "name": "ol-gis-project",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -8,6 +8,7 @@
     "generate-types": "tsc --project config/tsconfig-build.json",
     "apidoc": "jsdoc jsdoc/index.md -c jsdoc/conf.json -P package.json -d build/apidoc",
     "preview": "vite preview",
+    "publishPag": "npm run generate-types && npm publish",
     "http-server": "npm run apidoc && cd build && http-server -p 8088"
   },
   "repository": {
