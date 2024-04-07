@@ -12,7 +12,7 @@ class OSRMService extends OSRM {
      * @param {Object} param 
      * @param {String} param.url request url
      * @param {Boolean}param.profile travel type
-     * @param {Number} param.timeout] 
+     * @param {Number} param.timeout
      */
     constructor(param) {
         super(param)
